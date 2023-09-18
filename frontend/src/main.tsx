@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainPage from "./components/MainPage.tsx";
 import ErrorPage from "./components/ErrorPage.tsx";
 import OmokBoard from "./components/OmokBoard.tsx";
+import Buttonfriend from "./components/button.tsx";
 
 const router = createBrowserRouter([
   {
@@ -23,5 +24,6 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <RouterProvider router={router} />
+    <Buttonfriend />
   </React.StrictMode>,
 );
