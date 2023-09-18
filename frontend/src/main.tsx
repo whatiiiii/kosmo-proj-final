@@ -9,17 +9,24 @@ import ErrorPage from "./components/ErrorPage.tsx";
 import OmokBoard from "./components/OmokBoard.tsx";
 import Buttonfriend from "./components/button.tsx";
 
-const router = createBrowserRouter([
-  {
-    index: true,
-    element: <MainPage />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "omok",
-    element: <OmokBoard />,
-  },
-]);
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <MainPage />,
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "index",
+      element: <MainPage />,
+    },
+    {
+      path: "omok",
+      element: <OmokBoard />,
+    },
+  ],
+  { basename: "/" },
+);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
