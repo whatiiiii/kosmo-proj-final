@@ -16,6 +16,10 @@ const router = createBrowserRouter(
       errorElement: <ErrorPage />,
     },
     {
+      path: "index",
+      element: <MainPage />,
+    },
+    {
       path: "omok",
       element: <OmokBoard />,
     },
