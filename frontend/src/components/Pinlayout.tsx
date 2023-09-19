@@ -64,7 +64,7 @@ const styles = {
   pin_container: {
     margin: 0,
     paading: 0,
-    width: "80vw",
+    width: "110vw",
     backgroundColor: "black",
     position: "absolute",
     left: "50%",
@@ -73,6 +73,7 @@ const styles = {
     gridTemplateColumns: "repeat(auto-fill, 250px)",
     gridAutoRows: "10px",
     justifyContent: "center",
+    size: sizeArray,
   },
 };
 
