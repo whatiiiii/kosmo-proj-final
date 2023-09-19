@@ -7,8 +7,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainPage from "./components/MainPage.tsx";
 import ErrorPage from "./components/ErrorPage.tsx";
 import OmokBoard from "./components/OmokBoard.tsx";
-import Buttonfriend from "./components/button.tsx";
+import Buttonfriend from "./components/Button.tsx";
 import Clock from "./components/Clock.jsx";
+import Pinlayout from "./components/Pinlayout.tsx";
 
 const router = createBrowserRouter(
   [
@@ -34,5 +35,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <RouterProvider router={router} />
     <Buttonfriend />
     <Clock />
+    <Pinlayout />
   </React.StrictMode>,
 );
