@@ -1,13 +1,16 @@
-import React from "react";
 import img1 from "/imggg/img1.png";
 import img2 from "/imggg/img2.png";
+import { useEffect, useState } from "react";
 
 const backgroundArray = [img1, img2];
-const randomIndex = Math.floor(Math.random() * backgroundArray.length);
-
-const backgroundImg = backgroundArray[randomIndex];
+const sizeArray = ["small", "medium", "large"];
 
 function Pin(props) {
+  const [randomIndex, setRandomIndex] = useState(0);
+  useEffect(() => {
+    setRandomIndex(Math.floor(Math.random() * backgroundArray.length));
+  }, []);
+  const backgroundImg = backgroundArray[randomIndex];
   return (
     <div
       style={{
