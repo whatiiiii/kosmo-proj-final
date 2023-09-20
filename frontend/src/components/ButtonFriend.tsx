@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal } from "react-bootstrap";
 import { useState } from "react";
 
-function Buttonfriend() {
+function ButtonFriend() {
   const hello = () => console.log("반가워용");
   const bye = () => console.log("잘가용");
   const [show, setShow] = useState(false);
@@ -45,4 +45,4 @@ function Buttonfriend() {
     </>
   );
 }
-export default Buttonfriend;
+export default ButtonFriend;
