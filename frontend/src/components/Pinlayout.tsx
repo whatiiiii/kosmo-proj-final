@@ -1,6 +1,6 @@
 import Pin from "./Pin";
 
-function Pinlayout() {
+function PinLayout() {
   return (
     <div style={styles.pin_container}>
       <Pin />
@@ -29,4 +29,4 @@ const styles: Record<string, React.CSSProperties> = {
   },
 };
 
-export default Pinlayout;
+export default PinLayout;
