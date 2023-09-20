@@ -5,17 +5,22 @@ import { useEffect, useState } from "react";
 const backgroundArray = [img1, img2];
 const sizeArray = ["small", "medium", "large"];
 
-function Pin(props) {
+function Pin() {
   const [randomIndex, setRandomIndex] = useState(0);
   useEffect(() => {
     setRandomIndex(Math.floor(Math.random() * backgroundArray.length));
   }, []);
+  const [randomIndex2, setRandomIndex2] = useState(0);
+  useEffect(() => {
+    setRandomIndex2(Math.floor(Math.random() * sizeArray.length));
+  }, []);
   const backgroundImg = backgroundArray[randomIndex];
+  const size = sizeArray[randomIndex2];
   return (
     <div
       style={{
         ...styles.pin,
-        ...styles[props.size],
+        ...styles[size],
         backgroundImage: `url(${backgroundImg})`,
         backgroundPosition: "center",
       }}
@@ -23,7 +28,7 @@ function Pin(props) {
   );
 }
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
   pin: {
     margin: "15px 10px",
     padding: 0,
