@@ -38,6 +38,7 @@ export default function OmokBoard() {
     const [rowNum, colNum] = coord;
     setHistory(history.slice(0, history.length - 1));
     setBoard(board.with(rowNum, board[rowNum].with(colNum, Omok.EMPTY)));
+    setIsWhiteTurn(!isWhiteTurn);
   }
 
   return (
