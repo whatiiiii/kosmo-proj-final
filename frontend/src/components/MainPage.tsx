@@ -65,7 +65,7 @@ function MainPage() {
             />
             <label htmlFor="floatingInputCustom">아이디</label>
           </Form.Floating>
-          <Form.Floating>
+          <Form.Floating className="mb-3">
             <Form.Control
               id="floatingPasswordCustom"
               type="password"
