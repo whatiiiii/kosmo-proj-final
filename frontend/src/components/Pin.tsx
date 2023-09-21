@@ -32,7 +32,7 @@ const styles: Record<string, React.CSSProperties> = {
   pin: {
     margin: "15px 10px",
     padding: 0,
-    borderRadius: "16px",
+    borderRadius: "20px",
   },
   small: {
     gridRowEnd: "span 26",
