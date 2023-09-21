@@ -4,12 +4,14 @@ import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css";
 //import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import MainPage from "./components/MainPage.tsx";
+import TestPage from "./components/TestPage.tsx";
 import ErrorPage from "./components/ErrorPage.tsx";
 import OmokBoard from "./components/OmokBoard.tsx";
 import ButtonFriend from "./components/ButtonFriend.tsx";
 import Clock from "./components/Clock.jsx";
 import PinLayout from "./components/PinLayout.tsx";
+import MainPage from "./components/MainPage.tsx";
+import Feed from "./components/Feed.tsx";
 
 const router = createBrowserRouter(
   [
@@ -19,8 +21,8 @@ const router = createBrowserRouter(
       errorElement: <ErrorPage />,
     },
     {
-      path: "index",
-      element: <MainPage />,
+      path: "test",
+      element: <TestPage />,
     },
     {
       path: "omok",
@@ -37,6 +39,10 @@ const router = createBrowserRouter(
     {
       path: "pin",
       element: <PinLayout />,
+    },
+    {
+      path: "feed",
+      element: <Feed />,
     },
   ],
   { basename: "/" },
