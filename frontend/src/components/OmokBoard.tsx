@@ -31,9 +31,14 @@ export default function OmokBoard() {
     if (history.length === 0) {
       return;
     }
-    const [rowNum, colNum] = history.at(-1)!;
+    const coord = history.at(-1);
+    if (coord === undefined) {
+      return;
+    }
+    const [rowNum, colNum] = coord;
     setHistory(history.slice(0, history.length - 1));
     setBoard(board.with(rowNum, board[rowNum].with(colNum, Omok.EMPTY)));
+    setIsWhiteTurn(!isWhiteTurn);
   }
 
   return (
@@ -47,7 +52,9 @@ export default function OmokBoard() {
                   <OmokCell
                     key={colIndex}
                     value={value}
-                    onCellClick={() => addOmok(rowIndex, colIndex)}
+                    onCellClick={() => {
+                      addOmok(rowIndex, colIndex);
+                    }}
                   />
                 ))}
               </tr>
