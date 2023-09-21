@@ -63,7 +63,7 @@ function MainPage() {
               type="text"
               placeholder="name@example.com"
             />
-            <label htmlFor="floatingInputCustom">이름</label>
+            <label htmlFor="floatingInputCustom">아이디</label>
           </Form.Floating>
           <Form.Floating>
             <Form.Control
@@ -76,18 +76,18 @@ function MainPage() {
           <Form.Floating className="mb-3">
             <Form.Control
               id="floatingInputCustom"
-              type="date"
-              placeholder="name@example.com"
+              type="text"
+              placeholder="text"
             />
-            <label htmlFor="floatingInputCustom">생년월일</label>
+            <label htmlFor="floatingInputCustom">이름</label>
           </Form.Floating>
           <Form.Floating className="mb-3">
             <Form.Control
               id="floatingInputCustom"
-              type="text"
+              type="date"
               placeholder="name@example.com"
             />
-            <label htmlFor="floatingInputCustom">아이디</label>
+            <label htmlFor="floatingInputCustom">생년월일</label>
           </Form.Floating>
         </Modal.Body>
         <Modal.Footer className="justify-content-center">
