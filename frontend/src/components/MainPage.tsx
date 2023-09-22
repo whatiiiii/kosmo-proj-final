@@ -6,12 +6,44 @@ import { Form } from "react-bootstrap";
 function MainPage() {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [signupId, setSignupId] = useState("");
+  const [signupPwd, setSignupPwd] = useState("");
+  const [signupName, setSignupName] = useState("");
+  const [signupDate, setSignupDate] = useState("");
 
   const handleCloseLogin = () => setShowLogin(false);
   const handleShowLogin = () => setShowLogin(true);
 
   const handleCloseSignup = () => setShowSignup(false);
   const handleShowSignup = () => setShowSignup(true);
+
+  function doSignup() {
+    const requestBody = {
+      id: signupId,
+      pwd: signupPwd,
+      name: signupName,
+      birth: signupDate,
+    };
+    const json = JSON.stringify(requestBody);
+    console.log(json);
+
+    fetch("http://localhost:8080/members", {
+      body: json,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // mode: "no-cors",
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert("회원가입이 완료 되었습니다.");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 
   return (
     <>
@@ -62,6 +94,8 @@ function MainPage() {
               id="floatingInputCustom"
               type="text"
               placeholder="name@example.com"
+              value={signupId}
+              onChange={(e) => setSignupId(e.target.value)}
             />
             <label htmlFor="floatingInputCustom">아이디</label>
           </Form.Floating>
@@ -70,6 +104,8 @@ function MainPage() {
               id="floatingPasswordCustom"
               type="password"
               placeholder="Password"
+              value={signupPwd}
+              onChange={(e) => setSignupPwd(e.target.value)}
             />
             <label htmlFor="floatingPasswordCustom">비밀번호</label>
           </Form.Floating>
@@ -78,6 +114,8 @@ function MainPage() {
               id="floatingInputCustom"
               type="text"
               placeholder="text"
+              value={signupName}
+              onChange={(e) => setSignupName(e.target.value)}
             />
             <label htmlFor="floatingInputCustom">이름</label>
           </Form.Floating>
@@ -86,12 +124,14 @@ function MainPage() {
               id="floatingInputCustom"
               type="date"
               placeholder="name@example.com"
+              value={signupDate}
+              onChange={(e) => setSignupDate(e.target.value)}
             />
             <label htmlFor="floatingInputCustom">생년월일</label>
           </Form.Floating>
         </Modal.Body>
         <Modal.Footer className="justify-content-center">
-          <Button variant="danger" onClick={handleCloseSignup}>
+          <Button variant="danger" onClick={doSignup}>
             Sign Up
           </Button>
         </Modal.Footer>
