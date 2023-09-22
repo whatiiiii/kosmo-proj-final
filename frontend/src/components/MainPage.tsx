@@ -11,6 +11,9 @@ function MainPage() {
   const [signupName, setSignupName] = useState("");
   const [signupDate, setSignupDate] = useState("");
 
+  const [loginId, setloginId] = useState("");
+  const [loginPwd, setloginPwd] = useState("");
+
   const handleCloseLogin = () => setShowLogin(false);
   const handleShowLogin = () => setShowLogin(true);
 
@@ -65,6 +68,8 @@ function MainPage() {
               id="floatingInputCustom"
               type="text"
               placeholder="test"
+              value={loginId}
+              onChange={(e) => setloginId(e.target.value)}
             />
             <label htmlFor="floatingInputCustom">ID</label>
           </Form.Floating>
@@ -73,6 +78,8 @@ function MainPage() {
               id="floatingPasswordCustom"
               type="password"
               placeholder="pass"
+              value={loginPwd}
+              onChange={(e) => setloginPwd(e.target.value)}
             />
             <label htmlFor="floatingPasswordCustom">Password</label>
           </Form.Floating>
