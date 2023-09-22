@@ -92,7 +92,7 @@ function MainPage() {
         </Modal.Body>
         <Modal.Footer className="justify-content-center">
           <Button variant="danger" onClick={handleCloseSignup}>
-            LOGIN
+            Sign Up
           </Button>
         </Modal.Footer>
       </Modal>
