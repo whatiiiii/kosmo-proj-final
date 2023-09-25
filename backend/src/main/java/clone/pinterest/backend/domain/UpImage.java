@@ -14,13 +14,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image implements Serializable{
+public class UpImage {
     @Id
     @GeneratedValue
     private Integer imgSeq;
     private String fname;
-    private String savedFname;
-
-    @OneToOne(mappedBy = "image")
+    private String saved_fname;
+    @OneToOne(mappedBy = "upimage")
     private Member member;
 }
