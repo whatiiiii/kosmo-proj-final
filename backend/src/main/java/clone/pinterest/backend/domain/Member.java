@@ -1,5 +1,6 @@
 package clone.pinterest.backend.domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import org.springframework.data.rest.core.annotation.RestResource;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Member implements Serializable{
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
