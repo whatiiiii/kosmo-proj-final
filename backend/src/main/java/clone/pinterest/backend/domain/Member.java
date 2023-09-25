@@ -30,8 +30,8 @@ public class Member {
     private String loc;
     @OneToOne
     @JoinColumn(name = "imgSeq")
-    @RestResource(path = "ProfileImg", rel = "image")
-    private UpImage image;
+    @RestResource(path = "ProfileImg", rel = "upimage")
+    private UpImage upimage;
 
     @OneToOne(mappedBy = "writer")
     private Pin pin;
