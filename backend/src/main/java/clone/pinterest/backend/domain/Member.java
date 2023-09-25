@@ -36,5 +36,6 @@ public class Member implements Serializable {
 
     @OneToOne(mappedBy ="writer")
     private CommentInPin comment;
-
+    
+    
 }
