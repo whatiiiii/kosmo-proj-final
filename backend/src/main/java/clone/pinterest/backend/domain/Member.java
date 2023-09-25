@@ -1,11 +1,9 @@
 package clone.pinterest.backend.domain;
 
-import java.io.Serializable;
 import java.sql.Date;
 
 import org.springframework.data.rest.core.annotation.RestResource;
 
-import org.springframework.data.rest.core.annotation.RestResource;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,7 +31,7 @@ public class Member {
     @OneToOne
     @JoinColumn(name = "imgSeq")
     @RestResource(path = "ProfileImg", rel = "image")
-    private Image image;
+    private UpImage image;
 
     @OneToOne(mappedBy ="writer")
     private Pin pin;
