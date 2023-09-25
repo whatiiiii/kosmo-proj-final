@@ -30,7 +30,6 @@ public class Member {
     private Date birth;
     private String sex;
     private String loc;
-<<<<<<< HEAD
     @OneToOne
     @JoinColumn(name = "imgSeq")
     @RestResource(path = "ProfileImg", rel = "image")
@@ -43,7 +42,4 @@ public class Member {
     private CommentInPin comment;
     
     
-=======
-    private Integer profile_img;
->>>>>>> ea3580a9b603250b673e4a742a9a0bbc24f51433
 }
