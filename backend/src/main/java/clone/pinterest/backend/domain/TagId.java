@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TagId implements Serializable {
     private String tag_name;
-    private Integer pin_seq;
+    private Pin pin;
 }

@@ -33,11 +33,10 @@ public class Member {
     @RestResource(path = "ProfileImg", rel = "image")
     private UpImage image;
 
-    @OneToOne(mappedBy ="writer")
+    @OneToOne(mappedBy = "writer")
     private Pin pin;
 
-    @OneToOne(mappedBy ="writer")
+    @OneToOne(mappedBy = "writer")
     private CommentInPin comment;
-    
-    
+
 }
