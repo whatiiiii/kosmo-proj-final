@@ -25,7 +25,7 @@ public class Pin {
     @OneToOne
     @JoinColumn(name = "imgSeq")
     @RestResource(path = "PinImg", rel = "image")
-    private Image image;
+    private UpImage image;
     private Date pinRdate;
     @OneToOne
     @JoinColumn(name = "id")
