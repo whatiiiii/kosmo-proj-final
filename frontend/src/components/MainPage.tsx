@@ -20,6 +20,11 @@ function MainPage() {
   const handleCloseSignup = () => setShowSignup(false);
   const handleShowSignup = () => setShowSignup(true);
 
+  function doLogin() {
+    console.log(loginId);
+    console.log(loginPwd);
+  }
+
   function doSignup() {
     const requestBody = {
       id: signupId,
@@ -50,23 +55,6 @@ function MainPage() {
 
   return (
     <>
-<<<<<<< HEAD
-      <h1>
-        <Link to="/omok">오목판 테스트</Link>
-      </h1>
-      <h1>
-        <Link to="/clock">시계 테스트</Link>
-      </h1>
-      <h1>
-        <Link to="/button">버튼 테스트</Link>
-      </h1>
-      <h1>
-        <Link to="/pin">핀 테스트</Link>
-      </h1>
-      <h1>
-        <Link to="/image">레스트 서버 이미지 테스트</Link>
-      </h1>
-=======
       <Button variant="danger" onClick={handleShowLogin}>
         Login
       </Button>
@@ -102,7 +90,7 @@ function MainPage() {
           </Form.Floating>
         </Modal.Body>
         <Modal.Footer className="justify-content-center">
-          <Button href="/feed" variant="danger" onClick={handleCloseLogin}>
+          <Button href="/feed" variant="danger" onClick={doLogin}>
             LOGIN
           </Button>
         </Modal.Footer>
@@ -160,7 +148,6 @@ function MainPage() {
           </Button>
         </Modal.Footer>
       </Modal>
->>>>>>> 1e57e700e9976e6534b3671bb3ecc49fce2ed97e
     </>
   );
 }
