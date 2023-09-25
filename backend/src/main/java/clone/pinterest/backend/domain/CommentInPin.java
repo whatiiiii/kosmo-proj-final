@@ -2,9 +2,13 @@ package clone.pinterest.backend.domain;
 
 import java.sql.Date;
 
+import org.springframework.data.rest.core.annotation.RestResource;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +23,12 @@ public class CommentInPin {
     private Integer seq;
     private Long content;
     private Date rdate;
-    private Integer pin;
-    private String writer;
+    @OneToOne
+    @JoinColumn(name = "pinSeq")
+    @RestResource(path = "CommentPin", rel = "pin" )
+    private Pin pin;
+    @OneToOne
+    @JoinColumn(name = "id")
+    @RestResource(path = "CommentWriter", rel = "writer" )
+    private Member writer;
 }

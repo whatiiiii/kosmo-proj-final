@@ -1,9 +1,13 @@
 package clone.pinterest.backend.domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 
+import org.springframework.data.rest.core.annotation.RestResource;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Member implements Serializable {
 
     // @GeneratedValue
     @Id
@@ -22,5 +26,15 @@ public class Member {
     private Date birth;
     private String sex;
     private String loc;
-    private Integer profile_img;
+    @OneToOne
+    @JoinColumn(name = "imgSeq")
+    @RestResource(path = "ProfileImg", rel = "image")
+    private Image image;
+
+    @OneToOne(mappedBy ="writer")
+    private Pin pin;
+
+    @OneToOne(mappedBy ="writer")
+    private CommentInPin comment;
+
 }

@@ -1,13 +1,16 @@
 package clone.pinterest.backend.domain;
 
 import java.sql.Date;
-
+import org.springframework.data.rest.core.annotation.RestResource;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @Data
 @Entity
@@ -16,10 +19,21 @@ import lombok.NoArgsConstructor;
 public class Pin {
     @Id
     @GeneratedValue
-    private Integer pin_seq;
-    private String pin_title;
-    private Long pin_desc;
-    private Integer pin_img;
-    private Date pin_rdate;
-    private String pin_writer;
+    private Integer pinSeq;
+    private String pinTitle;
+    private Long pinDesc;
+    @OneToOne
+    @JoinColumn(name = "imgSeq")
+    @RestResource(path = "PinImg", rel = "image")
+    private Image image;
+    private Date pinRdate;
+    @OneToOne
+    @JoinColumn(name = "id")
+    @RestResource(path = "pinWriter", rel = "writer" )
+    private Member writer;
+    @OneToOne(mappedBy ="pin")
+    private CommentInPin comment;
+    
+
+
 }
