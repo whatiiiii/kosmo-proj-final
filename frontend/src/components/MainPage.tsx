@@ -15,6 +15,9 @@ export default function MainPage() {
       <h1>
         <Link to="/pin">핀 테스트</Link>
       </h1>
+      <h1>
+        <Link to="/image">레스트 서버 이미지 테스트</Link>
+      </h1>
     </>
   );
 }

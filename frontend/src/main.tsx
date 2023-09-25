@@ -9,7 +9,8 @@ import ErrorPage from "./components/ErrorPage.tsx";
 import OmokBoard from "./components/OmokBoard.tsx";
 import ButtonFriend from "./components/ButtonFriend.tsx";
 import Clock from "./components/Clock.jsx";
-import PinLayout from "./components/PinLayout.tsx";
+import PinLayout from "./components/Pinlayout.tsx";
+import Imageprac from "./components/Imageprac.tsx";
 
 const router = createBrowserRouter(
   [
@@ -37,6 +38,10 @@ const router = createBrowserRouter(
     {
       path: "pin",
       element: <PinLayout />,
+    },
+    {
+      path: "image",
+      element: <Imageprac />,
     },
   ],
   { basename: "/" },
