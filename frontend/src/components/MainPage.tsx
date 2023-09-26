@@ -21,8 +21,33 @@ function MainPage() {
   const handleShowSignup = () => setShowSignup(true);
 
   function doLogin() {
-    console.log(loginId);
-    console.log(loginPwd);
+    const params = {
+      id: loginId,
+      pwd: loginPwd,
+    };
+    fetch(
+      `http://localhost:8080/members/search/existsByIdAndPwd?${new URLSearchParams(
+        params,
+      ).toString()}`,
+      { method: "GET" },
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .then((json) => {
+        if (json === true) {
+          alert(`환영합니다. ${loginId}님!`);
+          location.href = "/feed";
+        } else {
+          alert("아이디 혹은 비밀번호를 확인해 주세요.");
+        }
+      })
+      .catch((err) => {
+        alert("아이디 혹은 비밀번호를 확인해 주세요.");
+        console.error(err);
+      });
   }
 
   function doSignup() {
@@ -90,7 +115,7 @@ function MainPage() {
           </Form.Floating>
         </Modal.Body>
         <Modal.Footer className="justify-content-center">
-          <Button href="/feed" variant="danger" onClick={doLogin}>
+          <Button variant="danger" onClick={doLogin}>
             LOGIN
           </Button>
         </Modal.Footer>
