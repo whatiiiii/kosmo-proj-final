@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 // import App from "./components/App.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 //import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import TestPage from "./components/TestPage.tsx";
 import ErrorPage from "./components/ErrorPage.tsx";
 import OmokBoard from "./components/OmokBoard.tsx";
@@ -13,41 +13,57 @@ import PinLayout from "./components/Pinlayout.tsx";
 import Imageprac from "./components/Imageprac.tsx";
 import MainPage from "./components/MainPage.tsx";
 import Feed from "./components/Feed.tsx";
+import UserProfile from "./components/UserProfile.tsx";
+import { UserProvider } from "./components/UserProvider.tsx";
 
 const router = createBrowserRouter(
   [
     {
       path: "/",
-      element: <MainPage />,
-      errorElement: <ErrorPage />,
-    },
-    {
-      path: "test",
-      element: <TestPage />,
-    },
-    {
-      path: "omok",
-      element: <OmokBoard />,
-    },
-    {
-      path: "clock",
-      element: <Clock />,
-    },
-    {
-      path: "button",
-      element: <ButtonFriend />,
-    },
-    {
-      path: "pin",
-      element: <PinLayout />,
-    },
-    {
-      path: "image",
-      element: <Imageprac />,
-    },
-    {
-      path: "feed",
-      element: <Feed />,
+      element: (
+        <UserProvider>
+          <Outlet />
+        </UserProvider>
+      ),
+      // errorElement: <ErrorPage />,
+      children: [
+        {
+          index: true,
+          element: <MainPage />,
+        },
+        {
+          path: "test",
+          element: <TestPage />,
+        },
+        {
+          path: "omok",
+          element: <OmokBoard />,
+        },
+        {
+          path: "clock",
+          element: <Clock />,
+        },
+        {
+          path: "button",
+          element: <ButtonFriend />,
+        },
+        {
+          path: "pin",
+          element: <PinLayout />,
+        },
+        {
+          path: "image",
+          element: <Imageprac />,
+        },
+        {
+          path: "feed",
+          element: <Feed />,
+        },
+        {
+          path: "profile",
+          element: <UserProfile />,
+        },
+      ],
     },
   ],
   { basename: "/" },
