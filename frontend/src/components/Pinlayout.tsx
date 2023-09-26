@@ -1,41 +1,44 @@
+import PinNavBar from "./PinNavBar";
 import Pin from "./Pin";
 
 function PinLayout() {
   return (
-    <div style={styles.pin_container}>
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-      <Pin />
-    </div>
+    <>
+      <PinNavBar />
+      <div style={styles.pin_container}>
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+        <Pin />
+      </div>
+    </>
   );
 }
 
 const styles: Record<string, React.CSSProperties> = {
   pin_container: {
-    margin: 0,
     padding: 0,
-    width: "100vw",
+    width: "95vw",
     backgroundColor: "white",
     position: "absolute",
     left: "50%",
