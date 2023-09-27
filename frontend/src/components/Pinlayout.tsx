@@ -47,6 +47,7 @@ const styles: Record<string, React.CSSProperties> = {
     gridTemplateColumns: "repeat(auto-fill, 250px)",
     gridAutoRows: "8px",
     justifyContent: "center",
+    marginTop: 75,
   },
 };
 
