@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 import clone.pinterest.backend.domain.Member;
 
 public interface MemberRepository extends CrudRepository<Member, String> {
-
+    boolean existsByIdAndPwd(String id, String pwd);
 }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Form } from "react-bootstrap";
+import { useUser } from "../api/user";
 
 function MainPage() {
   const [showLogin, setShowLogin] = useState(false);
@@ -14,15 +15,58 @@ function MainPage() {
   const [loginId, setloginId] = useState("");
   const [loginPwd, setloginPwd] = useState("");
 
-  const handleCloseLogin = () => setShowLogin(false);
-  const handleShowLogin = () => setShowLogin(true);
+  const [, setUser] = useUser();
 
-  const handleCloseSignup = () => setShowSignup(false);
-  const handleShowSignup = () => setShowSignup(true);
+  const handleCloseLogin = () => {
+    setShowLogin(false);
+  };
+  const handleShowLogin = () => {
+    setShowLogin(true);
+  };
+
+  const handleCloseSignup = () => {
+    setShowSignup(false);
+  };
+  const handleShowSignup = () => {
+    setShowSignup(true);
+  };
 
   function doLogin() {
-    console.log(loginId);
-    console.log(loginPwd);
+    const params = {
+      id: loginId,
+      pwd: loginPwd,
+    };
+    fetch(
+      `http://localhost:8080/members/search/existsByIdAndPwd?${new URLSearchParams(
+        params,
+      ).toString()}`,
+      { method: "GET" },
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .then((json) => {
+        if (json === true) {
+          const user = {
+            id: loginId,
+            // TODO: get properties from server
+            name: "test",
+          };
+          localStorage.setItem("user", JSON.stringify(user));
+          setUser(user);
+
+          alert(`환영합니다. ${loginId}님!`);
+          location.href = "/feed";
+        } else {
+          alert("아이디 혹은 비밀번호를 확인해 주세요.");
+        }
+      })
+      .catch((err) => {
+        alert("아이디 혹은 비밀번호를 확인해 주세요.");
+        console.error(err);
+      });
   }
 
   function doSignup() {
@@ -46,6 +90,7 @@ function MainPage() {
       .then((response) => {
         if (response.ok) {
           alert("회원가입이 완료 되었습니다.");
+          handleCloseSignup();
         }
       })
       .catch((err) => {
@@ -63,6 +108,10 @@ function MainPage() {
         Sign up
       </Button>
 
+      <Button href="/profile" variant="primary">
+        프로필
+      </Button>
+
       <Modal show={showLogin} onHide={handleCloseLogin}>
         <Modal.Header closeButton>
           <Modal.Title>Pinterest에 오신 것을 환영합니다!</Modal.Title>
@@ -74,7 +123,9 @@ function MainPage() {
               type="text"
               placeholder="test"
               value={loginId}
-              onChange={(e) => setloginId(e.target.value)}
+              onChange={(e) => {
+                setloginId(e.target.value);
+              }}
             />
             <label htmlFor="floatingInputCustom">ID</label>
           </Form.Floating>
@@ -84,13 +135,15 @@ function MainPage() {
               type="password"
               placeholder="pass"
               value={loginPwd}
-              onChange={(e) => setloginPwd(e.target.value)}
+              onChange={(e) => {
+                setloginPwd(e.target.value);
+              }}
             />
             <label htmlFor="floatingPasswordCustom">Password</label>
           </Form.Floating>
         </Modal.Body>
         <Modal.Footer className="justify-content-center">
-          <Button href="/feed" variant="danger" onClick={doLogin}>
+          <Button variant="danger" onClick={doLogin}>
             LOGIN
           </Button>
         </Modal.Footer>
@@ -107,7 +160,9 @@ function MainPage() {
               type="text"
               placeholder="name@example.com"
               value={signupId}
-              onChange={(e) => setSignupId(e.target.value)}
+              onChange={(e) => {
+                setSignupId(e.target.value);
+              }}
             />
             <label htmlFor="floatingInputCustom">아이디</label>
           </Form.Floating>
@@ -117,7 +172,9 @@ function MainPage() {
               type="password"
               placeholder="Password"
               value={signupPwd}
-              onChange={(e) => setSignupPwd(e.target.value)}
+              onChange={(e) => {
+                setSignupPwd(e.target.value);
+              }}
             />
             <label htmlFor="floatingPasswordCustom">비밀번호</label>
           </Form.Floating>
@@ -127,7 +184,9 @@ function MainPage() {
               type="text"
               placeholder="text"
               value={signupName}
-              onChange={(e) => setSignupName(e.target.value)}
+              onChange={(e) => {
+                setSignupName(e.target.value);
+              }}
             />
             <label htmlFor="floatingInputCustom">이름</label>
           </Form.Floating>
@@ -137,7 +196,9 @@ function MainPage() {
               type="date"
               placeholder="name@example.com"
               value={signupDate}
-              onChange={(e) => setSignupDate(e.target.value)}
+              onChange={(e) => {
+                setSignupDate(e.target.value);
+              }}
             />
             <label htmlFor="floatingInputCustom">생년월일</label>
           </Form.Floating>
