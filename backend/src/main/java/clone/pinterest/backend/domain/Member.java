@@ -21,9 +21,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Member implements Serializable{
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long id;
+    private String id;
     private String name;
     private String pwd;
     private Date birth;
