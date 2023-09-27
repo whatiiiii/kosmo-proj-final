@@ -5,7 +5,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 //import "./index.css";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import TestPage from "./components/TestPage.tsx";
-import ErrorPage from "./components/ErrorPage.tsx";
 import OmokBoard from "./components/OmokBoard.tsx";
 import ButtonFriend from "./components/ButtonFriend.tsx";
 import Clock from "./components/Clock.jsx";
@@ -14,6 +13,7 @@ import Imageprac from "./components/Imageprac.tsx";
 import MainPage from "./components/MainPage.tsx";
 import Feed from "./components/Feed.tsx";
 import UserProfile from "./components/UserProfile.tsx";
+import MakePin from "./components/MakePin.tsx";
 import { UserProvider } from "./components/UserProvider.tsx";
 
 const router = createBrowserRouter(
@@ -62,6 +62,10 @@ const router = createBrowserRouter(
         {
           path: "profile",
           element: <UserProfile />,
+        },
+        {
+          path: "makepin",
+          element: <MakePin />,
         },
       ],
     },
