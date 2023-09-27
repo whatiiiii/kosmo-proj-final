@@ -14,7 +14,7 @@ import Imageprac from "./components/Imageprac.tsx";
 import MainPage from "./components/MainPage.tsx";
 import Feed from "./components/Feed.tsx";
 import UserProfile from "./components/UserProfile.tsx";
-import PinBuilder from "./components/PinBuilder.tsx";
+// import PinBuilder from "./components/PinBuilder.tsx";
 import { UserProvider } from "./components/UserProvider.tsx";
 
 const router = createBrowserRouter(
@@ -66,7 +66,7 @@ const router = createBrowserRouter(
         },
         {
           path: "pin-builder",
-          element: <PinBuilder />,
+          // element: <PinBuilder />,
         },
       ],
     },
