@@ -1,9 +1,9 @@
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { LinkContainer } from "react-router-bootstrap";
+// import Button from "react-bootstrap/Button";
+// import Container from "react-bootstrap/Container";
+// import Row from "react-bootstrap/Row";
+// import Col from "react-bootstrap/Col";
+// import { LinkContainer } from "react-router-bootstrap";
 import OmokCell from "./OmokCell";
 import { Omok } from "../api/types";
 import styles from "./OmokBoard.module.css";

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 // import App from "./components/App.tsx";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 //import "./index.css";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import TestPage from "./components/TestPage.tsx";
@@ -14,6 +14,7 @@ import Imageprac from "./components/Imageprac.tsx";
 import MainPage from "./components/MainPage.tsx";
 import Feed from "./components/Feed.tsx";
 import UserProfile from "./components/UserProfile.tsx";
+import PinBuilder from "./components/PinBuilder.tsx";
 import { UserProvider } from "./components/UserProvider.tsx";
 
 const router = createBrowserRouter(
@@ -62,6 +63,10 @@ const router = createBrowserRouter(
         {
           path: "profile",
           element: <UserProfile />,
+        },
+        {
+          path: "pin-builder",
+          element: <PinBuilder />,
         },
       ],
     },

@@ -1,6 +1,6 @@
-import Button from "react-bootstrap/Button";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Modal } from "react-bootstrap";
+// import Button from "react-bootstrap/Button";
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import { Modal } from "react-bootstrap";
 import { useState } from "react";
 
 function ButtonFriend() {

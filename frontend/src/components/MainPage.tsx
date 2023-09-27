@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import { Form } from "react-bootstrap";
+// import Button from "react-bootstrap/Button";
+// import Modal from "react-bootstrap/Modal";
+// import { Form } from "react-bootstrap";
 import { useUser } from "../api/user";
 
 function MainPage() {
