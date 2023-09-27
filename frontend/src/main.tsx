@@ -16,6 +16,7 @@ import Feed from "./components/Feed.tsx";
 import UserProfile from "./components/UserProfile.tsx";
 // import PinBuilder from "./components/PinBuilder.tsx";
 import { UserProvider } from "./components/UserProvider.tsx";
+import PinBuilder from "./components/PinBuilder.tsx";
 
 const router = createBrowserRouter(
   [
@@ -66,7 +67,7 @@ const router = createBrowserRouter(
         },
         {
           path: "pin-builder",
-          // element: <PinBuilder />,
+          element: <PinBuilder />,
         },
       ],
     },
