@@ -133,7 +133,7 @@ export default function PinNavBar() {
 
   return (
     <Box sx={{ flexGrow: 10 }}>
-      <AppBar position="static">
+      <AppBar position="absolute">
         <Toolbar>
           <IconButton
             size="large"
