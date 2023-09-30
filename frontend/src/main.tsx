@@ -18,6 +18,7 @@ import { UserProvider } from "./components/UserProvider.tsx";
 import PinBuilder from "./components/PinBuilder.tsx";
 import SignIn from "./components/SignIn.tsx";
 import SignUp from "./components/SignUp.tsx";
+import CssBaseline from "@mui/material/CssBaseline";
 
 const router = createBrowserRouter(
   [
@@ -90,6 +91,7 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
+    <CssBaseline />
     <RouterProvider router={router} />
   </React.StrictMode>,
 );
