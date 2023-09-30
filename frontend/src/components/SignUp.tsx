@@ -17,7 +17,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/ko";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { koKR } from "@mui/x-date-pickers";
 
 function Copyright(props: TypographyProps) {
   return (
@@ -120,12 +119,14 @@ export default function SignUp() {
                 <LocalizationProvider
                   dateAdapter={AdapterDayjs}
                   adapterLocale="ko"
-                  localeText={
-                    koKR.components.MuiLocalizationProvider.defaultProps
-                      .localeText
-                  }
                 >
-                  <DatePicker />
+                  <DatePicker
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                      },
+                    }}
+                  />
                 </LocalizationProvider>
               </Grid>
               {/* <Grid item xs={12}>
