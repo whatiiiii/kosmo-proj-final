@@ -14,7 +14,7 @@ import MainPage from "./components/MainPage.tsx";
 import Feed from "./components/Feed.tsx";
 import UserProfile from "./components/UserProfile.tsx";
 import MakePin from "./components/MakePin.tsx";
-import { UserProvider } from "./components/UserProvider.tsx";
+import UserProvider from "./components/UserProvider.tsx";
 import PinBuilder from "./components/PinBuilder.tsx";
 import SignIn from "./components/SignIn.tsx";
 import SignUp from "./components/SignUp.tsx";
