@@ -142,7 +142,7 @@ export default function PinNavBar() {
             aria-label="open drawer"
             //sx={{ mr: 1 }}
           >
-            <Pinterest color="error" />
+            <Pinterest color="secondary" />
           </IconButton>
           <Button variant="text" color="secondary">
             홈
@@ -171,7 +171,7 @@ export default function PinNavBar() {
               aria-label="show 4 new mails"
               color="inherit"
             >
-              <Badge badgeContent={4} color="error">
+              <Badge badgeContent={4} color="info">
                 <MailIcon />
               </Badge>
             </IconButton>
@@ -180,7 +180,7 @@ export default function PinNavBar() {
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={17} color="error">
+              <Badge badgeContent={17} color="info">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
