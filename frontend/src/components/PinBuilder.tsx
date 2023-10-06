@@ -74,10 +74,13 @@ function PinBuilder() {
   };
 
   const StyledRoot = styled("div")({
-    display: "center",
+    display: "flex",
     padding: 150,
     backgroundColor: "#e0e0e0",
     borderRadius: 20,
+    alignItems: "center",
+    position: "relative",
+    flexDirection: "column",
   });
 
   const MuiPaperRoot = styled("div")({});
@@ -187,7 +190,7 @@ function PinBuilder() {
 
   return (
     <>
-      <StyledRoot>
+      <StyledRoot sx={{ borderRadius: 5 }}>
         <PinNavBar />
         <MuiPaperRoot>
           <DemoPaper square={false} elevation={3} sx={{ borderRadius: 5 }}>
@@ -223,6 +226,7 @@ function PinBuilder() {
                 sx={{
                   width: 450,
                   height: 90,
+                  display: "contents",
                   // backgroundColor: "yellow",
                   // borderRadius: 20,
                 }}
