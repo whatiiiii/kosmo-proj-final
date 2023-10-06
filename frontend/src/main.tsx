@@ -21,6 +21,7 @@ import SignUp from "./components/SignUp.tsx";
 import CssBaseline from "@mui/material/CssBaseline";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import theme from "./api/theme.ts";
+import EditProfile from "./components/EditProfile.tsx";
 
 const router = createBrowserRouter(
   [
@@ -85,6 +86,11 @@ const router = createBrowserRouter(
           path: "signup",
           element: <SignUp />,
         },
+        {
+          path: "editprofile",
+          element: <EditProfile />,
+        },
+
       ],
     },
   ],

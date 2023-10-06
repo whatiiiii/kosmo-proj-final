@@ -15,6 +15,7 @@ export default function EditProfile() {
     setSelectedIndex(index);
   };
 
+  
   return (
     <Box sx={{ width: '100%', maxWidth: 240, bgcolor: 'background.paper'}}>
       <List component="nav" aria-label="main mailbox folders" sx={{ marginTop: 16 }}></List>
