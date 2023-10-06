@@ -10,7 +10,7 @@ import ButtonFriend from "./components/ButtonFriend.tsx";
 import Clock from "./components/Clock.jsx";
 import PinLayout from "./components/Pinlayout.tsx";
 import Imageprac from "./components/Imageprac.tsx";
-import MainPage from "./components/MainPage.tsx";
+// import MainPage from "./components/MainPage.tsx";
 import Feed from "./components/Feed.tsx";
 import UserProfile from "./components/UserProfile.tsx";
 import MakePin from "./components/MakePin.tsx";
@@ -36,7 +36,7 @@ const router = createBrowserRouter(
       children: [
         {
           index: true,
-          element: <MainPage />,
+          element: <TestPage />,
         },
         {
           path: "test",
@@ -90,13 +90,11 @@ const router = createBrowserRouter(
           path: "profiletab",
           element: <ProfileTab />,
         },
-
       ],
     },
   ],
   { basename: "/" },
 );
-
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
