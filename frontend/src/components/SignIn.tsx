@@ -1,6 +1,5 @@
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 // import FormControlLabel from "@mui/material/FormControlLabel";
 // import Checkbox from "@mui/material/Checkbox";
@@ -10,8 +9,8 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import React from "react";
 import type { TypographyProps } from "@mui/material/Typography";
+import { useUser } from "../api/user";
 
 function Copyright(props: TypographyProps) {
   return (
@@ -32,18 +31,40 @@ function Copyright(props: TypographyProps) {
 }
 
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [, setUser] = useUser();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      id: data.get("id"),
-      password: data.get("password"),
-    });
+    const params = {
+      id: data.get("id") as string,
+      pwd: data.get("pwd") as string,
+    };
+    const response = await fetch(
+      `http://localhost:8080/members/search/existsByIdAndPwd?${new URLSearchParams(
+        params,
+      ).toString()}`,
+      { method: "GET" },
+    );
+    const json = (await response.json()) as boolean | null;
+    if (json) {
+      const user = {
+        id: params.id,
+        // TODO: get properties from server
+        name: "test",
+      };
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser(user);
+
+      alert(`환영합니다. ${user.id}님!`);
+      location.href = "/feed";
+    } else {
+      alert("아이디 혹은 비밀번호를 확인해 주세요.");
+    }
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <Box
         sx={{
           marginTop: 8,
@@ -58,7 +79,17 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           로그인
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={(event) => {
+            handleSubmit(event).catch((err) => {
+              console.log(err);
+              alert("ajax error");
+            });
+          }}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
             required
@@ -73,10 +104,10 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
-            name="password"
+            name="pwd"
             label="비밀번호"
             type="password"
-            id="password"
+            id="pwd"
             autoComplete="current-password"
           />
           {/* <FormControlLabel
