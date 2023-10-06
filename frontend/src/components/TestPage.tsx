@@ -9,7 +9,9 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-// import Button from "@mui/material/Button";
+import { useUser } from "../api/user";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 function ListItemLink({ href, text }: { href: string; text: string }) {
   return (
@@ -22,6 +24,17 @@ function ListItemLink({ href, text }: { href: string; text: string }) {
 }
 
 export default function TestPage() {
+  const [user, setUser] = useUser();
+  const navigate = useNavigate();
+  function handleLoginButton() {
+    if (user) {
+      localStorage.removeItem("user");
+      setUser(null);
+      location.href = "/";
+    } else {
+      navigate("/signin");
+    }
+  }
   return (
     <Container maxWidth="sm">
       <Box sx={{ flexGrow: 1 }}>
@@ -39,7 +52,9 @@ export default function TestPage() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               테스트 페이지
             </Typography>
-            {/* <Button color="inherit">Login</Button> */}
+            <Button color="inherit" onClick={handleLoginButton}>
+              {user ? "로그아웃" : "로그인"}
+            </Button>
           </Toolbar>
         </AppBar>
         <nav>
