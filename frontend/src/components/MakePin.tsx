@@ -1,13 +1,28 @@
 import Container from "@mui/material/Container";
 import PinNavBar from "./PinNavBar";
 import Box from "@mui/material/Box";
-import { Autocomplete, IconButton, TextField, styled } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  ButtonGroup,
+  ClickAwayListener,
+  Grow,
+  IconButton,
+  MenuItem,
+  MenuList,
+  Paper,
+  Popper,
+  TextField,
+  styled,
+} from "@mui/material";
 import { useRef, useState } from "react";
 import Profiletext from "./Profiletext";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import React from "react";
+import { ArrowDropDownIcon } from "@mui/x-date-pickers";
 
 function MakePin() {
+  const options = ["보드선택", "보드<1>", "보드<2>", "확인용보드"];
   const [imgFile, setImgFile] = useState<string>("");
   const imgRef = useRef<HTMLInputElement>(null);
 
@@ -41,6 +56,56 @@ function MakePin() {
   const [selectedTags, setSelectedTags] = useState(Array<object>());
   const tagsRef = useRef<any>(null);
 
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef<HTMLDivElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLDivElement>(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  const handleClick = () => {
+    console.info(`You clicked ${options[selectedIndex]}`);
+  };
+
+  const handleMenuItemClick = (
+    event: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    index: number,
+  ) => {
+    setSelectedIndex(index);
+    setOpen(false);
+  };
+
+  const handleToggle = () => {
+    // setAnchorEl(anchorRef.current);
+    // setAnchorEl(event.target as HTMLDivElement);
+    // console.log(anchorEl);
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event: Event) => {
+    if (
+      anchorRef.current &&
+      anchorRef.current.contains(event.target as HTMLElement)
+    ) {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const [state, setState] = React.useState<State>({
+    open1: false,
+    vertical: "top",
+    horizontal: "center",
+  });
+  const { vertical, horizontal, open1 } = state;
+
+  const handleClick1 = (newState: SnackbarOrigin) => () => {
+    setState({ ...newState, open1: true });
+  };
+
+  const handleClose1 = () => {
+    setState({ ...state, open1: false });
+  };
+
   return (
     <Container>
       <PinNavBar />
@@ -52,12 +117,73 @@ function MakePin() {
                 <div style={styles.searchbar}>
                   <div style={styles.searchbutton}></div>
                   <div style={styles.searchbutton2}>
-                    <button style={styles.scrollbutton}>
-                      <span>선택</span>
-                    </button>
-                    <button style={styles.scrollbutton2}>
-                      <span color="white">저장</span>
-                    </button>
+                    <ButtonGroup
+                      ref={anchorRef}
+                      aria-label="split button"
+                      sx={{ ml: 7, mr: 1 }}
+                    >
+                      <Button onClick={handleClick} style={{ width: 120 }}>
+                        {options[selectedIndex]}
+                      </Button>
+                      <Button
+                        size="small"
+                        aria-controls={open ? "split-button-menu" : undefined}
+                        aria-expanded={open ? "true" : undefined}
+                        aria-label="select merge strategy"
+                        aria-haspopup="menu"
+                        onClick={handleToggle}
+                      >
+                        <ArrowDropDownIcon />
+                      </Button>
+                    </ButtonGroup>
+                    <Popper
+                      sx={{
+                        zIndex: 1,
+                      }}
+                      open={open}
+                      anchorEl={() => anchorRef.current!}
+                      role={undefined}
+                      transition
+                      disablePortal
+                    >
+                      {({ TransitionProps, placement }) => (
+                        <Grow
+                          {...TransitionProps}
+                          style={{
+                            transformOrigin:
+                              placement === "bottom"
+                                ? "center top"
+                                : "center bottom",
+                          }}
+                        >
+                          <Paper>
+                            <ClickAwayListener onClickAway={handleClose}>
+                              <MenuList id="split-button-menu" autoFocusItem>
+                                {options.map((option, index) => (
+                                  <MenuItem
+                                    key={option}
+                                    disabled={index === 0}
+                                    selected={index === selectedIndex}
+                                    onClick={(event) =>
+                                      handleMenuItemClick(event, index)
+                                    }
+                                  >
+                                    {option}
+                                  </MenuItem>
+                                ))}
+                              </MenuList>
+                            </ClickAwayListener>
+                          </Paper>
+                        </Grow>
+                      )}
+                    </Popper>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      sx={{ ml: 1, mr: 1 }}
+                    >
+                      저장
+                    </Button>
                   </div>
                 </div>
                 <div style={styles.fileandtext}>
@@ -288,7 +414,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: "center",
     margin: 0,
     display: "flex",
-    paddingLeft: 250,
+    paddingLeft: 210,
   },
   scrollbutton: {
     alignItems: "center",
