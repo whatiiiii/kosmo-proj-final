@@ -34,6 +34,7 @@ import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
+import Grid from "@mui/material/Grid";
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
   width: 900,
@@ -112,16 +113,17 @@ function PinBuilder() {
     overflow: "auto",
   });
 
-  const Box2Bottom = styled("div")({
-    position: "sticky",
-  });
+  const Box2Bottom = styled("div")({});
 
   const ImageRoot = styled("img")({
     border: 0,
     height: "auto",
-    maxWidth: "100%",
+    //  maxWidth: "100%",
+    width: 450,
     verticalAlign: "middle",
-    borderRadius: 20,
+    //borderRadius: 20,
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
   });
 
   const [open, setOpen] = React.useState(false);
@@ -190,10 +192,41 @@ function PinBuilder() {
         <MuiPaperRoot>
           <DemoPaper square={false} elevation={3} sx={{ borderRadius: 5 }}>
             <Box1>
+              {/* <Grid
+              container
+              sx={{ float: "left", width: 450, height: 750, borderRadius: 20 }}
+            > */}
               <ImageRoot src={img2} />
+              {/* </Grid> */}
             </Box1>
-            <Box2>
-              <Box2Top>
+            {/* <Box2> */}
+            {/* <Box2Top> */}
+            <Grid
+              container
+              direction="column"
+              sx={{
+                display: "flex",
+                width: 450,
+                height: 750,
+                // backgroundColor: "#666666",
+                //  ml: 10,
+                //borderRadius: 5,
+                borderTopRightRadius: 20,
+                borderBottomRightRadius: 20,
+                position: "relative",
+                flexDirection: "column",
+              }}
+            >
+              <Grid
+                item
+                xs
+                sx={{
+                  width: 450,
+                  height: 90,
+                  // backgroundColor: "yellow",
+                  // borderRadius: 20,
+                }}
+              >
                 <List
                   sx={{
                     width: 410,
@@ -212,7 +245,7 @@ function PinBuilder() {
                       aria-label="open drawer"
                       sx={{ ml: 1, mr: 1, mt: 2 }}
                     >
-                      <DownloadForOfflineIcon fontSize="large" />
+                      <DownloadForOfflineIcon fontSize="s" />
                     </IconButton>
                     <IconButton
                       size="large"
@@ -225,7 +258,7 @@ function PinBuilder() {
                         horizontal: "center",
                       })}
                     >
-                      <LinkIcon fontSize="large" />
+                      <LinkIcon fontSize="medium" />
                       <Snackbar
                         anchorOrigin={{ vertical, horizontal }}
                         open={open1}
@@ -239,7 +272,7 @@ function PinBuilder() {
                       <ButtonGroup
                         ref={anchorRef}
                         aria-label="split button"
-                        sx={{ ml: 5, mr: 1, mt: 2 }}
+                        sx={{ ml: 7, mr: 1, mt: 2 }}
                       >
                         <Button onClick={handleClick}>
                           {options[selectedIndex]}
@@ -306,9 +339,22 @@ function PinBuilder() {
                     </Button>
                   </ListItem>
                 </List>
-              </Box2Top>
-              <Box2Middle>
-                <Container>
+                {/* </Box2Top> */}
+              </Grid>
+              {/* <Box2Middle> */}
+              <Grid
+                item
+                xs
+                sx={{
+                  width: 450,
+                  height: 550,
+                  //  backgroundColor: "#666666",
+                  overflow: "auto",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <Container style={{ display: "flex", flex: "1 1 auto" }}>
                   <Box sx={{ width: "100%", maxWidth: 500 }}>
                     <Typography variant="h4" gutterBottom>
                       제목 입력창입니다. 확인해주세요.
@@ -388,8 +434,28 @@ function PinBuilder() {
                     </Box>
                   </Box>
                 </Container>
-              </Box2Middle>
-              <Box2Bottom>
+              </Grid>
+              {/* </Box2Middle> */}
+              {/* <Box2Bottom> */}
+              <Grid
+                item
+                //  xs="auto"
+                sx={{
+                  //  // bottom: "0",
+                  // //  top: "auto",
+                  //   backgroundColor: "white",
+                  //   width: "100%",
+                  //   borderRadius: "15px",
+                  position: "sticky",
+                }}
+                style={{
+                  bottom: "0",
+                  top: "auto",
+                  backgroundColor: "white",
+                  width: "100%",
+                  borderRadius: "15px",
+                }}
+              >
                 <Typography variant="h6" fontWeight="bold" ml={2}>
                   댓글 4개
                 </Typography>
@@ -398,6 +464,7 @@ function PinBuilder() {
                     width: 410,
                     ml: 2,
                     bgcolor: "background.paper",
+                    overflow: "hidden",
                     // overflowY: "scroll",
                     //flexGrow: 2,
                   }}
@@ -418,13 +485,16 @@ function PinBuilder() {
                       fullWidth
                       sx={{
                         height: "100%",
-                        maxHeight: "calc((100vh, -80px) -16px)",
+                        width: "320px",
+                        //   maxHeight: "calc((100vh - 80px) - 16px)", // 수정: 계산식 수정
                       }}
                     />
                   </ListItem>
                 </List>
-              </Box2Bottom>
-            </Box2>
+              </Grid>
+              {/* </Box2Bottom> */}
+              {/* </Box2> */}
+            </Grid>
           </DemoPaper>
         </MuiPaperRoot>
       </StyledRoot>
@@ -444,7 +514,7 @@ const messageExamples: readonly MessageExample[] = [
   {
     primary: "a",
     secondary:
-      "Ha! Was literally just watching this movie and searching ‘high fashion’ because of it… just to see this as a top search result",
+      "Ha! Was literally just watching this movie and searching ‘high fashion’",
     person: "/static/images/avatar/5.jpg",
   },
   {
