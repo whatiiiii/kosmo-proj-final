@@ -1,6 +1,6 @@
 import React from "react";
 import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
+import AppBar, { type AppBarOwnProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -63,7 +63,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PinNavBar() {
+export default function PinNavBar({
+  position,
+}: {
+  position?: AppBarOwnProps["position"];
+}) {
   const navigate = useNavigate();
   const goPin = () => {
     navigate("/pin");
@@ -151,7 +155,7 @@ export default function PinNavBar() {
 
   return (
     <Box sx={{ flexGrow: 10 }}>
-      <AppBar position="absolute">
+      <AppBar position={position ?? "absolute"}>
         <Toolbar>
           <IconButton
             size="large"
