@@ -2,11 +2,11 @@ package clone.pinterest.backend.domain;
 
 import java.io.Serializable;
 
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,15 +15,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(FollowId.class)
-public class Follow implements Serializable{
-    @Id
-    @ManyToOne
-    @JoinColumn(name="follow_name", referencedColumnName="id")
-    private Member followName;
-
-    @Id
-    @ManyToOne
-    @JoinColumn(name="follower",referencedColumnName="id")
-    private Member follower;
+@Table(name="Follow")
+@RepositoryRestResource
+public class Follow{
+    @EmbeddedId
+    private FollowId id;
 }
