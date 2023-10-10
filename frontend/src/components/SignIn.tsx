@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import type { TypographyProps } from "@mui/material/Typography";
 import { useUser } from "../api/user";
+import { SERVER_URL } from "../api/globals";
 
 function Copyright(props: TypographyProps) {
   return (
@@ -41,7 +42,7 @@ export default function SignIn() {
       pwd: data.get("pwd") as string,
     };
     const response = await fetch(
-      `http://localhost:8080/members/search/existsByIdAndPwd?${new URLSearchParams(
+      `${SERVER_URL}/members/search/existsByIdAndPwd?${new URLSearchParams(
         params,
       ).toString()}`,
       { method: "GET" },

@@ -17,6 +17,7 @@ import "dayjs/locale/ko";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import type { User } from "../api/user";
+import { SERVER_URL } from "../api/globals";
 
 function Copyright(props: TypographyProps) {
   return (
@@ -54,7 +55,7 @@ export default function SignUp() {
     const json = JSON.stringify(signUpUser);
     console.log(json);
 
-    fetch("http://localhost:8080/members", {
+    fetch(SERVER_URL + "/members", {
       body: json,
       method: "POST",
       headers: {
