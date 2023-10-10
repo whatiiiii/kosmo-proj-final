@@ -10,7 +10,7 @@ import ButtonFriend from "./components/ButtonFriend.tsx";
 import Clock from "./components/Clock.jsx";
 import PinLayout from "./components/Pinlayout.tsx";
 import Imageprac from "./components/Imageprac.tsx";
-import MainPage from "./components/MainPage.tsx";
+// import MainPage from "./components/MainPage.tsx";
 import Feed from "./components/Feed.tsx";
 import UserProfile from "./components/UserProfile.tsx";
 import MakePin from "./components/MakePin.tsx";
@@ -24,6 +24,8 @@ import theme from "./api/theme.ts";
 import ProfileTab from "./components/ProfileTab.tsx";
 import ProfileFooter from "./components/ProfileFooter.tsx";
 import EditProfilePage from "./components/EditProfilePage.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const router = createBrowserRouter(
   [
@@ -38,7 +40,7 @@ const router = createBrowserRouter(
       children: [
         {
           index: true,
-          element: <MainPage />,
+          element: <TestPage />,
         },
         {
           path: "test",
@@ -69,10 +71,6 @@ const router = createBrowserRouter(
           element: <Feed />,
         },
         {
-          path: "profile",
-          element: <UserProfile />,
-        },
-        {
           path: "pin-builder",
           element: <PinBuilder />,
         },
@@ -100,17 +98,26 @@ const router = createBrowserRouter(
           path: "editprofilepage",
           element: <EditProfilePage />,
         },
+        {
+          path: "user/:id",
+          element: <UserProfile />,
+        },
       ],
     },
   ],
   { basename: "/" },
 );
 
+const queryClient = new QueryClient();
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <CssBaseline />
-    <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <CssBaseline />
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   </React.StrictMode>,
 );
