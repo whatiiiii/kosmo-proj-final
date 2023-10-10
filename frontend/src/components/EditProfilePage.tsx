@@ -42,7 +42,6 @@ export default function EditProfilePage() {
           multiline
           maxRows={4}
         />
-
         <TextField id="outlined-textarea" label="성" multiline />
       </div>
       <Typography gutterBottom fontSize={12}>
