@@ -14,9 +14,21 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
 function ListItemLink({ href, text }: { href: string; text: string }) {
+  const navigate = useNavigate();
+
+  function handleClick(event: React.MouseEvent<HTMLAnchorElement>) {
+    if (href.includes(":")) {
+      event.preventDefault();
+      href = href.replace(/:(\w+)/, (_, p1) => {
+        return prompt(`${p1} 입력`) ?? "";
+      });
+    }
+    navigate(href);
+  }
+
   return (
     <ListItem disablePadding>
-      <ListItemButton href={href}>
+      <ListItemButton href={href} onClick={handleClick}>
         <ListItemText primary={text} />
       </ListItemButton>
     </ListItem>
@@ -65,7 +77,7 @@ export default function TestPage() {
             <ListItemLink href="/pin" text="핀 테스트" />
             <ListItemLink href="/signin" text="로그인" />
             <ListItemLink href="/signup" text="회원가입" />
-            <ListItemLink href="/profile" text="프로필" />
+            <ListItemLink href="/user/:id" text="프로필" />
             <ListItemLink href="/pin-builder" text="핀빌더" />
             <ListItemLink href="/makepin" text="핀만들기" />
             <ListItemLink href="/profiletab" text="프로필탭" />

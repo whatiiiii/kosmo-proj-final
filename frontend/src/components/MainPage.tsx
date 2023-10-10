@@ -3,15 +3,21 @@ import { useState } from "react";
 // import Modal from "react-bootstrap/Modal";
 // import { Form } from "react-bootstrap";
 import { useUser } from "../api/user";
+import { Button } from "@mui/material"
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
 function MainPage() {
+
+ 
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [signupId, setSignupId] = useState("");
   const [signupPwd, setSignupPwd] = useState("");
   const [signupName, setSignupName] = useState("");
   const [signupDate, setSignupDate] = useState("");
-
+ 
   const [loginId, setloginId] = useState("");
   const [loginPwd, setloginPwd] = useState("");
 
@@ -100,115 +106,117 @@ function MainPage() {
 
   return (
     <>
-      <Button variant="danger" onClick={handleShowLogin}>
-        Login
+      <Button variant="contained" onClick={handleShowLogin} style={{ backgroundColor: '#E60023', color: 'white' }}>
+        로그인
       </Button>
 
-      <Button variant="secondary" onClick={handleShowSignup}>
-        Sign up
+      <Button
+        variant="outlined"
+        onClick={handleShowSignup}
+        sx={{
+          m : 1,
+          color: "black",
+          borderColor: "gray",
+          ":hover": { borderColor: "black" },
+        }}
+        >
+        회원가입
       </Button>
 
-      <Button href="/profile" variant="primary">
+      <Button href="/profile" variant="contained" style={{ backgroundColor: '#E60023', color: 'white' }}>
         프로필
       </Button>
 
-      <Modal show={showLogin} onHide={handleCloseLogin}>
-        <Modal.Header closeButton>
-          <Modal.Title>Pinterest에 오신 것을 환영합니다!</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Floating className="mb-3">
-            <Form.Control
-              id="floatingInputCustom"
-              type="text"
-              placeholder="test"
-              value={loginId}
-              onChange={(e) => {
-                setloginId(e.target.value);
-              }}
-            />
-            <label htmlFor="floatingInputCustom">ID</label>
-          </Form.Floating>
-          <Form.Floating>
-            <Form.Control
-              id="floatingPasswordCustom"
-              type="password"
-              placeholder="pass"
-              value={loginPwd}
-              onChange={(e) => {
-                setloginPwd(e.target.value);
-              }}
-            />
-            <label htmlFor="floatingPasswordCustom">Password</label>
-          </Form.Floating>
-        </Modal.Body>
-        <Modal.Footer className="justify-content-center">
-          <Button variant="danger" onClick={doLogin}>
-            LOGIN
+      <div>
+      <Modal
+        open={showLogin}
+        onClose={handleCloseLogin}
+        aria-labelledby="login-modal"
+        aria-describedby="login-modal-description"
+      >
+        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 300, bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
+          <h2 id="login-modal" style={{ textAlign: 'center' }}>Pinterest에 오신것을<br/>환영합니다!</h2>
+          <TextField
+            fullWidth
+            label="ID"
+            variant="outlined"
+            margin="normal"
+            value={loginId}
+            onChange={(e) => setloginId(e.target.value)}
+            autoFocus
+          />
+          <TextField
+            fullWidth
+            label="Password"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            value={loginPwd}
+            onChange={(e) => setloginPwd(e.target.value)}
+          />
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Button variant="contained" onClick={doLogin} style={{ backgroundColor: '#E60023', color: 'white' }}>
+            로그인
           </Button>
-        </Modal.Footer>
+          </div>
+        </Box>
       </Modal>
+    </div>
 
-      <Modal show={showSignup} onHide={handleCloseSignup}>
-        <Modal.Header closeButton>
-          <Modal.Title>회원가입</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Floating className="mb-3">
-            <Form.Control
-              id="floatingInputCustom"
-              type="text"
-              placeholder="name@example.com"
-              value={signupId}
-              onChange={(e) => {
-                setSignupId(e.target.value);
-              }}
-            />
-            <label htmlFor="floatingInputCustom">아이디</label>
-          </Form.Floating>
-          <Form.Floating className="mb-3">
-            <Form.Control
-              id="floatingPasswordCustom"
-              type="password"
-              placeholder="Password"
-              value={signupPwd}
-              onChange={(e) => {
-                setSignupPwd(e.target.value);
-              }}
-            />
-            <label htmlFor="floatingPasswordCustom">비밀번호</label>
-          </Form.Floating>
-          <Form.Floating className="mb-3">
-            <Form.Control
-              id="floatingInputCustom"
-              type="text"
-              placeholder="text"
-              value={signupName}
-              onChange={(e) => {
-                setSignupName(e.target.value);
-              }}
-            />
-            <label htmlFor="floatingInputCustom">이름</label>
-          </Form.Floating>
-          <Form.Floating className="mb-3">
-            <Form.Control
-              id="floatingInputCustom"
-              type="date"
-              placeholder="name@example.com"
-              value={signupDate}
-              onChange={(e) => {
-                setSignupDate(e.target.value);
-              }}
-            />
-            <label htmlFor="floatingInputCustom">생년월일</label>
-          </Form.Floating>
-        </Modal.Body>
-        <Modal.Footer className="justify-content-center">
-          <Button variant="danger" onClick={doSignup}>
-            Sign Up
+    <div>
+      <Modal
+        open={showSignup}
+        onClose={handleCloseSignup}
+        aria-labelledby="signup-modal"
+        aria-describedby="signup-modal-description"
+      >
+        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 300, bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
+          <h2 id="signup-modal" style={{ textAlign: 'center' }}>Pinterest에 오신것을 <br/>환영합니다!</h2>
+          <TextField
+            fullWidth
+            label="아이디"
+            variant="outlined"
+            margin="normal"
+            value={signupId}
+            onChange={(e) => setSignupId(e.target.value)}
+            autoFocus
+          />
+          <TextField
+            fullWidth
+            label="비밀번호"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            value={signupPwd}
+            onChange={(e) => setSignupPwd(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            label="이름"
+            variant="outlined"
+            margin="normal"
+            value={signupName}
+            onChange={(e) => setSignupName(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            label="생년월일"
+            InputLabelProps={{ shrink: true, required: true}} //기본값안뜨게추가 
+            type="date"
+            variant="outlined"
+            margin="normal"
+            value={signupDate}
+            onChange={(e) => setSignupDate(e.target.value)}
+          />
+
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Button variant="contained" onClick={doSignup} style={{ backgroundColor: '#E60023', color: 'white' }}>
+            가입하기
           </Button>
-        </Modal.Footer>
+          </div>
+        </Box>
       </Modal>
+    </div>
     </>
   );
 }

@@ -19,6 +19,7 @@
     "@mui/styled-engine-sc": "^5.14.11",
     "@mui/x-date-pickers": "^6.15.0",
     "@tanstack/react-query": "^5.0.0-rc.5",
+    "@tanstack/react-query-devtools": "^5.0.0-rc.5",
     "dayjs": "^1.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
