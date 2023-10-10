@@ -69,10 +69,6 @@ const router = createBrowserRouter(
           element: <Feed />,
         },
         {
-          path: "profile",
-          element: <UserProfile />,
-        },
-        {
           path: "pin-builder",
           element: <PinBuilder />,
         },
@@ -91,6 +87,10 @@ const router = createBrowserRouter(
         {
           path: "profiletab",
           element: <ProfileTab />,
+        },
+        {
+          path: "user/:id",
+          element: <UserProfile />,
         },
       ],
     },
