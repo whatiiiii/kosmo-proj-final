@@ -5,7 +5,7 @@ import { SERVER_URL } from "./globals";
 
 export type User = {
   id: string;
-  name: string;
+  name?: string;
   birth?: string;
   loc?: string;
   sex?: "Male" | "Female" | "Other";
