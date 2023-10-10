@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 function ListItemLink({ href, text }: { href: string; text: string }) {
   const navigate = useNavigate();
 
-  function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+  function handleClick(event: React.MouseEvent<HTMLAnchorElement>) {
     if (href.includes(":")) {
       event.preventDefault();
       href = href.replace(/:(\w+)/, (_, p1) => {
