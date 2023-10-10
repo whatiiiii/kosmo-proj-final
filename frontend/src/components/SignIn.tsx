@@ -51,8 +51,6 @@ export default function SignIn() {
     if (json) {
       const user = {
         id: params.id,
-        // TODO: get properties from server
-        name: "test",
       };
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
