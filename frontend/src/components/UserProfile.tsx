@@ -1,18 +1,12 @@
-import { useState } from "react";
-import { styled } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import PinNavBar from "./PinNavBar";
 import Container from "@mui/material/Container";
 import { useServerUser, useUser } from "../api/user";
 import { useNavigate, useParams } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
 
 export default function UserProfile() {
   const navigate = useNavigate();
