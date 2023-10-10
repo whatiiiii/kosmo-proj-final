@@ -44,6 +44,7 @@ export function useServerUser(id?: string) {
       fetch(`${SERVER_URL}/members/${id}`).then(
         (res) => res.json() as Promise<User>,
       ),
+    staleTime: 5 * 60 * 1000,
   });
   return result;
 }
