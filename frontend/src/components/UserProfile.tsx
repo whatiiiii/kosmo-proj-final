@@ -12,13 +12,24 @@ import Box from "@mui/material/Box";
 import PinNavBar from "./PinNavBar";
 import Container from "@mui/material/Container";
 import { useServerUser, useUser } from "../api/user";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function UserProfile() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const userQuery = useServerUser(id);
   const [self] = useUser();
   const isSelf = self?.id === id;
+
+  function handleFollowButton() {
+    if (self) {
+      // TODO: follow
+      alert(`팔로우 버튼 클릭: ${self.id} -> ${id}`);
+    } else {
+      navigate("/signin");
+    }
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <PinNavBar position="static" />
@@ -46,7 +57,9 @@ export default function UserProfile() {
           </Grid>
           <Grid item container justifyContent="center">
             <Grid item display={isSelf ? "none" : "flex"}>
-              <Button variant="contained">팔로우</Button>
+              <Button variant="contained" onClick={handleFollowButton}>
+                팔로우
+              </Button>
             </Grid>
             <Grid item display={isSelf ? "flex" : "none"}>
               <Button variant="outlined">프로필 수정</Button>
