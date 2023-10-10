@@ -22,6 +22,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import theme from "./api/theme.ts";
 import ProfileTab from "./components/ProfileTab.tsx";
+import ProfileFooter from "./components/ProfileFooter.tsx";
+import EditProfilePage from "./components/EditProfilePage.tsx";
 
 const router = createBrowserRouter(
   [
@@ -90,13 +92,19 @@ const router = createBrowserRouter(
           path: "profiletab",
           element: <ProfileTab />,
         },
-
+        {
+          path: "profilefooter",
+          element: <ProfileFooter />,
+        },
+        {
+          path: "editprofilepage",
+          element: <EditProfilePage />,
+        },
       ],
     },
   ],
   { basename: "/" },
 );
-
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
