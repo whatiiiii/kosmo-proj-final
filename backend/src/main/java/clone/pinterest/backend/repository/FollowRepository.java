@@ -1,8 +1,12 @@
 package clone.pinterest.backend.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import clone.pinterest.backend.domain.Follow;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-public interface FollowRepository extends CrudRepository<Follow, String> {
+import clone.pinterest.backend.domain.Follow;
+import clone.pinterest.backend.domain.FollowId;
+
+@RepositoryRestResource(collectionResourceRel = "follows", path = "follows")
+public interface FollowRepository extends CrudRepository<Follow, FollowId> {
 
 }

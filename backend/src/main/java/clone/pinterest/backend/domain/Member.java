@@ -39,8 +39,11 @@ public class Member implements Serializable {
     @OneToOne(mappedBy = "writer")
     private CommentInPin comment;
 
-    @OneToMany(mappedBy = "id.follow")
-    private List<Follow> follows;
+    @OneToMany(mappedBy = "id.follow") // Follow 엔티티의 id 필드의 follow와 매핑
+    private List<Follow> follow;
+
+    @OneToMany(mappedBy = "id.follower") // Follow 엔티티의 id 필드의 follower와 매핑
+    private List<Follow> follower;
 
     @OneToMany(mappedBy = "id.member") // Save 엔티티의 id 필드의 pin과 매핑
     private List<Save> saves1;

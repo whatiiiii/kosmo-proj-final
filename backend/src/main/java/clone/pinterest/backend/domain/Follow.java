@@ -1,12 +1,8 @@
 package clone.pinterest.backend.domain;
 
 import java.io.Serializable;
-
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,9 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="Follow")
-@RepositoryRestResource
-public class Follow{
+public class Follow implements Serializable {
     @EmbeddedId
     private FollowId id;
 }
