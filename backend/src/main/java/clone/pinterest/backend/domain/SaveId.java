@@ -5,12 +5,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Embeddable
 public class SaveId implements Serializable {
-    private String saved_member;
-    private Integer saved_pin;
-    // private Member member;
-    // private Pin saved_pin;
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "seq")
+    private Pin pin;
 }

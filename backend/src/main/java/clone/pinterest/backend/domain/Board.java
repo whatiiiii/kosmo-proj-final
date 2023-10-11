@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 public class Board {
     @Id
     @GeneratedValue
-    private Integer board_seq;
-    private String board_name;
+    private Integer boardSeq;
+    private String boardName;
 }

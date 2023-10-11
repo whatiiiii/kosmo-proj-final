@@ -1,7 +1,10 @@
 package clone.pinterest.backend.domain;
 
+import jakarta.persistence.Convert;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class Save {
     @EmbeddedId
     private SaveId id;
-    private Integer board;
-
+    @ManyToOne
+    @JoinColumn(name = "board", referencedColumnName = "boardSeq")
+    private Board board;
 }

@@ -43,4 +43,6 @@ public class Pin implements Serializable {
     @OneToMany(mappedBy = "pin", cascade = CascadeType.ALL)
     private List<Tag> tags = new ArrayList<>();
 
+    @OneToMany(mappedBy = "id.pin") // Save 엔티티의 id 필드의 pin과 매핑
+    private List<Save> saves;
 }
