@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import img1 from "/imggg/img1.png";
 import img2 from "/imggg/img2.png";
 import { useEffect, useState } from "react";
@@ -6,6 +7,10 @@ const backgroundArray = [img1, img2];
 const sizeArray = ["small", "medium", "large"];
 
 function Pin() {
+  const navigate = useNavigate();
+  const goPin = () => {
+    navigate("/pin-builder");
+  };
   const [randomIndex, setRandomIndex] = useState(0);
   useEffect(() => {
     setRandomIndex(Math.floor(Math.random() * backgroundArray.length));
@@ -23,7 +28,9 @@ function Pin() {
         ...styles[size],
         backgroundImage: `url(${backgroundImg})`,
         backgroundPosition: "center",
+        backgroundSize: "cover",
       }}
+      onClick={goPin}
     ></div>
   );
 }

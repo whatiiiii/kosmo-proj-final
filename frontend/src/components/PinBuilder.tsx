@@ -74,10 +74,13 @@ function PinBuilder() {
   };
 
   const StyledRoot = styled("div")({
-    display: "center",
+    display: "flex",
     padding: 150,
     backgroundColor: "#e0e0e0",
     borderRadius: 20,
+    alignItems: "center",
+    position: "relative",
+    flexDirection: "column",
   });
 
   const MuiPaperRoot = styled("div")({});
@@ -187,7 +190,7 @@ function PinBuilder() {
 
   return (
     <>
-      <StyledRoot>
+      <StyledRoot sx={{ borderRadius: 5 }}>
         <PinNavBar />
         <MuiPaperRoot>
           <DemoPaper square={false} elevation={3} sx={{ borderRadius: 5 }}>
@@ -223,6 +226,7 @@ function PinBuilder() {
                 sx={{
                   width: 450,
                   height: 90,
+                  display: "contents",
                   // backgroundColor: "yellow",
                   // borderRadius: 20,
                 }}
@@ -245,7 +249,7 @@ function PinBuilder() {
                       aria-label="open drawer"
                       sx={{ ml: 1, mr: 1, mt: 2 }}
                     >
-                      <DownloadForOfflineIcon fontSize="s" />
+                      <DownloadForOfflineIcon fontSize="medium" />
                     </IconButton>
                     <IconButton
                       size="large"
@@ -356,7 +360,11 @@ function PinBuilder() {
               >
                 <Container style={{ display: "flex", flex: "1 1 auto" }}>
                   <Box sx={{ width: "100%", maxWidth: 500 }}>
-                    <Typography variant="h4" gutterBottom>
+                    <Typography
+                      variant="h4"
+                      gutterBottom
+                      style={{ fontWeight: "bold" }}
+                    >
                       제목 입력창입니다. 확인해주세요.
                     </Typography>
                     <Typography variant="body1" gutterBottom>
@@ -417,16 +425,49 @@ function PinBuilder() {
                       >
                         {messages.map(
                           ({ primary, secondary, person }, index) => (
-                            <ListItem key={index + person}>
+                            <ListItem
+                              key={index + person}
+                              style={{
+                                paddingTop: 0,
+                                paddingBottom: 8,
+                                paddingLeft: 0,
+                                paddingRight: 16,
+                              }}
+                            >
                               <ListItemAvatar>
-                                <IconButton>
-                                  <Avatar alt="Profile Picture" src={person} />
+                                <IconButton
+                                  // size="small"
+                                  style={{ position: "absolute", top: 0 }}
+                                >
+                                  <Avatar
+                                    alt="Profile Picture"
+                                    src={person}
+                                    style={{ width: 30, height: 30 }}
+                                  />
                                 </IconButton>
                               </ListItemAvatar>
-                              <ListItemText
-                                primary={primary}
-                                secondary={secondary}
-                              />
+                              <ListItemText>
+                                <Typography
+                                // variant="h6"
+                                // style={{ fontSize: "15px" }}
+                                >
+                                  <span
+                                    style={{
+                                      fontSize: "15px",
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    {primary}
+                                  </span>
+                                  <span style={{ fontSize: "15px" }}>
+                                    {" "}
+                                    {secondary}
+                                  </span>
+                                </Typography>
+                                <Typography>
+                                  <span style={{ fontSize: "11px" }}>날짜</span>
+                                </Typography>
+                              </ListItemText>
                             </ListItem>
                           ),
                         )}
@@ -441,19 +482,18 @@ function PinBuilder() {
                 item
                 //  xs="auto"
                 sx={{
-                  //  // bottom: "0",
-                  // //  top: "auto",
-                  //   backgroundColor: "white",
-                  //   width: "100%",
-                  //   borderRadius: "15px",
                   position: "sticky",
+                  borderTop: 0.2,
+                  borderColor: "lightgray",
                 }}
                 style={{
                   bottom: "0",
                   top: "auto",
                   backgroundColor: "white",
                   width: "100%",
-                  borderRadius: "15px",
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 15,
                 }}
               >
                 <Typography variant="h6" fontWeight="bold" ml={2}>

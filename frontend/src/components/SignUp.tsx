@@ -1,6 +1,5 @@
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 // import FormControlLabel from "@mui/material/FormControlLabel";
 // import Checkbox from "@mui/material/Checkbox";
@@ -17,6 +16,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/ko";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import type { User } from "../api/user";
+import { SERVER_URL } from "../api/globals";
 
 function Copyright(props: TypographyProps) {
   return (
@@ -36,20 +37,46 @@ function Copyright(props: TypographyProps) {
   );
 }
 
+type SignUpUser = { pwd: string } & NonNullable<User>;
+
 export default function SignUp() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      id: data.get("id"),
-      password: data.get("password"),
-    });
+    const signUpUser: SignUpUser = {
+      id: data.get("id") as string,
+      pwd: data.get("pwd") as string,
+      name: data.get("name") as string,
+      birth: data.get("birth") as string,
+    };
+    if (!signUpUser.id || !signUpUser.pwd) {
+      return;
+    }
+    const json = JSON.stringify(signUpUser);
+    console.log(json);
+
+    fetch(SERVER_URL + "/members", {
+      body: json,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // mode: "no-cors",
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert("회원가입이 완료 되었습니다.");
+          location.href = "/signin";
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
@@ -85,10 +112,10 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  name="password"
+                  name="pwd"
                   label="비밀번호"
                   type="password"
-                  id="password"
+                  id="pwd"
                   autoComplete="new-password"
                 />
               </Grid>
@@ -118,9 +145,12 @@ export default function SignUp() {
                   adapterLocale="ko"
                 >
                   <DatePicker
+                    format="YYYY-MM-DD"
                     slotProps={{
                       textField: {
                         fullWidth: true,
+                        id: "birth",
+                        name: "birth",
                       },
                     }}
                   />

@@ -1,6 +1,6 @@
 import React from "react";
 import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
+import AppBar, { type AppBarOwnProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -21,6 +21,7 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import Button from "@mui/material/Button";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useHref, useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -62,7 +63,28 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PinNavBar() {
+export default function PinNavBar({
+  position,
+}: {
+  position?: AppBarOwnProps["position"];
+}) {
+  const navigate = useNavigate();
+  const goPin = () => {
+    navigate("/pin");
+  };
+  const goHome = () => {
+    navigate("/pin");
+  };
+  const goMakePin = () => {
+    navigate("/makepin");
+  };
+  const goProfile = () => {
+    navigate("/Profile");
+  };
+  const goProfileTab = () => {
+    navigate("/ProfileTab");
+  };
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -133,24 +155,26 @@ export default function PinNavBar() {
 
   return (
     <Box sx={{ flexGrow: 10 }}>
-      <AppBar position="absolute">
+      <AppBar position={position ?? "absolute"}>
         <Toolbar>
           <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="open drawer"
+            onClick={goPin}
             //sx={{ mr: 1 }}
           >
             <Pinterest color="secondary" />
           </IconButton>
-          <Button variant="text" color="secondary">
+          <Button variant="text" color="secondary" onClick={goHome}>
             홈
           </Button>
           <Button
             variant="text"
             color="secondary"
             // endIcon={<KeyboardArrowDownIcon />}
+            onClick={goMakePin}
           >
             만들기
           </Button>
@@ -232,24 +256,24 @@ export default function PinNavBar() {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
-                <MenuItem onClick={handleClose}>
-                  <Avatar /> Profile
+                <MenuItem onClick={goProfileTab}>
+                  <Avatar />내 프로필
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Avatar /> My account
+                <MenuItem onClick={goProfileTab}>
+                  <Avatar /> 계정 관리
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={goProfileTab}>
                   <ListItemIcon>
                     <Settings fontSize="small" />
                   </ListItemIcon>
-                  Settings
+                  설정
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                   <ListItemIcon>
                     <Logout fontSize="small" />
                   </ListItemIcon>
-                  Logout
+                  로그아웃
                 </MenuItem>
               </Menu>
             </React.Fragment>
