@@ -48,11 +48,9 @@ export default function SignIn() {
       { method: "GET" },
     );
     const json = (await response.json()) as boolean | null;
-    if (json) {
+    if (json === true) {
       const user = {
         id: params.id,
-        // TODO: get properties from server
-        name: "test",
       };
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
