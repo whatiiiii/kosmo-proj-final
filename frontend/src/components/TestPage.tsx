@@ -36,17 +36,7 @@ function ListItemLink({ href, text }: { href: string; text: string }) {
 }
 
 export default function TestPage() {
-  const [user, setUser] = useUser();
-  const navigate = useNavigate();
-  function handleLoginButton() {
-    if (user) {
-      localStorage.removeItem("user");
-      setUser(null);
-      location.href = "/";
-    } else {
-      navigate("/signin");
-    }
-  }
+  const [user] = useUser();
   return (
     <Container maxWidth="sm">
       <Box sx={{ flexGrow: 1 }}>
@@ -64,7 +54,7 @@ export default function TestPage() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               테스트 페이지
             </Typography>
-            <Button color="inherit" onClick={handleLoginButton}>
+            <Button color="inherit" href={user ? "/logout" : "/signin"}>
               {user ? "로그아웃" : "로그인"}
             </Button>
           </Toolbar>
