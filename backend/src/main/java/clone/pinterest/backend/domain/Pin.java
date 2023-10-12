@@ -5,7 +5,10 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.rest.core.annotation.RestResource;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -32,6 +35,8 @@ public class Pin implements Serializable {
     @JoinColumn(name = "imgSeq")
     @RestResource(path = "PinImg", rel = "image")
     private UpImage image;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    @CreationTimestamp
     private Date pinRdate;
     @OneToOne
     @JoinColumn(name = "id")
