@@ -11,9 +11,9 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.text.secondary,
 }));
-export default function BasicGrid() {
+export default function ProfileFooter() {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, position: "fixed", bottom: "0", width: "100%" }}>
       <Grid container spacing={2} alignItems="flex-end">
         <Grid item xs={12}>
           <Item>
