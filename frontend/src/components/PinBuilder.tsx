@@ -33,8 +33,10 @@ import Grow from "@mui/material/Grow";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
-import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@mui/material/Grid";
+import { useQuery } from "@tanstack/react-query";
+import { SERVER_URL } from "../api/globals";
+import Pin from "./Pin";
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
   width: 900,
@@ -184,9 +186,30 @@ function PinBuilder() {
   const [messages, setMessages] = React.useState(() => refreshMessages());
 
   React.useEffect(() => {
-    (ref.current as HTMLDivElement).ownerDocument.body.scrollTop = 0;
-    setMessages(refreshMessages());
+    if (ref.current) {
+      ref.current.ownerDocument.body.scrollTop = 0;
+      setMessages(refreshMessages());
+    }
   }, [value, setMessages]);
+
+  interface Data {
+    pinSeq: number;
+    pinTitle: string;
+    pinDesc: number;
+    image: number;
+    pinRdate: Date;
+    pinWriter: string;
+    comment: string;
+    saves: number;
+    tags: number;
+  }
+  const { data, isLoading } = useQuery<Data>({
+    queryKey: ["pins"],
+    queryFn: () => fetch(SERVER_URL + "/pins/" + 1).then((res) => res.json()),
+  });
+  if (isLoading) {
+    return <div>actually Loading..</div>;
+  }
 
   return (
     <>
@@ -360,22 +383,25 @@ function PinBuilder() {
               >
                 <Container style={{ display: "flex", flex: "1 1 auto" }}>
                   <Box sx={{ width: "100%", maxWidth: 500 }}>
-                    <Typography
-                      variant="h4"
-                      gutterBottom
-                      style={{ fontWeight: "bold" }}
-                    >
-                      제목 입력창입니다. 확인해주세요.
-                    </Typography>
-                    <Typography variant="body1" gutterBottom>
-                      상세 설명이 들어가는 칸 입니다. body1. Lorem ipsum dolor
-                      sit amet, consectetur adipisicing elit. Quos blanditiis
-                      tenetur unde suscipit, quam beatae rerum inventore
-                      consectetur, neque doloribus, cupiditate numquam
-                      dignissimos laborum fugiat deleniti? Eum quasi quidem
-                      quibusdam.
-                    </Typography>
-
+                    {data && (
+                      <Typography
+                        variant="h4"
+                        gutterBottom
+                        style={{ fontWeight: "bold" }}
+                        key={data.pinSeq}
+                      >
+                        {data.pinTitle}
+                      </Typography>
+                    )}
+                    {data && (
+                      <Typography
+                        variant="body1"
+                        gutterBottom
+                        key={data.pinSeq}
+                      >
+                        {data.pinDesc}
+                      </Typography>
+                    )}
                     <List
                       sx={
                         {
@@ -394,10 +420,13 @@ function PinBuilder() {
                             />
                           </IconButton>
                         </ListItemAvatar>
-                        <ListItemText
-                          primary="The Fashion Feed"
-                          secondary="팔로워 3,913명"
-                        />
+                        {data && (
+                          <ListItemText
+                            primary={data.pinWriter}
+                            secondary="팔로워 3,913명"
+                            key={data.pinSeq}
+                          />
+                        )}
                         <Button
                           variant="contained"
                           color="success"
