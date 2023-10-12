@@ -8,19 +8,24 @@ import { useNavigate } from "react-router-dom";
 import PinNavBar from "./PinNavBar";
 import ProfileFooter from "./ProfileFooter";
 import EditProfilePage from "./EditProfilePage";
+import AccountSetting from "./AccountSetting";
+import ProfileVisibility from "./ProfileVisibility";
 
-export default function EditProfile() {
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
-
+export default function ProfileTab() {
+  const [selectedIndex, setSelectedIndex] = React.useState(2);
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number,
   ) => {
     setSelectedIndex(index);
   };
+
   const navigate = useNavigate();
-  const goPin = () => {
-    navigate("/pin");
+  const goProfiletab = () => {
+    navigate("/profiletab");
+  };
+  const goAccountSetting = () => {
+    navigate("/accountsetting");
   };
 
   return (
@@ -50,15 +55,15 @@ export default function EditProfile() {
         <List
           component="nav"
           aria-label="secondary mailbox folder"
-          sx={{ width: "300px", paddingRight: "150px", paddingBottom: "397px" }}
+          sx={{ width: "400px", paddingRight: "100px", paddingBottom: "397px" }}
         >
-          <ListItemButton selected={selectedIndex === 2} onClick={goPin}>
+          <ListItemButton selected={selectedIndex === 2} onClick={goProfiletab}>
             <Typography fontWeight="bold">프로필 수정</Typography>
           </ListItemButton>
 
           <ListItemButton
             selected={selectedIndex === 3}
-            onClick={(event) => handleListItemClick(event, 3)}
+            onClick={goAccountSetting}
           >
             <Typography fontWeight="bold">계정 관리</Typography>
           </ListItemButton>
@@ -119,7 +124,10 @@ export default function EditProfile() {
             <Typography fontWeight="bold">브랜드 컨텐츠</Typography>
           </ListItemButton>
         </List>
-        <EditProfilePage />
+
+        {selectedIndex === 2 && <EditProfilePage />}
+        {selectedIndex === 3 && <AccountSetting />}
+        {selectedIndex === 4 && <ProfileVisibility />}
       </div>
       <ProfileFooter />
     </Box>
