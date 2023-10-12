@@ -3,7 +3,12 @@ import ReactDOM from "react-dom/client";
 // import App from "./components/App.tsx";
 // import "bootstrap/dist/css/bootstrap.min.css";
 //import "./index.css";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Outlet,
+  redirectDocument,
+  RouterProvider,
+} from "react-router-dom";
 import TestPage from "./components/TestPage.tsx";
 import OmokBoard from "./components/OmokBoard.tsx";
 import ButtonFriend from "./components/ButtonFriend.tsx";
@@ -101,6 +106,13 @@ const router = createBrowserRouter(
         {
           path: "user/:id",
           element: <UserProfile />,
+        },
+        {
+          path: "logout",
+          loader: () => {
+            localStorage.removeItem("user");
+            return redirectDocument("/");
+          },
         },
       ],
     },

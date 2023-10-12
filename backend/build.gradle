@@ -28,6 +28,8 @@ dependencies {
 	// implementation 'org.springframework.boot:spring-boot-starter-security'
   	implementation 'org.springframework.data:spring-data-rest-hal-explorer'
   	implementation 'org.springframework.session:spring-session-core'
+	implementation 'com.github.paulcwarren:spring-content-fs-boot-starter:3.0.6'
+	implementation 'com.github.paulcwarren:spring-content-rest-boot-starter:3.0.6'
   	compileOnly 'org.projectlombok:lombok'
   	developmentOnly 'org.springframework.boot:spring-boot-devtools'
   	runtimeOnly 'com.h2database:h2'

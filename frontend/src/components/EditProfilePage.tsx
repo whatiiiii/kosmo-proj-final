@@ -32,19 +32,13 @@ export default function EditProfilePage() {
       </Button>
 
       <Typography gutterBottom fontSize={12}>
-        이름 / 성
+        이름
       </Typography>
       <TextField
         id="outlined-multiline-flexible"
         label="이름"
         multiline
         maxRows={4}
-        style={{ width: "47.5%" }}
-      />
-      <TextField
-        id="outlined-textarea"
-        label="성"
-        multiline
         style={{ width: "47.5%", height: "80px" }}
       />
 
@@ -59,10 +53,10 @@ export default function EditProfilePage() {
         rows={4}
         style={{ width: "95%", height: "150px" }}
       />
-
       <Typography gutterBottom fontSize={12}>
         웹 페이지
       </Typography>
+
       <TextField
         id="outlined-basic"
         placeholder="회원님의 사이트로 트래픽을 유도하는 링크를 추가하세요"
