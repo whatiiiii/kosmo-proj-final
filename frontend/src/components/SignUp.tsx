@@ -18,6 +18,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import type { User } from "../api/user";
 import { SERVER_URL } from "../api/globals";
+import { useState } from "react";
 
 function Copyright(props: TypographyProps) {
   return (
@@ -74,6 +75,37 @@ export default function SignUp() {
       });
   };
 
+  const [idHelperText, setIdHelperText] = useState("아이디를 입력해주세요.");
+  const [pwdHelperText, setPwdHelperText] =
+    useState("비밀번호를 입력해주세요.");
+
+  function handleIdChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const id = e.target.value;
+    if (!id) {
+      setIdHelperText("아이디를 입력해주세요.");
+      return;
+    }
+    fetch(SERVER_URL + "/members/" + id)
+      .then((response) => {
+        if (response.ok) {
+          setIdHelperText("이미 존재하는 아이디 입니다.");
+        } else {
+          setIdHelperText("");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+  function handlePwdChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const pwd = e.target.value;
+    if (!pwd) {
+      setPwdHelperText("비밀번호를 입력해주세요.");
+      return;
+    }
+    setPwdHelperText("");
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -100,16 +132,21 @@ export default function SignUp() {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
+                  error={idHelperText !== ""}
+                  helperText={idHelperText}
                   required
                   fullWidth
                   id="id"
                   label="아이디"
                   name="id"
                   autoComplete="id"
+                  onChange={handleIdChange}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={pwdHelperText !== ""}
+                  helperText={pwdHelperText}
                   required
                   fullWidth
                   name="pwd"
@@ -117,16 +154,11 @@ export default function SignUp() {
                   type="password"
                   id="pwd"
                   autoComplete="new-password"
+                  onChange={handlePwdChange}
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="name"
-                  label="이름"
-                  id="name"
-                />
+                <TextField fullWidth name="name" label="이름" id="name" />
               </Grid>
               <Grid item xs={12}>
                 {/* <TextField
@@ -164,6 +196,7 @@ export default function SignUp() {
               </Grid> */}
             </Grid>
             <Button
+              disabled={!!idHelperText || !!pwdHelperText}
               type="submit"
               fullWidth
               variant="contained"
