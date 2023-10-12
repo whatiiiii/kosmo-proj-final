@@ -4,7 +4,6 @@ import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
 import { Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import PinNavBar from "./PinNavBar";
 import ProfileFooter from "./ProfileFooter";
 import EditProfilePage from "./EditProfilePage";
@@ -18,14 +17,6 @@ export default function ProfileTab() {
     index: number,
   ) => {
     setSelectedIndex(index);
-  };
-
-  const navigate = useNavigate();
-  const goProfiletab = () => {
-    navigate("/profiletab");
-  };
-  const goAccountSetting = () => {
-    navigate("/accountsetting");
   };
 
   return (
@@ -57,13 +48,16 @@ export default function ProfileTab() {
           aria-label="secondary mailbox folder"
           sx={{ width: "400px", paddingRight: "100px", paddingBottom: "397px" }}
         >
-          <ListItemButton selected={selectedIndex === 2} onClick={goProfiletab}>
+          <ListItemButton
+            selected={selectedIndex === 2}
+            onClick={(event) => handleListItemClick(event, 2)}
+          >
             <Typography fontWeight="bold">프로필 수정</Typography>
           </ListItemButton>
 
           <ListItemButton
             selected={selectedIndex === 3}
-            onClick={goAccountSetting}
+            onClick={(event) => handleListItemClick(event, 3)}
           >
             <Typography fontWeight="bold">계정 관리</Typography>
           </ListItemButton>
