@@ -9,6 +9,8 @@ import ProfileFooter from "./ProfileFooter";
 import EditProfilePage from "./EditProfilePage";
 import AccountSetting from "./AccountSetting";
 import ProfileVisibility from "./ProfileVisibility";
+import ProfileSecurity from "./ProfileSecurity";
+import ProfileAuthority from "./ProfileAuthority";
 
 export default function ProfileTab() {
   const [selectedIndex, setSelectedIndex] = React.useState(2);
@@ -122,6 +124,8 @@ export default function ProfileTab() {
         {selectedIndex === 2 && <EditProfilePage />}
         {selectedIndex === 3 && <AccountSetting />}
         {selectedIndex === 4 && <ProfileVisibility />}
+        {selectedIndex === 10 && <ProfileSecurity />}
+        {selectedIndex === 7 && <ProfileAuthority />}
       </div>
       <ProfileFooter />
     </Box>
