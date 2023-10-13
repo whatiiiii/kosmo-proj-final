@@ -202,13 +202,28 @@ function PinBuilder() {
     comment: string;
     saves: number;
     tags: number;
+    id: string;
   }
-  const { data, isLoading } = useQuery<Data>({
+  interface Member {
+    id: string;
+  }
+  const { data: pinData, isLoading: isPinLoading } = useQuery<Data>({
     queryKey: ["pins"],
-    queryFn: () => fetch(SERVER_URL + "/pins/" + 1).then((res) => res.json()),
+    queryFn: () => fetch(SERVER_URL + "/pins/" + 2).then((res) => res.json()),
   });
-  if (isLoading) {
-    return <div>actually Loading..</div>;
+
+  const { data: memberData, isLoading: isMemberLoading } = useQuery<Member>({
+    queryKey: ["members"],
+    queryFn: () =>
+      fetch(SERVER_URL + "/pins/" + 2 + "/pinWriter").then((res) => res.json()),
+  });
+
+  if (isPinLoading) {
+    return <div>actually PinLoading..</div>;
+  }
+
+  if (isMemberLoading) {
+    return <div>actually MemberLoading..</div>;
   }
 
   return (
@@ -383,23 +398,18 @@ function PinBuilder() {
               >
                 <Container style={{ display: "flex", flex: "1 1 auto" }}>
                   <Box sx={{ width: "100%", maxWidth: 500 }}>
-                    {data && (
+                    {pinData && (
                       <Typography
                         variant="h4"
                         gutterBottom
                         style={{ fontWeight: "bold" }}
-                        key={data.pinSeq}
                       >
-                        {data.pinTitle}
+                        {pinData.pinTitle}
                       </Typography>
                     )}
-                    {data && (
-                      <Typography
-                        variant="body1"
-                        gutterBottom
-                        key={data.pinSeq}
-                      >
-                        {data.pinDesc}
+                    {pinData && (
+                      <Typography variant="body1" gutterBottom>
+                        {pinData.pinDesc}
                       </Typography>
                     )}
                     <List
@@ -420,11 +430,10 @@ function PinBuilder() {
                             />
                           </IconButton>
                         </ListItemAvatar>
-                        {data && (
+                        {memberData && (
                           <ListItemText
-                            primary={data.pinWriter}
+                            primary={memberData.id}
                             secondary="팔로워 3,913명"
-                            key={data.pinSeq}
                           />
                         )}
                         <Button
