@@ -204,19 +204,30 @@ function PinBuilder() {
     tags: number;
     id: string;
   }
+
   interface Member {
     id: string;
   }
   const { data: pinData, isLoading: isPinLoading } = useQuery<Data>({
     queryKey: ["pins"],
-    queryFn: () => fetch(SERVER_URL + "/pins/" + 2).then((res) => res.json()),
+    queryFn: () => fetch(SERVER_URL + "/pins/" + 1).then((res) => res.json()),
   });
 
   const { data: memberData, isLoading: isMemberLoading } = useQuery<Member>({
     queryKey: ["members"],
     queryFn: () =>
-      fetch(SERVER_URL + "/pins/" + 2 + "/pinWriter").then((res) => res.json()),
+      fetch(SERVER_URL + "/pins/" + 1 + "/pinWriter").then((res) => res.json()),
   });
+  const { data: imageData, isLoading: isImageLoading } = useQuery<Blob>({
+    queryKey: ["upImage"],
+    queryFn: () =>
+      fetch(SERVER_URL + "/upImages/" + 1 + "/content").then((res) =>
+        res.blob(),
+      ),
+  });
+  if (isImageLoading) {
+    return <div>actually ImageLoading..</div>;
+  }
 
   if (isPinLoading) {
     return <div>actually PinLoading..</div>;
@@ -237,7 +248,7 @@ function PinBuilder() {
               container
               sx={{ float: "left", width: 450, height: 750, borderRadius: 20 }}
             > */}
-              <ImageRoot src={img2} />
+              {imageData && <ImageRoot src={URL.createObjectURL(imageData)} />}
               {/* </Grid> */}
             </Box1>
             {/* <Box2> */}
