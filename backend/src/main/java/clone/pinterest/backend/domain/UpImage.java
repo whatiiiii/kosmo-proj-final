@@ -21,8 +21,6 @@ public class UpImage {
     @Id
     @GeneratedValue
     private Integer imgSeq;
-    private String fName;
-    private String saveFName;
     @OneToOne
     @JoinColumn(name = "id")
     private Member member;
