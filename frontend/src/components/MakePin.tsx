@@ -1,6 +1,4 @@
-import Container from "@mui/material/Container";
-import PinNavBar from "./PinNavBar";
-import Box from "@mui/material/Box";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import {
   Autocomplete,
   Button,
@@ -13,13 +11,16 @@ import {
   Paper,
   Popper,
   TextField,
-  styled,
 } from "@mui/material";
-import { useRef, useState } from "react";
-import Profiletext from "./Profiletext";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import React from "react";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import { ArrowDropDownIcon } from "@mui/x-date-pickers";
+import { useMutation } from "@tanstack/react-query";
+import React, { useRef, useState } from "react";
+import PinNavBar from "./PinNavBar";
+import Profiletext from "./Profiletext";
+import axios from "axios";
+import { SERVER_URL } from "../api/globals";
 
 function MakePin() {
   const options = ["보드선택", "보드<1>", "보드<2>", "확인용보드"];
@@ -106,6 +107,97 @@ function MakePin() {
     setState({ ...state, open1: false });
   };
 
+  interface Pin {
+    pinTitle: string;
+    pinDesc: string;
+  }
+
+  const createPin = async () => {
+    const pin = await fetch(`${SERVER_URL}/pins`, {
+      method: "POST",
+      body: JSON.stringify({
+        pinTitle: "제목들어감",
+        pinDesc: 1,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return pin;
+  };
+
+  const addTodo = async (newTOdo: Pin): Promise<Pin> => {
+    const { data } = await axios.post<Pin>(`${SERVER_URL}/pins`, newTOdo, {
+      headers: { "Content-Type": `application/json` },
+    });
+    return data;
+  };
+  const { mutate, isLoading, isError, error, isSuccess } = useMutation({
+    mutationFn: addTodo,
+  });
+
+  // Usage example
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newTodo: Pin = {
+      pinTitle: "Your Title",
+      pinDesc: "Your Description",
+    };
+    try {
+      await mutate(newTodo);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  // const mutation = useMutation<{ data: Pin }, Error, Pin>({
+  //   mutationFn: (Pin) => {
+  //     return axios.post("/pins", Pin);
+  //   },
+  // });
+
+  // async function AddPin(newTodo: Pin) {
+  //   try {
+  //     const response = await fetch("/pins", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(newTodo),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     }
+
+  //     const { data: pinData } = (await response.json()) as { data: Pin };
+  //     return pinData;
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     throw error;
+  //   }
+  // }
+
+  // const { mutateAsync: addTodoMutation } = useMutation({
+  //   mutationFn: addPin,
+  // });
+
+  // const pinTitleRef = useRef();
+  // const pinDescRef = useRef();
+  // const { mutateAsync: addTodoMutation } = useMutation({
+  //   mutationFn: AddPin,
+  // });
+
+  // function handleSubmit(e: React.FormEvent) {
+  //   e.preventDefault();
+  //   if (pinTitleRef.current && pinDescRef.current) {
+  //     addTodoMutation.mutate({
+  //       pinTitle: pinTitleRef.current.value,
+  //       pinDesc: pinDescRef.current.value,
+  //     });
+  //   }
+  // }
+
   return (
     <Container>
       <PinNavBar />
@@ -181,6 +273,13 @@ function MakePin() {
                       variant="contained"
                       color="error"
                       sx={{ ml: 1, mr: 1 }}
+                      onClick={() => {
+                        //  createPin().catch((e) => console.error(e));
+                        mutate({
+                          pinTitle: "Your Title",
+                          pinDesc: 33,
+                        });
+                      }}
                     >
                       저장
                     </Button>
