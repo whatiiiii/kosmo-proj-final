@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import {
   FormControl,
   FormControlLabel,
-  InputLabel,
   MenuItem,
   Radio,
   RadioGroup,
@@ -19,7 +18,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import React from "react";
 
 export default function AccountSetting() {
-  const [country, setCountry] = React.useState("");
+  const [, setCountry] = React.useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
     setCountry(event.target.value);
@@ -57,6 +56,7 @@ export default function AccountSetting() {
         <DemoContainer components={["DatePicker"]}>
           <DatePicker label="생년월일" />
         </DemoContainer>
+        <div style={{ margin: "1em 0" }}></div>
       </LocalizationProvider>
 
       <FormControl>
@@ -77,25 +77,41 @@ export default function AccountSetting() {
           />
         </RadioGroup>
       </FormControl>
+      <div style={{ margin: "1em 0" }}></div>
 
       <Typography gutterBottom fontSize={12}>
         국가/지역
       </Typography>
-
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label"></InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={country}
-          label="country"
-          onChange={handleChange}
-        >
-          <MenuItem value={1}>대한민국</MenuItem>
-          <MenuItem value={2}>미국</MenuItem>
-          <MenuItem value={3}>일본</MenuItem>
+        <Select onChange={handleChange}>
+          <MenuItem value={1}>네덜란드</MenuItem>
+          <MenuItem value={2}>뉴질랜드</MenuItem>
+          <MenuItem value={3}>대만</MenuItem>
+          <MenuItem value={4}>대한민국(대한민국)</MenuItem>
+          <MenuItem value={5}>독일</MenuItem>
+          <MenuItem value={6}>러시아</MenuItem>
+          <MenuItem value={7}>몽골</MenuItem>
+          <MenuItem value={8}>미국</MenuItem>
+          <MenuItem value={9}>베트남</MenuItem>
+          <MenuItem value={10}>사우디아라비아</MenuItem>
+          <MenuItem value={11}>스웨덴</MenuItem>
+          <MenuItem value={12}>스위스</MenuItem>
+          <MenuItem value={13}>스페인</MenuItem>
+          <MenuItem value={14}>싱가폴</MenuItem>
+          <MenuItem value={15}>영국</MenuItem>
+          <MenuItem value={16}>오스트레일리아</MenuItem>
+          <MenuItem value={17}>우크라이나</MenuItem>
+          <MenuItem value={18}>일본</MenuItem>
+          <MenuItem value={19}>중국</MenuItem>
+          <MenuItem value={20}>태국</MenuItem>
+          <MenuItem value={21}>포르투갈</MenuItem>
+          <MenuItem value={22}>프랑스</MenuItem>
+          <MenuItem value={23}>핀란드</MenuItem>
+          <MenuItem value={24}>필리핀</MenuItem>
+          <MenuItem value={25}>헝가리</MenuItem>
         </Select>
       </FormControl>
+      <div style={{ margin: "1em 0" }}></div>
     </Box>
   );
 }
