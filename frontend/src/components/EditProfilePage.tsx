@@ -9,31 +9,28 @@ import Avatar from "@mui/material/Avatar";
 export default function EditProfilePage() {
   //이미지 초기값 state
   const [imgFile, setimgFile] = useState<string>("");
-  const fileInput = useRef<HTMLInputElement | null>(null);
+  const imgRef = useRef<HTMLInputElement>(null);
 
-  const onChange = () => {
+  const saveImgFile = () => {
     let file: File | null = null;
-    if (fileInput.current?.files != null) {
-      file = fileInput.current?.files[0];
-    } else {
-      setimgFile(
-        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-      );
-      return;
+    if (imgRef.current?.files != null && imgRef.current?.files.length !== 0) {
+      file = imgRef.current?.files[0];
     }
+
     const reader: FileReader = new FileReader();
+
     if (file) {
       reader.readAsDataURL(file);
-      reader.onload = () => {
-        if (reader.result === "string") {
+      reader.onloadend = () => {
+        if (typeof reader.result === "string") {
           setimgFile(reader.result);
         }
       };
     }
   };
   const handleImageClick = () => {
-    if (fileInput.current) {
-      fileInput.current.click(); // input 클릭 이벤트를 발생시킵니다.
+    if (imgRef.current) {
+      imgRef.current.click(); // input 클릭 이벤트를 발생시킵니다.
     }
   };
   return (
@@ -53,6 +50,7 @@ export default function EditProfilePage() {
         <Avatar
           alt="Basic Avatar"
           sx={{ width: 56, height: 56 }}
+          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
           variant="circular"
         />
       )}
@@ -68,25 +66,20 @@ export default function EditProfilePage() {
       {/* 사진바꾸기 기능  */}
       <input
         type="file"
-        // style={{ display: "none" }}
+        style={{ display: "none" }}
         accept="image/jpg, image/png, image/jpeg"
         name="profile_img"
-        onChange={onChange}
-        ref={fileInput}
+        onChange={saveImgFile}
+        ref={imgRef}
       />
-
       <Button
-        variant="outlined"
         sx={{
-          m: 1,
+          marginTop: "15px",
+          backgroundColor: "#dbdbdb",
           color: "black",
-          borderColor: "gray",
-          bgcolor: "background.paper",
-          fontWeight: "bold",
+          marginBottom: "15px",
         }}
-        onClick={() => {
-          onChange;
-        }}
+        onClick={handleImageClick}
       >
         변경
       </Button>
