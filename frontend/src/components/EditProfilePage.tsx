@@ -2,9 +2,40 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
+import { useRef, useState } from "react";
 //import Button from "@mui/material-next/Button";
+import Avatar from "@mui/material/Avatar";
 
 export default function EditProfilePage() {
+  //이미지 초기값 state
+  const [imgFile, setimgFile] = useState<string>("");
+  const fileInput = useRef<HTMLInputElement | null>(null);
+
+  const onChange = () => {
+    let file: File | null = null;
+    if (fileInput.current?.files != null) {
+      file = fileInput.current?.files[0];
+    } else {
+      setimgFile(
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+      );
+      return;
+    }
+    const reader: FileReader = new FileReader();
+    if (file) {
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        if (reader.result === "string") {
+          setimgFile(reader.result);
+        }
+      };
+    }
+  };
+  const handleImageClick = () => {
+    if (fileInput.current) {
+      fileInput.current.click(); // input 클릭 이벤트를 발생시킵니다.
+    }
+  };
   return (
     <Box sx={{ width: "100%", maxWidth: 500 }}>
       <Typography variant="h4" gutterBottom fontWeight="bold">
@@ -18,6 +49,32 @@ export default function EditProfilePage() {
       <Typography gutterBottom fontSize={12}>
         사진
       </Typography>
+      {!imgFile && (
+        <Avatar
+          alt="Basic Avatar"
+          sx={{ width: 56, height: 56 }}
+          variant="circular"
+        />
+      )}
+      {imgFile && (
+        <Avatar
+          alt="Basic Avatar"
+          src={imgFile}
+          sx={{ width: 56, height: 56 }}
+          variant="circular"
+        />
+      )}
+
+      {/* 사진바꾸기 기능  */}
+      <input
+        type="file"
+        // style={{ display: "none" }}
+        accept="image/jpg, image/png, image/jpeg"
+        name="profile_img"
+        onChange={onChange}
+        ref={fileInput}
+      />
+
       <Button
         variant="outlined"
         sx={{
@@ -26,6 +83,9 @@ export default function EditProfilePage() {
           borderColor: "gray",
           bgcolor: "background.paper",
           fontWeight: "bold",
+        }}
+        onClick={() => {
+          onChange;
         }}
       >
         변경
