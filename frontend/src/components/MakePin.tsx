@@ -15,12 +15,13 @@ import {
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { ArrowDropDownIcon } from "@mui/x-date-pickers";
-import { useMutation } from "@tanstack/react-query";
+import { Mutation, useMutation } from "@tanstack/react-query";
 import React, { useRef, useState } from "react";
 import PinNavBar from "./PinNavBar";
 import Profiletext from "./Profiletext";
 import axios from "axios";
 import { SERVER_URL } from "../api/globals";
+import Pin from "./Pin";
 
 function MakePin() {
   const options = ["보드선택", "보드<1>", "보드<2>", "확인용보드"];
@@ -126,6 +127,9 @@ function MakePin() {
     return pin;
   };
 
+  const [pinTitle, setpinTitle] = useState("");
+  const [pinDesc, setpinDesc] = useState("");
+
   const addTodo = async (newTOdo: Pin): Promise<Pin> => {
     const { data } = await axios.post<Pin>(`${SERVER_URL}/pins`, newTOdo, {
       headers: { "Content-Type": `application/json` },
@@ -135,68 +139,20 @@ function MakePin() {
   const { mutate, isLoading, isError, error, isSuccess } = useMutation({
     mutationFn: addTodo,
   });
-
-  // Usage example
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const newTodo: Pin = {
-      pinTitle: "Your Title",
-      pinDesc: "Your Description",
-    };
-    try {
-      await mutate(newTodo);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+  const submitData = () => {
+    mutate({ pinTitle, pinDesc });
   };
+  if (isLoading) {
+    return <span>Submitting...</span>;
+  }
 
-  // const mutation = useMutation<{ data: Pin }, Error, Pin>({
-  //   mutationFn: (Pin) => {
-  //     return axios.post("/pins", Pin);
-  //   },
-  // });
+  if (isError) {
+    return <span>Error: {mutation.error.message}</span>;
+  }
 
-  // async function AddPin(newTodo: Pin) {
-  //   try {
-  //     const response = await fetch("/pins", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(newTodo),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     }
-
-  //     const { data: pinData } = (await response.json()) as { data: Pin };
-  //     return pinData;
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     throw error;
-  //   }
-  // }
-
-  // const { mutateAsync: addTodoMutation } = useMutation({
-  //   mutationFn: addPin,
-  // });
-
-  // const pinTitleRef = useRef();
-  // const pinDescRef = useRef();
-  // const { mutateAsync: addTodoMutation } = useMutation({
-  //   mutationFn: AddPin,
-  // });
-
-  // function handleSubmit(e: React.FormEvent) {
-  //   e.preventDefault();
-  //   if (pinTitleRef.current && pinDescRef.current) {
-  //     addTodoMutation.mutate({
-  //       pinTitle: pinTitleRef.current.value,
-  //       pinDesc: pinDescRef.current.value,
-  //     });
-  //   }
-  // }
+  if (isSuccess) {
+    return <span>Post submitted!</span>;
+  }
 
   return (
     <Container>
@@ -273,13 +229,7 @@ function MakePin() {
                       variant="contained"
                       color="error"
                       sx={{ ml: 1, mr: 1 }}
-                      onClick={() => {
-                        //  createPin().catch((e) => console.error(e));
-                        mutate({
-                          pinTitle: "Your Title",
-                          pinDesc: 33,
-                        });
-                      }}
+                      onClick={submitData}
                     >
                       저장
                     </Button>
@@ -370,6 +320,8 @@ function MakePin() {
                                   label="제목 입력"
                                   placeholder="모두의 이목을 끌 제목을 입력해보세요!"
                                   multiline
+                                  value={pinTitle}
+                                  onChange={(e) => setpinTitle(e.target.value)}
                                   variant="standard"
                                   fullWidth
                                   InputLabelProps={{ style: { fontSize: 20 } }}
@@ -396,6 +348,8 @@ function MakePin() {
                             placeholder="사람들에게 이 핀에 대해서 설명해 보세요!"
                             // multiline
                             variant="standard"
+                            value={pinDesc}
+                            onChange={(e) => setpinDesc(e.target.value)}
                             fullWidth
                             InputLabelProps={{ style: { fontSize: 20 } }}
                             InputProps={{
