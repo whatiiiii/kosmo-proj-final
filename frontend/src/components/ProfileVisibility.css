@@ -9,6 +9,7 @@
   border-color: rgba(0, 0, 0, 0.51);
   border-radius: 10px;
   box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.5);
+  float: right;
 }
 #check {
   width: 30px;
@@ -19,7 +20,7 @@
   border-radius: 15px;
   position: relative;
   top: -10px;
-  background-color: gray;
+  background-color: rgb(255, 255, 255);
   box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.51);
 }
 #check:checked {

@@ -13,6 +13,9 @@ import ProfileSecurity from "./ProfileSecurity";
 import ProfileAuthority from "./ProfileAuthority";
 import ProfileFeed from "./ProfileFeed";
 import ProfileNotificationSettings from "./ProfileNotificationSettings";
+import ProfileOwnership from "./ProfileOwnership";
+import ProfileData from "./ProfileData";
+import ProfileBContents from "./ProfileBContents";
 
 export default function ProfileTab() {
   const [selectedIndex, setSelectedIndex] = React.useState(2);
@@ -130,6 +133,9 @@ export default function ProfileTab() {
         {selectedIndex === 7 && <ProfileAuthority />}
         {selectedIndex === 5 && <ProfileFeed />}
         {selectedIndex === 8 && <ProfileNotificationSettings />}
+        {selectedIndex === 6 && <ProfileOwnership />}
+        {selectedIndex === 9 && <ProfileData />}
+        {selectedIndex === 11 && <ProfileBContents />}
       </div>
       <ProfileFooter />
     </Box>

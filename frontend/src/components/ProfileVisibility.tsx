@@ -13,25 +13,20 @@ export default function ProfileVisibility() {
       <p>
         프로필이 비공개인 경우 승인된 사용자만 프로필, 핀, 보드, 팔로워 및
         팔로우 목록을 볼 수 있습니다.
-      </p>
-      <p>
         <div id="check-container">
           <input id="check" type="checkbox"></input>
         </div>
+        <a href="https://help.pinterest.com/ko/article/make-your-profile-private">
+          <strong>자세히 알아보기</strong>
+        </a>
       </p>
-      <a href="https://help.pinterest.com/ko/article/make-your-profile-private">
-        <strong>자세히 알아보기</strong>
-      </a>
-
       <p>
         <strong>개인정보 보호 검색</strong>
       </p>
       <p>검색 엔진에서 프로필 및 보드를 숨깁니다(예: Google).</p>
-      <p>
-        <div id="check-container">
-          <input id="check" type="checkbox"></input>
-        </div>
-      </p>
+      <div id="check-container">
+        <input id="check" type="checkbox"></input>
+      </div>
       <a href="https://help.pinterest.com/ko/article/update-your-search-privacy">
         <strong>자세히 알아보기</strong>
       </a>

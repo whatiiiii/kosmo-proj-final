@@ -210,13 +210,13 @@ function PinBuilder() {
   }
   const { data: pinData, isLoading: isPinLoading } = useQuery<Data>({
     queryKey: ["pins"],
-    queryFn: () => fetch(SERVER_URL + "/pins/" + 1).then((res) => res.json()),
+    queryFn: () => fetch(SERVER_URL + "/pins/" + 3).then((res) => res.json()),
   });
 
   const { data: memberData, isLoading: isMemberLoading } = useQuery<Member>({
     queryKey: ["members"],
     queryFn: () =>
-      fetch(SERVER_URL + "/pins/" + 1 + "/pinWriter").then((res) => res.json()),
+      fetch(SERVER_URL + "/pins/" + 3 + "/pinWriter").then((res) => res.json()),
   });
   const { data: imageData, isLoading: isImageLoading } = useQuery<Blob>({
     queryKey: ["upImage"],

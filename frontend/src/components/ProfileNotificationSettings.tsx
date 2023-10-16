@@ -1,6 +1,6 @@
 import "./ProfileNotificationSettings.css";
 
-export default function ProfileAuthority() {
+export default function ProfileNotificationSettings() {
   return (
     <div>
       <div className="profile-notificationsettings">
@@ -10,7 +10,7 @@ export default function ProfileAuthority() {
         중요한 변경사항이 있으면 항상 알려드립니다. 이외에도 어떤 항목에 대해
         소식을 받고 싶은지 선택하세요.
         <a href="https://help.pinterest.com/ko/article/edit-notification-settings">
-          자세히 알아보기
+          <strong>자세히 알아보기</strong>
         </a>
       </p>
       <div>
@@ -19,7 +19,7 @@ export default function ProfileAuthority() {
         </p>
         <p>앱 또는 사이트에 표시할 알림을 선택하세요.</p>
         <a href="https://help.pinterest.com/ko/article/edit-notification-settings">
-          자세히 알아보기
+          <strong>자세히 알아보기</strong>
         </a>
         <button className="nbutton">
           <strong>수정</strong>
@@ -36,7 +36,7 @@ export default function ProfileAuthority() {
         </p>
         <p>이메일로 받을 알림을 선택하세요.</p>
         <a href="https://help.pinterest.com/ko/article/edit-notification-settings">
-          자세히 알아보기
+          <strong>자세히 알아보기</strong>
         </a>
         <button className="nbutton">
           <strong>수정</strong>
@@ -53,7 +53,7 @@ export default function ProfileAuthority() {
         </p>
         <p>휴대폰 또는 컴퓨터에서 받을 알림을 선택하세요.</p>
         <a href="https://help.pinterest.com/ko/article/edit-notification-settings">
-          자세히 알아보기
+          <strong>자세히 알아보기</strong>
         </a>
         <button className="nbutton">
           <strong>수정</strong>
