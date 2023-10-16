@@ -30,6 +30,6 @@ public class UpImage {
     @ContentLength
     private long contentLength;
     @MimeType
-    private String contentMimeType = "image/jpg";
+    private String contentMimeType = "image/jpeg";
 
 }
