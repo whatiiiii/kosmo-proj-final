@@ -16,7 +16,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { ArrowDropDownIcon } from "@mui/x-date-pickers";
 import { Mutation, useMutation } from "@tanstack/react-query";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PinNavBar from "./PinNavBar";
 import Profiletext from "./Profiletext";
 import axios from "axios";
@@ -27,8 +27,12 @@ function MakePin() {
   const options = ["보드선택", "보드<1>", "보드<2>", "확인용보드"];
   const [imgFile, setImgFile] = useState<string>("");
   const imgRef = useRef<HTMLInputElement>(null);
+  const [seq, setSeq] = useState<number>(-1);
+  useEffect(() => {
+    console.log(seq);
+  }, [seq]);
 
-  const saveImgFile = (data1: number) => {
+  const saveImgFile = () => {
     let file: File | null = null;
     if (imgRef.current?.files != null && imgRef.current?.files.length !== 0) {
       file = imgRef.current?.files[0];
@@ -46,10 +50,11 @@ function MakePin() {
     }
 
     const formData = new FormData();
+
     formData.append("file", file as Blob, file.name);
     axios({
       method: "post",
-      url: `http://localhost:8080/upImages/` + data1,
+      url: `http://localhost:8080/upImages/${seq}`,
       data: formData,
       headers: { "Content-Type": "image/*" },
     })
@@ -158,7 +163,6 @@ function MakePin() {
     return data;
   };
 
-  let data1: number;
   const addUpimage = async (newTodo: UpImage): Promise<UpImage> => {
     const { data: upImageData } = await axios.post<UpImage>(
       `${SERVER_URL}/upImages`,
@@ -167,8 +171,7 @@ function MakePin() {
         headers: { "Content-Type": `application/json` },
       },
     );
-    data1 = upImageData.imgSeq;
-    console.log("data1", data1);
+    setSeq(upImageData.imgSeq);
     return upImageData;
   };
 
