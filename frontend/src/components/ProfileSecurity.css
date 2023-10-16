@@ -11,7 +11,7 @@ input[type="checkbox"] {
   border-radius: 0.5em;
   border: 1px solid rgba(0, 0, 0, 0.51);
   background-color: white;
-  position: relative;
+  /* position: relative; */
   top: 8px;
 }
 input[type="checkbox"]:checked {
