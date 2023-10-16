@@ -22,35 +22,22 @@ import Profiletext from "./Profiletext";
 import axios from "axios";
 import { SERVER_URL } from "../api/globals";
 import Pin from "./Pin";
+import { useNavigate } from "react-router-dom";
 
 function MakePin() {
   const options = ["보드선택", "보드<1>", "보드<2>", "확인용보드"];
   const [imgFile, setImgFile] = useState<string>("");
   const imgRef = useRef<HTMLInputElement>(null);
   const [seq, setSeq] = useState<number>(-1);
-  // seq가 변경될 때마다 작업 실행
   useEffect(() => {
-    if (seq !== -1) {
-      // seq가 -1이 아닐 때 작업 실행
-      console.log(`seq: ${seq}`);
-
-      // 여기에서 changeContent 함수 또는 다른 작업 실행
-      changeContent();
-    }
+    console.log(seq);
   }, [seq]);
-
-  const [file, setFile] = useState<File | null>(null);
-  const setFn = (newFile: File | null) => {
-    setFile(newFile);
-  };
-  useEffect(() => {
-    console.log(`fn: `, file);
-  }, [file]);
+  const navigate = useNavigate();
 
   const saveImgFile = () => {
     let file: File | null = null;
-    if (imgRef.current?.files != null && imgRef.current?.files.length !== 0) {
-      file = imgRef.current?.files[0];
+    if (imgRef.current?.files != null && imgRef.current.files.length !== 0) {
+      file = imgRef.current.files[0];
     }
 
     const reader: FileReader = new FileReader();
@@ -60,32 +47,27 @@ function MakePin() {
       reader.onloadend = () => {
         if (typeof reader.result === "string") {
           setImgFile(reader.result);
-          console.log(`file: `, file);
-          setFn(file);
         }
       };
     }
-  };
 
-  const changeContent = () => {
-    const formData = new FormData();
-    formData.append("file", file as Blob); //("file", file as Blob, file.name);
-    console.log("formData:", formData);
-    axios({
-      method: "post",
-      url: `http://localhost:8080/upImages/${seq}`,
-      data: formData,
-      headers: { "Content-Type": "image/*" },
-    })
-      .then((result) => {
-        console.log("요청성공");
-      })
-      .catch((error) => {
-        console.log(file);
-        console.log("요청실패");
-      });
-  };
+    // const formData = new FormData();
 
+    // formData.append("file", file as Blob, file.name);
+    // axios({
+    //   method: "post",
+    //   url: `http://localhost:8080/upImages/${seq}`,
+    //   data: formData,
+    //   headers: { "Content-Type": "image/*" },
+    // })
+    //   .then((result) => {
+    //     console.log("요청성공");
+    //   })
+    //   .catch((error) => {
+    //     console.log(file);
+    //     console.log("요청실패");
+    //   });
+  };
   const deleteFileImage = () => {
     URL.revokeObjectURL(imgFile);
     setImgFile("");
@@ -97,7 +79,7 @@ function MakePin() {
   };
 
   const [selectedTags, setSelectedTags] = useState(Array<object>());
-  const tagsRef = useRef<any>(null);
+  const tagsRef = useRef<React.ReactElement>(null);
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement>(null);
@@ -109,7 +91,7 @@ function MakePin() {
   };
 
   const handleMenuItemClick = (
-    event: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    event: React.MouseEvent<HTMLLIElement>,
     index: number,
   ) => {
     setSelectedIndex(index);
@@ -134,96 +116,148 @@ function MakePin() {
     setOpen(false);
   };
 
-  const [state, setState] = React.useState<State>({
-    open1: false,
-    vertical: "top",
-    horizontal: "center",
-  });
-  const { vertical, horizontal, open1 } = state;
+  // const [state, setState] = React.useState<{open1: boolean; vertical: "top"; horizontal: "center"}>({
+  //   open1: false,
+  //   vertical: "top",
+  //   horizontal: "center",
+  // });
+  // const { vertical, horizontal, open1 } = state;
 
-  const handleClick1 = (newState: SnackbarOrigin) => () => {
-    setState({ ...newState, open1: true });
-  };
+  // const handleClick1 = (newState: SnackbarOrigin) => () => {
+  //   setState({ ...newState, open1: true });
+  // };
 
-  const handleClose1 = () => {
-    setState({ ...state, open1: false });
-  };
+  // const handleClose1 = () => {
+  //   setState({ ...state, open1: false });
+  // };
 
   interface Pin {
     pinTitle: string;
     pinDesc: string;
+    image?: string;
   }
 
   interface UpImage {
     imgSeq: number;
   }
 
-  const createPin = async () => {
-    const pin = await fetch(`${SERVER_URL}/pins`, {
+  // const createPin = async () => {
+  //   const pin = await fetch(`${SERVER_URL}/pins`, {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       pinTitle: "제목들어감",
+  //       pinDesc: 1,
+  //     }),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   return pin;
+  // };
+
+  const [pinTitle, setpinTitle] = useState("");
+  const [pinDesc, setpinDesc] = useState("");
+  const imgSeq = useRef(-1);
+
+  async function handleSubmit() {
+    const { imgSeq } = await createImage();
+    const imgUrl = `/upImages/${imgSeq}`;
+    await uploadImage(imgSeq);
+    await createPin(imgUrl);
+    alert("핀이 생성되었습니다.");
+    navigate("/pin");
+  }
+
+  const createImage = async () => {
+    const response = await fetch(`${SERVER_URL}/upImages`, {
+      method: "POST",
+      body: JSON.stringify({}),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.json() as Promise<UpImage>;
+  };
+
+  const uploadImage = async (id: number) => {
+    if (!imgRef.current?.files) {
+      throw new Error("No file selected");
+    }
+    const response = await fetch(`${SERVER_URL}/upImages/${id}/content`, {
+      method: "PUT",
+      body: imgRef.current.files[0],
+      headers: {
+        "Content-Type": "image/jpeg",
+      },
+    });
+    return response;
+  };
+
+  const createPin = async (imageUrl: string) => {
+    // const { data } = await axios.post<Pin>(`${SERVER_URL}/pins`, newTOdo, {
+    //   headers: { "Content-Type": `application/json` },
+    // });
+    const data = await fetch(`${SERVER_URL}/pins`, {
       method: "POST",
       body: JSON.stringify({
-        pinTitle: "제목들어감",
-        pinDesc: 1,
+        pinTitle: pinTitle,
+        pinDesc: pinDesc,
+        image: imageUrl,
       }),
       headers: {
         "Content-Type": "application/json",
       },
     });
-    return pin;
-  };
-
-  const [pinTitle, setpinTitle] = useState("");
-  const [pinDesc, setpinDesc] = useState("");
-  const [imgSeq] = useState(Number);
-
-  const addTodo = async (newTOdo: Pin): Promise<Pin> => {
-    const { data } = await axios.post<Pin>(`${SERVER_URL}/pins`, newTOdo, {
-      headers: { "Content-Type": `application/json` },
-    });
     return data;
   };
 
-  const addUpimage = async (newTodo: UpImage): Promise<UpImage> => {
-    const { data: upImageData } = await axios.post<UpImage>(
-      `${SERVER_URL}/upImages`,
-      newTodo,
-      {
-        headers: { "Content-Type": `application/json` },
-      },
-    );
-    setSeq(upImageData.imgSeq);
-    console.log(`seqq:: ${seq}`);
-    return upImageData;
-  };
+  // const uploadImage = async () => {
+  //   // const { data: upImageData } = await axios.post<UpImage>(
+  //   //   `${SERVER_URL}/upImages`,
+  //   //   newTodo,
+  //   //   {
+  //   //     headers: { "Content-Type": `application/json` },
+  //   //   },
+  //   // );
+  //   const
+  //   setSeq(upImageData.imgSeq);
+  //   return upImageData;
+  // };
 
-  const { mutate, isLoading, isError, error, isSuccess } = useMutation({
-    mutationFn: addTodo,
-  });
+  // const { mutate, isPending, isError, error, isSuccess } = useMutation({
+  //   mutationFn: createPin,
+  // });
 
-  const { mutate: imageMutation } = useMutation({
-    mutationFn: addUpimage,
-  });
+  // const { mutate: mutateImage } = useMutation({
+  //   mutationFn: uploadImage,
+  // });
 
-  const submitData = () => {
-    mutate({ pinTitle, pinDesc });
-  };
+  // const submitData = () => {
+  //   mutate({ pinTitle, pinDesc });
+  // };
 
-  const submitImage = () => {
-    imageMutation({ imgSeq });
-    console.log("seq:", seq);
-  };
+  // const submitImage = () => {
+  //   mutateImage();
+  //   console.log("imgSeq:", imgSeq);
+  // };
 
-  if (isLoading) {
-    return <span>Submitting...</span>;
-  }
+  // const { mutate, isPending, isError, error, isSuccess } = useMutation({
+  //   mutationKey: ["handleSubmit"],
+  //   mutationFn: handleSubmit,
+  //   onSuccess: ({ imgSeq }: UpImage) => {},
+  // });
 
-  if (isError) {
-    return <span>Error: {mutation.error.message}</span>;
-  }
+  // if (isPending) {
+  //   return <span>Submitting...</span>;
+  // }
 
-  if (isSuccess) {
-    return <span>Post submitted!</span>;
-  }
+  // if (isError) {
+  //   return <span>Error: {error.message}</span>;
+  // }
+
+  // if (isSuccess) {
+  //   return <span>Post submitted!</span>;
+  // }
 
   return (
     <Container>
@@ -283,9 +317,9 @@ function MakePin() {
                                     key={option}
                                     disabled={index === 0}
                                     selected={index === selectedIndex}
-                                    onClick={(event) =>
-                                      handleMenuItemClick(event, index)
-                                    }
+                                    onClick={(event) => {
+                                      handleMenuItemClick(event, index);
+                                    }}
                                   >
                                     {option}
                                   </MenuItem>
@@ -301,7 +335,11 @@ function MakePin() {
                       color="error"
                       sx={{ ml: 1, mr: 1 }}
                       //onClick={submitData}
-                      onClick={submitImage}
+                      onClick={() => {
+                        handleSubmit().catch((e) => {
+                          console.error(e);
+                        });
+                      }}
                     >
                       저장
                     </Button>
@@ -372,7 +410,6 @@ function MakePin() {
                                   aria-hidden="true"
                                   tabIndex={-1}
                                   style={styles.fileupstyle}
-                                  onChange={saveImgFile}
                                   ref={imgRef}
                                 />
                               </div>
