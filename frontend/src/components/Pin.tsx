@@ -1,25 +1,22 @@
 import { useNavigate } from "react-router-dom";
-import img1 from "/imggg/img1.png";
-import img2 from "/imggg/img2.png";
 import { useEffect, useState } from "react";
 
-const backgroundArray = [img1, img2];
 const sizeArray = ["small", "medium", "large"];
 
-function Pin() {
+function Pin({ src }: { src?: string }) {
+  if (src === undefined) {
+    src = "https://placehold.co/600x400?text=Error";
+  }
+
   const navigate = useNavigate();
   const goPin = () => {
     navigate("/pin-builder");
   };
-  const [randomIndex, setRandomIndex] = useState(0);
-  useEffect(() => {
-    setRandomIndex(Math.floor(Math.random() * backgroundArray.length));
-  }, []);
   const [randomIndex2, setRandomIndex2] = useState(0);
   useEffect(() => {
     setRandomIndex2(Math.floor(Math.random() * sizeArray.length));
   }, []);
-  const backgroundImg = backgroundArray[randomIndex];
+  const backgroundImg = src;
   const size = sizeArray[randomIndex2];
   return (
     <div
