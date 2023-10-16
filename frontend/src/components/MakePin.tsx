@@ -28,9 +28,24 @@ function MakePin() {
   const [imgFile, setImgFile] = useState<string>("");
   const imgRef = useRef<HTMLInputElement>(null);
   const [seq, setSeq] = useState<number>(-1);
+  // seq가 변경될 때마다 작업 실행
   useEffect(() => {
-    console.log(seq);
+    if (seq !== -1) {
+      // seq가 -1이 아닐 때 작업 실행
+      console.log(`seq: ${seq}`);
+
+      // 여기에서 changeContent 함수 또는 다른 작업 실행
+      changeContent();
+    }
   }, [seq]);
+
+  const [file, setFile] = useState<File | null>(null);
+  const setFn = (newFile: File | null) => {
+    setFile(newFile);
+  };
+  useEffect(() => {
+    console.log(`fn: `, file);
+  }, [file]);
 
   const saveImgFile = () => {
     let file: File | null = null;
@@ -45,13 +60,17 @@ function MakePin() {
       reader.onloadend = () => {
         if (typeof reader.result === "string") {
           setImgFile(reader.result);
+          console.log(`file: `, file);
+          setFn(file);
         }
       };
     }
+  };
 
+  const changeContent = () => {
     const formData = new FormData();
-
-    formData.append("file", file as Blob, file.name);
+    formData.append("file", file as Blob); //("file", file as Blob, file.name);
+    console.log("formData:", formData);
     axios({
       method: "post",
       url: `http://localhost:8080/upImages/${seq}`,
@@ -66,6 +85,7 @@ function MakePin() {
         console.log("요청실패");
       });
   };
+
   const deleteFileImage = () => {
     URL.revokeObjectURL(imgFile);
     setImgFile("");
@@ -172,6 +192,7 @@ function MakePin() {
       },
     );
     setSeq(upImageData.imgSeq);
+    console.log(`seqq:: ${seq}`);
     return upImageData;
   };
 
@@ -189,7 +210,7 @@ function MakePin() {
 
   const submitImage = () => {
     imageMutation({ imgSeq });
-    console.log("imgSeq:", imgSeq);
+    console.log("seq:", seq);
   };
 
   if (isLoading) {
