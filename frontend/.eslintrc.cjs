@@ -21,6 +21,10 @@ module.exports = {
   },
   plugins: ["react-refresh"],
   rules: {
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+    ],
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },

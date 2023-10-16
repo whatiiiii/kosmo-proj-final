@@ -1,35 +1,35 @@
 import PinNavBar from "./PinNavBar";
 import Pin from "./Pin";
+import { useFeed } from "../api/feed";
+import { Button } from "@mui/material";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 
 function PinLayout() {
-  return (
+  const { status, error, data, fetchNextPage } = useFeed();
+  const { inView, ref } = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage().catch((e) => {
+        console.error(e);
+      });
+    }
+  }, [inView, fetchNextPage, data]);
+
+  return status === "pending" ? (
+    <p>Loading...</p>
+  ) : status === "error" ? (
+    <p>Error: {error.message}</p>
+  ) : (
     <>
       <PinNavBar />
+
       <div style={styles.pin_container}>
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
-        <Pin />
+        {data.pages.map((src, i) => (
+          <Pin key={i} src={src} />
+        ))}
+        <div ref={ref}></div>
       </div>
     </>
   );
