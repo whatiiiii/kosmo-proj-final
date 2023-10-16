@@ -28,7 +28,7 @@ function MakePin() {
   const [imgFile, setImgFile] = useState<string>("");
   const imgRef = useRef<HTMLInputElement>(null);
 
-  const saveImgFile = () => {
+  const saveImgFile = (data1: number) => {
     let file: File | null = null;
     if (imgRef.current?.files != null && imgRef.current?.files.length !== 0) {
       file = imgRef.current?.files[0];
@@ -44,6 +44,22 @@ function MakePin() {
         }
       };
     }
+
+    const formData = new FormData();
+    formData.append("file", file as Blob, file.name);
+    axios({
+      method: "post",
+      url: `http://localhost:8080/upImages/` + data1,
+      data: formData,
+      headers: { "Content-Type": "image/*" },
+    })
+      .then((result) => {
+        console.log("요청성공");
+      })
+      .catch((error) => {
+        console.log(file);
+        console.log("요청실패");
+      });
   };
   const deleteFileImage = () => {
     URL.revokeObjectURL(imgFile);
@@ -113,6 +129,10 @@ function MakePin() {
     pinDesc: string;
   }
 
+  interface UpImage {
+    imgSeq: number;
+  }
+
   const createPin = async () => {
     const pin = await fetch(`${SERVER_URL}/pins`, {
       method: "POST",
@@ -129,6 +149,7 @@ function MakePin() {
 
   const [pinTitle, setpinTitle] = useState("");
   const [pinDesc, setpinDesc] = useState("");
+  const [imgSeq] = useState(Number);
 
   const addTodo = async (newTOdo: Pin): Promise<Pin> => {
     const { data } = await axios.post<Pin>(`${SERVER_URL}/pins`, newTOdo, {
@@ -136,12 +157,38 @@ function MakePin() {
     });
     return data;
   };
+
+  let data1: number;
+  const addUpimage = async (newTodo: UpImage): Promise<UpImage> => {
+    const { data: upImageData } = await axios.post<UpImage>(
+      `${SERVER_URL}/upImages`,
+      newTodo,
+      {
+        headers: { "Content-Type": `application/json` },
+      },
+    );
+    data1 = upImageData.imgSeq;
+    console.log("data1", data1);
+    return upImageData;
+  };
+
   const { mutate, isLoading, isError, error, isSuccess } = useMutation({
     mutationFn: addTodo,
   });
+
+  const { mutate: imageMutation } = useMutation({
+    mutationFn: addUpimage,
+  });
+
   const submitData = () => {
     mutate({ pinTitle, pinDesc });
   };
+
+  const submitImage = () => {
+    imageMutation({ imgSeq });
+    console.log("imgSeq:", imgSeq);
+  };
+
   if (isLoading) {
     return <span>Submitting...</span>;
   }
@@ -229,7 +276,8 @@ function MakePin() {
                       variant="contained"
                       color="error"
                       sx={{ ml: 1, mr: 1 }}
-                      onClick={submitData}
+                      //onClick={submitData}
+                      onClick={submitImage}
                     >
                       저장
                     </Button>
