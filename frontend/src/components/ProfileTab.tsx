@@ -12,6 +12,7 @@ import ProfileVisibility from "./ProfileVisibility";
 import ProfileSecurity from "./ProfileSecurity";
 import ProfileAuthority from "./ProfileAuthority";
 import ProfileFeed from "./ProfileFeed";
+import ProfileNotificationSettings from "./ProfileNotificationSettings";
 
 export default function ProfileTab() {
   const [selectedIndex, setSelectedIndex] = React.useState(2);
@@ -128,6 +129,7 @@ export default function ProfileTab() {
         {selectedIndex === 10 && <ProfileSecurity />}
         {selectedIndex === 7 && <ProfileAuthority />}
         {selectedIndex === 5 && <ProfileFeed />}
+        {selectedIndex === 8 && <ProfileNotificationSettings />}
       </div>
       <ProfileFooter />
     </Box>
