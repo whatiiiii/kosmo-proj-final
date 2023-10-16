@@ -30,7 +30,7 @@ public class Pin implements Serializable {
     @GeneratedValue
     private Integer pinSeq;
     private String pinTitle;
-    private Long pinDesc;
+    private String pinDesc;
     @OneToOne
     @JoinColumn(name = "imgSeq")
     @RestResource(path = "PinImg", rel = "image")
