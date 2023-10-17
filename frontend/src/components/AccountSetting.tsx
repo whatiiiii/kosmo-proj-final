@@ -121,8 +121,7 @@ export default function AccountSetting() {
         국가/지역
       </Typography>
       <FormControl fullWidth>
-        <InputLabel id="loc-label">선택하세요.</InputLabel>
-        <Select onChange={handleChange} labelId="loc-label">
+        <Select onChange={handleChange}>
           <MenuItem value={1}>네덜란드</MenuItem>
           <MenuItem value={2}>뉴질랜드</MenuItem>
           <MenuItem value={3}>대만</MenuItem>
