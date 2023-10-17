@@ -22,6 +22,7 @@ import Logout from "@mui/icons-material/Logout";
 import Button from "@mui/material/Button";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useHref, useNavigate } from "react-router-dom";
+import Link from "@mui/material/Link";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -269,7 +270,7 @@ export default function PinNavBar({
                   </ListItemIcon>
                   설정
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem component={Link} href="/logout">
                   <ListItemIcon>
                     <Logout fontSize="small" />
                   </ListItemIcon>
