@@ -22,6 +22,7 @@ public class TagIdConverter implements BackendIdConverter {
         if (id == null) {
             return null;
         }
+        System.out.println(id);
 
         String[] parts = id.split("_");
         String aID = parts[0];
@@ -34,7 +35,7 @@ public class TagIdConverter implements BackendIdConverter {
     @Override
     public String toRequestId(Serializable source, Class<?> entityType) {
         TagId memberId = (TagId) source;
-        String aId = memberId.getTag_name();
+        String aId = memberId.getTagName();
         String bId = memberId.getPin() != null ? String.valueOf(memberId.getPin().getPinSeq()) : "null";
         return aId + "_" + bId;
     }

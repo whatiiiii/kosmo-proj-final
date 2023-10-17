@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Embeddable
 public class TagId implements Serializable {
-    private String tag_name;
+    private String tagName;
     @ManyToOne
     @JoinColumn(name = "pinSeq")
     private Pin pin;
