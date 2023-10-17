@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 public class TagId implements Serializable {
     private String tag_name;
     @ManyToOne
-    @JoinColumn(name = "seq")
+    @JoinColumn(name = "pinSeq")
     private Pin pin;
 }

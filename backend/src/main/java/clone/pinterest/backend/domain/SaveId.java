@@ -18,6 +18,6 @@ public class SaveId implements Serializable {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "seq")
+    @JoinColumn(name = "pinSeq")
     private Pin pin;
 }
