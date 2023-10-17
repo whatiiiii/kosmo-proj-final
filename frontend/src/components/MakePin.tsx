@@ -23,6 +23,7 @@ import axios from "axios";
 import { SERVER_URL } from "../api/globals";
 import Pin from "./Pin";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../api/user";
 
 function MakePin() {
   const options = ["보드선택", "보드<1>", "보드<2>", "확인용보드"];
@@ -50,23 +51,6 @@ function MakePin() {
         }
       };
     }
-
-    // const formData = new FormData();
-
-    // formData.append("file", file as Blob, file.name);
-    // axios({
-    //   method: "post",
-    //   url: `http://localhost:8080/upImages/${seq}`,
-    //   data: formData,
-    //   headers: { "Content-Type": "image/*" },
-    // })
-    //   .then((result) => {
-    //     console.log("요청성공");
-    //   })
-    //   .catch((error) => {
-    //     console.log(file);
-    //     console.log("요청실패");
-    //   });
   };
   const deleteFileImage = () => {
     URL.revokeObjectURL(imgFile);
@@ -116,26 +100,12 @@ function MakePin() {
     setOpen(false);
   };
 
-  // const [state, setState] = React.useState<{open1: boolean; vertical: "top"; horizontal: "center"}>({
-  //   open1: false,
-  //   vertical: "top",
-  //   horizontal: "center",
-  // });
-  // const { vertical, horizontal, open1 } = state;
-
-  // const handleClick1 = (newState: SnackbarOrigin) => () => {
-  //   setState({ ...newState, open1: true });
-  // };
-
-  // const handleClose1 = () => {
-  //   setState({ ...state, open1: false });
-  // };
-
   interface Pin {
     pinSeq: number;
     pinTitle: string;
     pinDesc: string;
     image?: string;
+    writer: string;
   }
 
   interface UpImage {
@@ -144,7 +114,6 @@ function MakePin() {
 
   const [pinTitle, setpinTitle] = useState("");
   const [pinDesc, setpinDesc] = useState("");
-  const imgSeq = useRef(-1);
 
   async function handleSubmit() {
     const { imgSeq } = await createImage();
@@ -182,15 +151,13 @@ function MakePin() {
   };
 
   const createPin = async (imageUrl: string) => {
-    // const { data } = await axios.post<Pin>(`${SERVER_URL}/pins`, newTOdo, {
-    //   headers: { "Content-Type": `application/json` },
-    // });
     const data = await fetch(`${SERVER_URL}/pins`, {
       method: "POST",
       body: JSON.stringify({
         pinTitle: pinTitle,
         pinDesc: pinDesc,
         image: imageUrl,
+        writer: `${SERVER_URL}/members/${userId}`,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -198,6 +165,10 @@ function MakePin() {
     });
     return data.json() as Promise<Pin>;
   };
+
+  //로그인 중인 userId 값 가지고 옴
+  const [user] = useUser();
+  const userId = user?.id;
 
   const createTag = async (seq: number) => {
     const tagIds = selectedTags.map((tag) => tag.reason);
@@ -741,6 +712,7 @@ const styles: Record<string, React.CSSProperties> = {
   imgStyle: {
     width: "100%", // 혹은 필요한 크기로 조절
     height: "auto", // 비율 유지
+    maxHeight: 570,
     position: "absolute",
     top: 0,
     left: 0,
