@@ -15,6 +15,7 @@ export default function EditProfilePage() {
   const data = result.data;
   // const name = data !==null && data ! == undefined ? data.name:"";
   const name = data ? data.name : "";
+  //const {data: { name }} = useServerUser();
 
   const saveImgFile = () => {
     let file: File | null = null;
