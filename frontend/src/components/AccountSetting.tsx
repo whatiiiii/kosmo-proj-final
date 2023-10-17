@@ -25,6 +25,7 @@ export default function AccountSetting() {
   const result = useServerUser();
   const data = result.data;
   // const pwd = data ? data.pwd : ""; //값을 수정 안되게할때
+  const email = data?.id + "@pinterest.clone";
   const [pwd, setPwd] = useState<string>(data?.pwd ?? ""); //값을 수정할 수 있게 할때
   const [birth, setBirth] = React.useState<Dayjs | null>(dayjs(data?.birth));
 
@@ -52,6 +53,7 @@ export default function AccountSetting() {
         placeholder="이메일을 적어주세요"
         variant="outlined"
         style={{ width: "95%", height: "80px" }}
+        value={email}
       />
 
       <br />
@@ -89,13 +91,8 @@ export default function AccountSetting() {
       <Typography gutterBottom fontSize={12}>
         생년월일
       </Typography>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer components={["DatePicker"]}>
-          <DatePicker
-            onChange={(newBirth) => setBirth(newBirth)}
-            value={birth}
-          />
-        </DemoContainer>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+        <DatePicker onChange={(newBirth) => setBirth(newBirth)} value={birth} />
         <div style={{ margin: "1em 0" }}></div>
       </LocalizationProvider>
 
