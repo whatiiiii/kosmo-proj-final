@@ -6,6 +6,7 @@ import {
   Button,
   FormControl,
   FormControlLabel,
+  InputLabel,
   MenuItem,
   Radio,
   RadioGroup,
@@ -120,7 +121,8 @@ export default function AccountSetting() {
         국가/지역
       </Typography>
       <FormControl fullWidth>
-        <Select onChange={handleChange}>
+        <InputLabel id="loc-label">선택하세요.</InputLabel>
+        <Select onChange={handleChange} labelId="loc-label">
           <MenuItem value={1}>네덜란드</MenuItem>
           <MenuItem value={2}>뉴질랜드</MenuItem>
           <MenuItem value={3}>대만</MenuItem>
