@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import dayjs, { Dayjs } from "dayjs";
 import {
   Button,
   FormControl,
@@ -25,6 +26,7 @@ export default function AccountSetting() {
   const data = result.data;
   // const pwd = data ? data.pwd : ""; //값을 수정 안되게할때
   const [pwd, setPwd] = useState<string>(data?.pwd ?? ""); //값을 수정할 수 있게 할때
+  const [birth, setBirth] = React.useState<Dayjs | null>(dayjs(data?.birth));
 
   const handleChange = (event: SelectChangeEvent) => {
     setCountry(event.target.value);
@@ -89,7 +91,10 @@ export default function AccountSetting() {
       </Typography>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DemoContainer components={["DatePicker"]}>
-          <DatePicker label="생년월일" />
+          <DatePicker
+            onChange={(newBirth) => setBirth(newBirth)}
+            value={birth}
+          />
         </DemoContainer>
         <div style={{ margin: "1em 0" }}></div>
       </LocalizationProvider>
@@ -139,11 +144,12 @@ export default function AccountSetting() {
           <MenuItem value={18}>일본</MenuItem>
           <MenuItem value={19}>중국</MenuItem>
           <MenuItem value={20}>태국</MenuItem>
-          <MenuItem value={21}>포르투갈</MenuItem>
-          <MenuItem value={22}>프랑스</MenuItem>
-          <MenuItem value={23}>핀란드</MenuItem>
-          <MenuItem value={24}>필리핀</MenuItem>
-          <MenuItem value={25}>헝가리</MenuItem>
+          <MenuItem value={21}>캐나다</MenuItem>
+          <MenuItem value={22}>포르투갈</MenuItem>
+          <MenuItem value={23}>프랑스</MenuItem>
+          <MenuItem value={24}>핀란드</MenuItem>
+          <MenuItem value={25}>필리핀</MenuItem>
+          <MenuItem value={26}>헝가리</MenuItem>
         </Select>
       </FormControl>
       <div style={{ margin: "1em 0" }}></div>

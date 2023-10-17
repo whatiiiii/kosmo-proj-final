@@ -60,7 +60,7 @@ export default function EditProfilePage() {
       {!imgFile && (
         <Avatar
           alt="Basic Avatar"
-          sx={{ width: 56, height: 56 }}
+          sx={{ width: 75, height: 75 }}
           src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
           variant="circular"
         />
@@ -69,7 +69,7 @@ export default function EditProfilePage() {
         <Avatar
           alt="Basic Avatar"
           src={imgFile}
-          sx={{ width: 56, height: 56 }}
+          sx={{ width: 75, height: 75 }}
           variant="circular"
         />
       )}
@@ -89,6 +89,7 @@ export default function EditProfilePage() {
           backgroundColor: "#dbdbdb",
           color: "black",
           marginBottom: "15px",
+          fontWeight: "bold",
         }}
         onClick={handleImageClick}
       >
@@ -138,7 +139,7 @@ export default function EditProfilePage() {
         id="outlined-basic"
         placeholder="다른 사람들이 회원님을 찾을 수 있도록 잘 선택하세요"
         variant="outlined"
-        style={{ width: "95%" }}
+        style={{ width: "95%", height: "200px" }}
       />
     </Box>
   );
