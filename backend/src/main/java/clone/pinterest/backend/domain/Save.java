@@ -15,7 +15,4 @@ import lombok.NoArgsConstructor;
 public class Save {
     @EmbeddedId
     private SaveId id;
-    @OneToOne
-    @JoinColumn(name = "board", referencedColumnName = "boardSeq")
-    private Board board;
 }
