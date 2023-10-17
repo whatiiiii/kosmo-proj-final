@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,15 +23,11 @@ public class UpImage {
     @Id
     @GeneratedValue
     private Integer imgSeq;
-    @OneToOne
-    @JoinColumn(name = "id")
-    private Member member;
-
     @ContentId
     private String contentId;
     @ContentLength
     private long contentLength;
     @MimeType
-    private String contentMimeType = "image/jpeg";
+    private String contentMimeType = "image/jpg";
 
 }

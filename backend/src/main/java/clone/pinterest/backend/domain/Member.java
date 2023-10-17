@@ -9,6 +9,8 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -33,8 +35,8 @@ public class Member implements Serializable {
     @RestResource(path = "ProfileImg", rel = "upimage")
     private UpImage upimage;
 
-    @OneToOne(mappedBy = "writer")
-    private Pin pin;
+    @OneToMany(mappedBy = "writer")
+    private List<Pin> pin;
 
     @OneToOne(mappedBy = "writer")
     private CommentInPin comment;
