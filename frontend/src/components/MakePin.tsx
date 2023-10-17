@@ -132,6 +132,7 @@ function MakePin() {
   // };
 
   interface Pin {
+    pinSeq: number;
     pinTitle: string;
     pinDesc: string;
     image?: string;
@@ -141,20 +142,6 @@ function MakePin() {
     imgSeq: number;
   }
 
-  // const createPin = async () => {
-  //   const pin = await fetch(`${SERVER_URL}/pins`, {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       pinTitle: "제목들어감",
-  //       pinDesc: 1,
-  //     }),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   return pin;
-  // };
-
   const [pinTitle, setpinTitle] = useState("");
   const [pinDesc, setpinDesc] = useState("");
   const imgSeq = useRef(-1);
@@ -163,7 +150,8 @@ function MakePin() {
     const { imgSeq } = await createImage();
     const imgUrl = `/upImages/${imgSeq}`;
     await uploadImage(imgSeq);
-    await createPin(imgUrl);
+    const { pinSeq } = await createPin(imgUrl);
+    await createTag(pinSeq);
     alert("핀이 생성되었습니다.");
     navigate("/pin");
   }
@@ -208,56 +196,28 @@ function MakePin() {
         "Content-Type": "application/json",
       },
     });
-    return data;
+    return data.json() as Promise<Pin>;
   };
 
-  // const uploadImage = async () => {
-  //   // const { data: upImageData } = await axios.post<UpImage>(
-  //   //   `${SERVER_URL}/upImages`,
-  //   //   newTodo,
-  //   //   {
-  //   //     headers: { "Content-Type": `application/json` },
-  //   //   },
-  //   // );
-  //   const
-  //   setSeq(upImageData.imgSeq);
-  //   return upImageData;
-  // };
-
-  // const { mutate, isPending, isError, error, isSuccess } = useMutation({
-  //   mutationFn: createPin,
-  // });
-
-  // const { mutate: mutateImage } = useMutation({
-  //   mutationFn: uploadImage,
-  // });
-
-  // const submitData = () => {
-  //   mutate({ pinTitle, pinDesc });
-  // };
-
-  // const submitImage = () => {
-  //   mutateImage();
-  //   console.log("imgSeq:", imgSeq);
-  // };
-
-  // const { mutate, isPending, isError, error, isSuccess } = useMutation({
-  //   mutationKey: ["handleSubmit"],
-  //   mutationFn: handleSubmit,
-  //   onSuccess: ({ imgSeq }: UpImage) => {},
-  // });
-
-  // if (isPending) {
-  //   return <span>Submitting...</span>;
-  // }
-
-  // if (isError) {
-  //   return <span>Error: {error.message}</span>;
-  // }
-
-  // if (isSuccess) {
-  //   return <span>Post submitted!</span>;
-  // }
+  const createTag = async (seq: number) => {
+    const tagIds = selectedTags.map((tag) => tag.reason);
+    for (const tag of tagIds) {
+      await fetch(`${SERVER_URL}/tags`, {
+        method: "POST",
+        body: JSON.stringify({
+          tagId: {
+            tagName: tag,
+            pin: `${SERVER_URL}/pins/${seq}`,
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      //return data;
+      // 여기에서 data를 사용하거나 필요한 작업 수행
+    }
+  };
 
   return (
     <Container>
