@@ -376,46 +376,50 @@ function MakePin() {
                             </div>
                           </>
                         )}
-                        {!imgFile && (
-                          <div style={styles.fileupload3}>
-                            <div style={styles.inputpadding}>
-                              <div style={styles.inputinline}>
-                                <div style={styles.inputtext}>
-                                  <div style={styles.inputtext2}>
-                                    <div
-                                      style={{
-                                        ...styles.visibleWrapper,
-                                        pointerEvents: imgFile
-                                          ? "none"
-                                          : "auto",
-                                      }}
-                                      onClick={
-                                        !imgFile ? handleImageClick : undefined
-                                      }
-                                    >
-                                      {!imgFile && (
-                                        <div style={styles.overlayText}>
-                                          드래그하거나 클릭하여 업로드
-                                        </div>
-                                      )}
-                                    </div>
+
+                        <Box
+                          component="div"
+                          sx={{
+                            display: imgFile ? "none !important" : "inherit",
+                          }}
+                          style={styles.fileupload3}
+                        >
+                          <div style={styles.inputpadding}>
+                            <div style={styles.inputinline}>
+                              <div style={styles.inputtext}>
+                                <div style={styles.inputtext2}>
+                                  <div
+                                    style={{
+                                      ...styles.visibleWrapper,
+                                      pointerEvents: imgFile ? "none" : "auto",
+                                    }}
+                                    onClick={
+                                      !imgFile ? handleImageClick : undefined
+                                    }
+                                  >
+                                    {!imgFile && (
+                                      <div style={styles.overlayText}>
+                                        드래그하거나 클릭하여 업로드
+                                      </div>
+                                    )}
                                   </div>
                                 </div>
-                                <input
-                                  aria-label="파일 업로드"
-                                  id="media-upload-input-5d6df17c-e614-4193-9f8c-6ca3ea8c0a82"
-                                  data-test-id="media-upload-input-5d6df17c-e614-4193-9f8c-6ca3ea8c0a82"
-                                  type="file"
-                                  accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp"
-                                  aria-hidden="true"
-                                  tabIndex={-1}
-                                  style={styles.fileupstyle}
-                                  ref={imgRef}
-                                />
                               </div>
+                              <input
+                                aria-label="파일 업로드"
+                                id="media-upload-input-5d6df17c-e614-4193-9f8c-6ca3ea8c0a82"
+                                data-test-id="media-upload-input-5d6df17c-e614-4193-9f8c-6ca3ea8c0a82"
+                                type="file"
+                                accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp"
+                                aria-hidden="true"
+                                tabIndex={-1}
+                                style={styles.fileupstyle}
+                                ref={imgRef}
+                                onChange={saveImgFile}
+                              />
                             </div>
                           </div>
-                        )}
+                        </Box>
                       </div>
                     </div>
                     <div style={styles.textbox}>
