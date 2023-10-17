@@ -2,6 +2,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import {
+  Button,
   FormControl,
   FormControlLabel,
   MenuItem,
@@ -15,10 +16,15 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import React from "react";
+import React, { useState } from "react";
+import { useServerUser } from "../api/user";
 
 export default function AccountSetting() {
   const [, setCountry] = React.useState("");
+  const result = useServerUser();
+  const data = result.data;
+  // const pwd = data ? data.pwd : ""; //값을 수정 안되게할때
+  const [pwd, setPwd] = useState<string>(data?.pwd ?? ""); //값을 수정할 수 있게 할때
 
   const handleChange = (event: SelectChangeEvent) => {
     setCountry(event.target.value);
@@ -40,11 +46,40 @@ export default function AccountSetting() {
         이메일 · 비공개
       </Typography>
       <TextField
-        id="outlined-basic"
+        id="email"
         placeholder="이메일을 적어주세요"
         variant="outlined"
         style={{ width: "95%", height: "80px" }}
       />
+
+      <br />
+      <Typography gutterBottom fontSize={12}>
+        비밀번호
+      </Typography>
+      <TextField
+        id="password"
+        type="password"
+        placeholder="비밀번호를 적어주세요"
+        autoComplete="current-password"
+        style={{ width: "78%", height: "80px" }}
+        onChange={(e) => {
+          setPwd(e.target.value);
+        }}
+        value={pwd}
+      />
+      <Button
+        variant="outlined"
+        sx={{
+          m: 2,
+          color: "black",
+          borderColor: "gray",
+          bgcolor: "background.paper",
+          fontWeight: "bold",
+        }}
+      >
+        변경
+      </Button>
+
       <Typography variant="h6" gutterBottom fontWeight="bold">
         개인 정보
       </Typography>

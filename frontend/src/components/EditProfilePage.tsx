@@ -2,15 +2,26 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import { useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 //import Button from "@mui/material-next/Button";
 import Avatar from "@mui/material/Avatar";
+import { useServerUser } from "../api/user";
 
 export default function EditProfilePage() {
   //이미지 초기값 state
   const [imgFile, setimgFile] = useState<string>("");
   const imgRef = useRef<HTMLInputElement>(null);
+  const result = useServerUser();
+  const data = result.data;
+  // const name = data !==null && data ! == undefined ? data.name:"";
+  // const name = data ? data.name : "";
+  const [name, setName] = useState<string>("");
 
+  useEffect(() => {
+    if (result.isFetched) {
+      setName(data?.name ?? "");
+    }
+  }, [result.isFetched, data]);
   const saveImgFile = () => {
     let file: File | null = null;
     if (imgRef.current?.files != null && imgRef.current?.files.length !== 0) {
@@ -89,10 +100,14 @@ export default function EditProfilePage() {
       </Typography>
       <TextField
         id="outlined-multiline-flexible"
-        label="이름"
+        placeholder="이름"
         multiline
         maxRows={4}
         style={{ width: "47.5%", height: "80px" }}
+        onChange={(e) => {
+          setName(e.target.value);
+        }}
+        value={name}
       />
 
       <Typography gutterBottom fontSize={12}>
