@@ -9,6 +9,7 @@ export type User = {
   birth?: string;
   loc?: string;
   sex?: "Male" | "Female" | "Other";
+  pwd?: string;
 } | null;
 
 export const UserContext = createContext<User>(null);
