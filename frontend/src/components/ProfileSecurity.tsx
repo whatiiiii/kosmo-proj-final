@@ -8,8 +8,8 @@ export default function ProfileSecurity() {
       </div>
 
       <p>
-        이중 인증 켜기, 연결된 기기 목록 확인하기 등의 추가 보안 기능을 포함하여
-        계정, 핀, 보드를 안전하게 보호하세요
+        이중 인증 켜기, 연결된 기기 목록 확인하기 등의 추가 보안 기능을 <br />
+        포함하여 계정, 핀, 보드를 안전하게 보호하세요
       </p>
 
       <a href="https://help.pinterest.com/ko/article/protect-your-account">
@@ -20,8 +20,8 @@ export default function ProfileSecurity() {
         <strong>이중인증</strong>
       </p>
       <p>
-        이렇게 하면 계정 보안이 더욱 강화됩니다. 로그인할 때마다 비밀번호와 함께
-        휴대폰 문자로 전송된 비밀 코드를 입력해야 합니다.
+        이렇게 하면 계정 보안이 더욱 강화됩니다. 로그인할 때마다 비밀번호와
+        <br /> 함께 휴대폰 문자로 전송된 비밀 코드를 입력해야 합니다.
       </p>
       <a href="https://help.pinterest.com/ko/article/two-factor-authentication">
         <strong>자세히 알아보기</strong>
@@ -49,8 +49,8 @@ export default function ProfileSecurity() {
         <strong>앱 로그인</strong>
       </p>
       <p>
-        회원님의 Pinterest 프로필로 로그인한 모든 곳을 추적하고 Pinterest를 더
-        이상 사용하지 않는 앱에서 액세스를 삭제하세요.
+        회원님의 Pinterest 프로필로 로그인한 모든 곳을 추적하고 Pinterest를{" "}
+        <br />더 이상 사용하지 않는 앱에서 액세스를 삭제하세요.
       </p>
       <a href="https://help.pinterest.com/ko/article/link-your-social-media?source=settings_page">
         <strong>자세히 알아보기</strong>

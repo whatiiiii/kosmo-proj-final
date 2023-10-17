@@ -8,8 +8,9 @@ export default function ProfileFeed() {
       </div>
       <p>
         Pinterest를 자신에 맞게 본인. Pinterest가 아이디어를 추천하기 위해
-        사용하는 세부 정보를 편집해 보세요. 본 세부 정보는 공개적으로 표시되지
-        않습니다.
+        <br />
+        사용하는 세부 정보를 편집해 보세요. 본 세부 정보는 공개적으로 표<br />
+        시되지 않습니다.
       </p>
       <button className="button1">
         <strong>활동</strong>
