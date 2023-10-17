@@ -11,8 +11,8 @@ export default function ProfileVisibility() {
         <strong>비공개 프로필</strong>
       </p>
       <p>
-        프로필이 비공개인 경우 승인된 사용자만 프로필, 핀, 보드, 팔로워 및
-        팔로우 목록을 볼 수 있습니다.
+        프로필이 비공개인 경우 승인된 사용자만 프로필, 핀, 보드, <br />
+        팔로워 및 팔로우 목록을 볼 수 있습니다.
         <div id="check-container">
           <input id="check" type="checkbox"></input>
         </div>

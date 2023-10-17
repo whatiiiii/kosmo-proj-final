@@ -7,8 +7,9 @@ export default function ProfileOwnership() {
         <strong>소유권이 표시된 계정</strong>
       </div>
       <p>
-        계정 소유권을 표시하면 분석을 모니터링할 수 있고 회원님의 사이트에서
-        만든 모든 핀에 회원님의 이름 또는 브랜드가 표시됩니다.
+        계정 소유권을 표시하면 분석을 모니터링할 수 있고 회원님의 사이트
+        <br />
+        에서 만든 모든 핀에 회원님의 이름 또는 브랜드가 표시됩니다.
       </p>
       <a href="https://help.pinterest.com/ko/business/article/claim-your-website">
         <strong>자세히 알아보기</strong>

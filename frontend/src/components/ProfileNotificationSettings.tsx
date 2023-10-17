@@ -7,8 +7,8 @@ export default function ProfileNotificationSettings() {
         <strong>알림</strong>
       </div>
       <p>
-        중요한 변경사항이 있으면 항상 알려드립니다. 이외에도 어떤 항목에 대해
-        소식을 받고 싶은지 선택하세요.
+        중요한 변경사항이 있으면 항상 알려드립니다. 이외에도 어떤 항목에 <br />
+        대해 소식을 받고 싶은지 선택하세요.
         <a href="https://help.pinterest.com/ko/article/edit-notification-settings">
           <strong>자세히 알아보기</strong>
         </a>
