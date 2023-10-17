@@ -17,8 +17,8 @@ function ListItemLink({ href, text }: { href: string; text: string }) {
   const navigate = useNavigate();
 
   function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+    event.preventDefault();
     if (href.includes(":")) {
-      event.preventDefault();
       href = href.replace(/:(\w+)/, (_, p1) => {
         return prompt(`${p1} 입력`) ?? "";
       });
