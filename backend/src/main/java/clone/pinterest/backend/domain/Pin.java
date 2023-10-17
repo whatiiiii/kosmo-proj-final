@@ -42,8 +42,8 @@ public class Pin implements Serializable {
     @JoinColumn(name = "id")
     @RestResource(path = "pinWriter", rel = "writer")
     private Member writer;
-    @OneToOne(mappedBy = "pin")
-    private CommentInPin comment;
+    @OneToMany(mappedBy = "pin")
+    private List<CommentInPin> comment;
 
     @OneToMany(mappedBy = "id.pin") // Save 엔티티의 id 필드의 pin과 매핑
     private List<Save> saves;
