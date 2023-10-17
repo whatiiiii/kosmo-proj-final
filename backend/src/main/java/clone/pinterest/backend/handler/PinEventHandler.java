@@ -20,10 +20,9 @@ public class PinEventHandler {
 
     @HandleAfterCreate
     public void handlePinCreate(Pin pin) {
-        // TODO: change to get current user
-        // SaveId saveId = new SaveId(pin.getWriter(), pin);
-        Member member = memberRepository.findById("a").orElseThrow();
-        SaveId saveId = new SaveId(member, pin);
+        SaveId saveId = new SaveId(pin.getWriter(), pin);
+        // Member member = memberRepository.findById("a").orElseThrow();
+        // SaveId saveId = new SaveId(member, pin);
 
         Save save = new Save(saveId);
         saveRepository.save(save);
