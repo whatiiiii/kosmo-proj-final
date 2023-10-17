@@ -2,14 +2,19 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import { useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 //import Button from "@mui/material-next/Button";
 import Avatar from "@mui/material/Avatar";
+import { useServerUser } from "../api/user";
 
 export default function EditProfilePage() {
   //이미지 초기값 state
   const [imgFile, setimgFile] = useState<string>("");
   const imgRef = useRef<HTMLInputElement>(null);
+  const result = useServerUser();
+  const data = result.data;
+  // const name = data !==null && data ! == undefined ? data.name:"";
+  const name = data ? data.name : "";
 
   const saveImgFile = () => {
     let file: File | null = null;
@@ -93,6 +98,7 @@ export default function EditProfilePage() {
         multiline
         maxRows={4}
         style={{ width: "47.5%", height: "80px" }}
+        value={name}
       />
 
       <Typography gutterBottom fontSize={12}>
