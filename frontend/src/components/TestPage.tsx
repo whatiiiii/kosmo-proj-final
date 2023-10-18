@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 function ListItemLink({ href, text }: { href: string; text: string }) {
   const navigate = useNavigate();
 
-  function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+  function handleClick(event: React.MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
     if (href.includes(":")) {
       href = href.replace(/:(\w+)/, (_, p1) => {
@@ -61,19 +61,19 @@ export default function TestPage() {
         </AppBar>
         <nav>
           <List>
-            <ListItemLink href="/omok" text="오목판 테스트" />
-            <ListItemLink href="/clock" text="시계 테스트" />
-            <ListItemLink href="/button" text="버튼 테스트" />
-            <ListItemLink href="/pin" text="핀 테스트" />
+            <ListItemLink href="/feed" text="피드(핀 테스트)" />
+            <ListItemLink href="/pin/:seq" text="핀 정보(핀빌더)" />
             <ListItemLink href="/signin" text="로그인" />
             <ListItemLink href="/signup" text="회원가입" />
             <ListItemLink href="/user/:id" text="프로필" />
-            <ListItemLink href="/pin-builder" text="핀빌더" />
+            <ListItemLink href="/profiletab" text="프로필수정(프로필탭)" />
             <ListItemLink href="/makepin" text="핀만들기" />
-            <ListItemLink href="/profiletab" text="프로필탭" />
-            <ListItemLink href="/feed" text="피드" />
-            <ListItemLink href="/image" text="이미지" />
-            <ListItemLink href="/test" text="테스트" />
+            <ListItemLink href="/" text="메인페이지" />
+            <ListItemLink href="/test" text="테스트페이지" />
+            <ListItemLink href="/clock" text="시계 테스트" />
+            <ListItemLink href="/button" text="버튼 테스트" />
+            <ListItemLink href="/image" text="이미지 테스트" />
+            <ListItemLink href="/omok" text="오목판 테스트" />
           </List>
         </nav>
       </Box>
