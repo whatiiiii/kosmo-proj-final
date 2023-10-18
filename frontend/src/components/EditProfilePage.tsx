@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import { useServerUser } from "../api/user";
 import { SERVER_URL } from "../api/globals";
+import { getImageFromMember, uploadImage } from "../api/image";
 
 export default function EditProfilePage() {
   //이미지 초기값 state
@@ -19,26 +20,46 @@ export default function EditProfilePage() {
   const [name, setName] = useState<string>("");
 
   const changeImage = () => {
-    fetch(SERVER_URL + "/members/" + data?.id, {
-      method: "put",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        upimage: imgFile,
-      }),
-    })
+    if (imgRef.current?.files == null || imgRef.current.files.length === 0) {
+      alert("이미지를 선택해주세요.");
+      return;
+    }
+    uploadImage(imgRef.current.files[0])
+      .then((imgSeq) => {
+        return fetch(SERVER_URL + "/members/" + data?.id, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            upimage: "/upImages/" + imgSeq,
+          }),
+        });
+      })
       .then((response) => {
         if (response.ok) {
-          alert("사진수정 완료!");
+          alert("이미지가 변경되었습니다.");
         } else {
-          alert("사진수정 실패!");
+          alert("이미지 변경에 실패하였습니다.");
         }
       })
       .catch((error) => {
         console.error(error);
       });
   };
+
+  useEffect(() => {
+    if (data?.id == null) {
+      return;
+    }
+    getImageFromMember(data.id)
+      .then((img) => {
+        setimgFile(URL.createObjectURL(img));
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [data?.id]);
 
   useEffect(() => {
     if (result.isFetched) {
@@ -106,7 +127,7 @@ export default function EditProfilePage() {
           marginBottom: "15px",
           fontWeight: "bold",
         }}
-        onChange={changeImage}
+        onClick={changeImage}
       >
         변경
       </Button>
