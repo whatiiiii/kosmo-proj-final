@@ -36,7 +36,7 @@ export default function AccountSetting() {
     //const json = JSON.stringigy({ pwd: pwd }); 로 빼면 body: json, 만 넣으면 됌
     fetch(SERVER_URL + "/members/" + data?.id, {
       //로그인된 계정의 페이지를 가져와야하기때문에
-      method: "put",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
