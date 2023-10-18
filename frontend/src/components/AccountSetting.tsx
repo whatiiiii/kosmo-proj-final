@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import dayjs, { Dayjs } from "dayjs";
@@ -6,7 +5,6 @@ import {
   Button,
   FormControl,
   FormControlLabel,
-  InputLabel,
   MenuItem,
   Radio,
   RadioGroup,
@@ -16,10 +14,10 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import React, { useState } from "react";
 import { useServerUser } from "../api/user";
+import { SERVER_URL } from "../api/globals";
 
 export default function AccountSetting() {
   const [, setCountry] = React.useState("");
@@ -32,6 +30,32 @@ export default function AccountSetting() {
 
   const handleChange = (event: SelectChangeEvent) => {
     setCountry(event.target.value);
+  };
+
+  //비밀번호 변경
+  const changePwd = () => {
+    //const json = JSON.stringigy({ pwd: pwd }); 로 빼면 body: json, 만 넣으면 됌
+    fetch(SERVER_URL + "/members/" + data?.id, {
+      //로그인된 계정의 페이지를 가져와야하기때문에
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        pwd: pwd, //앞pwd:backend_member  뒤pwd: useState
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          //res.sucess랑은 다른 개념
+          alert("비밀번호가 변경되었습니다.");
+        } else {
+          alert("비밀번호 변경에 실패하였습니다.");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -81,6 +105,7 @@ export default function AccountSetting() {
           bgcolor: "background.paper",
           fontWeight: "bold",
         }}
+        onClick={changePwd}
       >
         변경
       </Button>
