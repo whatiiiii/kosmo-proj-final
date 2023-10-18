@@ -339,7 +339,7 @@ function PinBuilder() {
       // console.log("comment", comment);
       // commentIdData를 받아와서 messageExamples에 추가
       messageExamples.push({
-        primary: "dsd",
+        primary: "  dsd",
         secondary: comment,
         person: "/static/images/avatar/5.jpg", // 프로필 사진 경로
         date: rdate,
