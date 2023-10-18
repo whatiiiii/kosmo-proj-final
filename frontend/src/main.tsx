@@ -64,7 +64,7 @@ const router = createBrowserRouter(
           element: <ButtonFriend />,
         },
         {
-          path: "pin",
+          path: "feed",
           element: <PinLayout />,
         },
         {
@@ -72,11 +72,7 @@ const router = createBrowserRouter(
           element: <Imageprac />,
         },
         {
-          path: "feed",
-          element: <Feed />,
-        },
-        {
-          path: "pin-builder",
+          path: "pin/:seq",
           element: <PinBuilder />,
         },
         {

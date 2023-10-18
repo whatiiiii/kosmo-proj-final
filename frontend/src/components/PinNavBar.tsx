@@ -71,10 +71,10 @@ export default function PinNavBar({
 }) {
   const navigate = useNavigate();
   const goPin = () => {
-    navigate("/pin");
+    navigate("/feed");
   };
   const goHome = () => {
-    navigate("/pin");
+    navigate("/feed");
   };
   const goMakePin = () => {
     navigate("/makepin");

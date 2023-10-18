@@ -122,7 +122,7 @@ function MakePin() {
     const { pinSeq } = await createPin(imgUrl);
     await createTag(pinSeq);
     alert("핀이 생성되었습니다.");
-    navigate("/pin");
+    navigate("/feed");
   }
 
   const createImage = async () => {
@@ -178,7 +178,7 @@ function MakePin() {
         body: JSON.stringify({
           tagId: {
             tagName: tag,
-            pin: `${SERVER_URL}/pins/${seq}`,
+            pinSeq: `${SERVER_URL}/pins/${seq}`,
           },
         }),
         headers: {
