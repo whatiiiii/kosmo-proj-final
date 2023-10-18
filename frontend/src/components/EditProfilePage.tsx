@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 //import Button from "@mui/material-next/Button";
 import Avatar from "@mui/material/Avatar";
 import { useServerUser } from "../api/user";
+import { SERVER_URL } from "../api/globals";
 
 export default function EditProfilePage() {
   //이미지 초기값 state
@@ -16,6 +17,28 @@ export default function EditProfilePage() {
   // const name = data !==null && data ! == undefined ? data.name:"";
   // const name = data ? data.name : "";
   const [name, setName] = useState<string>("");
+
+  const changeImage = () => {
+    fetch(SERVER_URL + "/members/" + data?.id, {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        upimage: imgFile,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert("사진수정 완료!");
+        } else {
+          alert("사진수정 실패!");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   useEffect(() => {
     if (result.isFetched) {
@@ -57,22 +80,14 @@ export default function EditProfilePage() {
       <Typography gutterBottom fontSize={12}>
         사진
       </Typography>
-      {!imgFile && (
-        <Avatar
-          alt="Basic Avatar"
-          sx={{ width: 75, height: 75 }}
-          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-          variant="circular"
-        />
-      )}
-      {imgFile && (
-        <Avatar
-          alt="Basic Avatar"
-          src={imgFile}
-          sx={{ width: 75, height: 75 }}
-          variant="circular"
-        />
-      )}
+
+      <Avatar
+        alt="Basic Avatar"
+        src={imgFile}
+        sx={{ width: 75, height: 75 }}
+        variant="circular"
+        onClick={handleImageClick}
+      />
 
       {/* 사진바꾸기 기능  */}
       <input
@@ -91,7 +106,7 @@ export default function EditProfilePage() {
           marginBottom: "15px",
           fontWeight: "bold",
         }}
-        onClick={handleImageClick}
+        onChange={changeImage}
       >
         변경
       </Button>
