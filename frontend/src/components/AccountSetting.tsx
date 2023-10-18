@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import dayjs, { Dayjs } from "dayjs";
 import {
   Button,
   FormControl,
@@ -26,7 +25,7 @@ export default function AccountSetting() {
   // const pwd = data ? data.pwd : ""; //값을 수정 안되게할때
   const email = data?.id + "@pinterest.clone";
   const [pwd, setPwd] = useState<string>(data?.pwd ?? ""); //값을 수정할 수 있게 할때
-  const [birth, setBirth] = React.useState<Dayjs | null>(dayjs(data?.birth));
+  const [birth, setBirth] = React.useState<string | null>(null);
 
   const handleChange = (event: SelectChangeEvent) => {
     setCountry(event.target.value);
@@ -118,7 +117,11 @@ export default function AccountSetting() {
         생년월일
       </Typography>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-        <DatePicker onChange={(newBirth) => setBirth(newBirth)} value={birth} />
+        <DatePicker
+          onChange={(newBirth) => setBirth(newBirth)}
+          value={birth}
+          disableFuture
+        />
         <div style={{ margin: "1em 0" }}></div>
       </LocalizationProvider>
 
