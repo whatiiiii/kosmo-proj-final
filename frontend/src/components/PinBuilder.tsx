@@ -23,7 +23,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import { ListItemButton } from "@mui/material";
+import { ListItemButton, stepContentClasses } from "@mui/material";
 import TextField from "@mui/material/TextField";
 
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -37,6 +37,8 @@ import Grid from "@mui/material/Grid";
 import { useQuery } from "@tanstack/react-query";
 import { SERVER_URL } from "../api/globals";
 import Pin from "./Pin";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
   width: 900,
@@ -63,6 +65,7 @@ function refreshMessages(): MessageExample[] {
     primary: message.primary,
     secondary: message.secondary,
     person: message.person,
+    date: message.date,
   }));
 
   return randomMessages;
@@ -208,23 +211,150 @@ function PinBuilder() {
   interface Member {
     id: string;
   }
+
+  interface Image {
+    imgSeq: number;
+  }
+
+  interface CommentMember {
+    id: string;
+  }
+
+  interface Comment {
+    _embedded: {
+      commentInPins: Comment[];
+    };
+  }
+  interface CommentWithContent extends Comment {
+    content: string;
+    rdate: string;
+    _links: {
+      writer: {
+        href: string; // writer.href를 문자열로 지정
+      };
+    };
+  }
+  const { seq: pinSeq } = useParams(); //pinsSeq 변수에 핀번호 할당
+
   const { data: pinData, isLoading: isPinLoading } = useQuery<Data>({
-    queryKey: ["pins"],
-    queryFn: () => fetch(SERVER_URL + "/pins/" + 3).then((res) => res.json()),
+    queryKey: ["pins", pinSeq],
+    queryFn: () =>
+      fetch(SERVER_URL + "/pins/" + pinSeq).then((res) => res.json()),
   });
 
   const { data: memberData, isLoading: isMemberLoading } = useQuery<Member>({
-    queryKey: ["members"],
+    queryKey: ["members", pinSeq],
     queryFn: () =>
-      fetch(SERVER_URL + "/pins/" + 3 + "/pinWriter").then((res) => res.json()),
-  });
-  const { data: imageData, isLoading: isImageLoading } = useQuery<Blob>({
-    queryKey: ["upImage"],
-    queryFn: () =>
-      fetch(SERVER_URL + "/upImages/" + 1 + "/content").then((res) =>
-        res.blob(),
+      fetch(SERVER_URL + "/pins/" + pinSeq + "/pinWriter").then((res) =>
+        res.json(),
       ),
   });
+
+  const { data: image } = useQuery<Image>({
+    queryKey: ["images", pinSeq],
+    queryFn: () =>
+      fetch(SERVER_URL + "/pins/" + pinSeq + "/PinImg").then((res) =>
+        res.json(),
+      ),
+  });
+
+  const { data: imageData, isLoading: isImageLoading } = useQuery<Blob>({
+    queryKey: ["upImage", image?.imgSeq],
+    queryFn: () =>
+      fetch(SERVER_URL + "/upImages/" + image?.imgSeq + "/content").then(
+        (res) => res.blob(),
+      ),
+  });
+
+  const { data: commentData, isLoading: isCommentLoading } = useQuery<Comment>({
+    queryKey: ["commentInPins", pinSeq],
+    queryFn: () =>
+      fetch(SERVER_URL + "/pins/" + pinSeq + "/comment").then((res) =>
+        res.json(),
+      ),
+  });
+
+  // const { data: commentIdData } = useQuery<CommentMember>({
+  //   queryKey: ["commentId"],
+  //   queryFn: () => fetch(writerUrl).then((res) => res.json()),
+  // });
+
+  const commentArray = commentData?._embedded?.commentInPins?.map(
+    (comment) => comment as CommentWithContent,
+  );
+
+  if (!commentArray) {
+    // _embedded 또는 commentInPins가 없을 경우에 대한 처리
+    return null; // 또는 에러 메시지를 표시하거나 다른 처리를 수행
+  }
+
+  // const rdateArray: string[] = commentData._embedded.commentInPins.map(
+  //   (comment) => comment.rdate,
+  // );
+  // const writerLinks: string[] = commentData._embedded.commentInPins.map(
+  //   (comment) => comment._links.writer.href,
+  // );
+
+  // if (commentArray && commentArray.length > 0) {
+  //   //messageExamples[0].secondary = commentArray[0].content;
+  //   //messageExamples[0].date = commentArray[0].rdate;
+  //   const comContents = commentArray.map((comment) => comment.content);
+  //   const comRdate = commentArray.map((comment)=> comment.rdate);
+
+  // }
+
+  // if (commentArray && commentArray.length > 0) {
+  //   // for (let i = 0; i < commentArray.length; i++) {
+  //   messageExamples[0].secondary = commentArray[0].content;
+  //   // }
+  // }
+
+  if (commentArray && commentArray.length > 0) {
+    const comContents = commentArray.map((comment) => comment.content);
+    const comRdates = commentArray.map((comment) => comment.rdate);
+    const comIds = commentArray.map((comment) => comment._links.writer.href);
+
+    // Promise를 사용하여 데이터를 가져옴
+    // const fetchData = async (url: string) => {
+    //   const response = await fetch(url);
+    //   const data = (await response.json()) as Promise<CommentMember>;
+    //   return data;
+    // };
+
+    //const updateMessageExamples = async () => {
+    for (let i = 0; i < commentArray.length; i++) {
+      const comment = comContents[i];
+      const rdate = comRdates[i];
+      const writerUrl = comIds[i];
+
+      const response = fetch(writerUrl, {
+        method: "Get",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("response: ", response);
+      //  const commentIdData = await fetchData(writerUrl);
+      // console.log("commentIdData.id", commentIdData.id);
+      // console.log("comment", comment);
+      // commentIdData를 받아와서 messageExamples에 추가
+      messageExamples.push({
+        primary: "dsd",
+        secondary: comment,
+        person: "/static/images/avatar/5.jpg", // 프로필 사진 경로
+        date: rdate,
+      });
+    }
+    // };
+
+    // 함수를 호출하여 messageExamples를 업데이트
+    // updateMessageExamples();
+  }
+  // console.log("commentArray", commentArray);
+  // console.log("contentArray: ", commentArray[0].content);
+  // console.log("rdateArray: ", commentArray[0].rdate);
+  // console.log("writerLinks: ", commentArray[0]._links.writer.href);
+
   if (isImageLoading) {
     return <div>actually ImageLoading..</div>;
   }
@@ -236,6 +366,14 @@ function PinBuilder() {
   if (isMemberLoading) {
     return <div>actually MemberLoading..</div>;
   }
+
+  if (isCommentLoading) {
+    return <div>actually CommentLoading..</div>;
+  }
+
+  // if (isCommentIdLoading) {
+  //   return <div>actually CommentIdLoading..</div>;
+  // }
 
   return (
     <>
@@ -473,7 +611,7 @@ function PinBuilder() {
                         }}
                       >
                         {messages.map(
-                          ({ primary, secondary, person }, index) => (
+                          ({ primary, secondary, person, date }, index) => (
                             <ListItem
                               key={index + person}
                               style={{
@@ -514,7 +652,9 @@ function PinBuilder() {
                                   </span>
                                 </Typography>
                                 <Typography>
-                                  <span style={{ fontSize: "11px" }}>날짜</span>
+                                  <span style={{ fontSize: "11px" }}>
+                                    {date}
+                                  </span>
                                 </Typography>
                               </ListItemText>
                             </ListItem>
@@ -597,28 +737,16 @@ interface MessageExample {
   primary: string;
   secondary: string;
   person: string;
+  date: string;
 }
 
-const messageExamples: readonly MessageExample[] = [
-  {
-    primary: "a",
-    secondary:
-      "Ha! Was literally just watching this movie and searching ‘high fashion’",
-    person: "/static/images/avatar/5.jpg",
-  },
-  {
-    primary: "karmiicharmii",
-    secondary: "This outfit of andy honestly deserved more screentime",
-    person: "/static/images/avatar/1.jpg",
-  },
-  {
-    primary: "Hatis floarea",
-    secondary: "Îmi place foarte mult!",
-    person: "/static/images/avatar/2.jpg",
-  },
-  {
-    primary: "Janelle",
-    secondary: "live, love, stanley tucci",
-    person: "/static/images/avatar/2.jpg",
-  },
-];
+// const messageExamples: readonly MessageExample[] = [
+//   {
+//     primary: "dsdddsd",
+//     secondary: "dsdsd",
+//     person: "/static/images/avatar/5.jpg",
+//     date: "날dsd짜",
+//   },
+// ];
+
+let messageExamples: MessageExample[] = [];
