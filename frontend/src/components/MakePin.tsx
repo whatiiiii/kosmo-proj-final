@@ -121,7 +121,7 @@ function MakePin() {
     await uploadImage(imgSeq);
     const { pinSeq } = await createPin(imgUrl);
     await createTag(pinSeq);
-    alert("핀이 생성되었습니다.");
+    alert("핀이 생성되었습니다..");
     navigate("/feed");
   }
 
