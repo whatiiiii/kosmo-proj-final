@@ -13,8 +13,7 @@ public class CorsConfig {
         return new RepositoryRestConfigurer() {
             @Override
             public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
-
-                cors.addMapping("/**").allowedOrigins("*");
+                cors.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedOrigins("*");
             }
         };
     }
