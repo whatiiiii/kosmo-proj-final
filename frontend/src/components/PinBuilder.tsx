@@ -1,44 +1,29 @@
 import PinNavBar from "./PinNavBar";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import img2 from "/imggg/img2.png";
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
-import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-
 import IconButton from "@mui/material/IconButton";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 import LinkIcon from "@mui/icons-material/Link";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import { ListItemButton, stepContentClasses } from "@mui/material";
 import TextField from "@mui/material/TextField";
-
-import ButtonGroup from "@mui/material/ButtonGroup";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Grow from "@mui/material/Grow";
-import Popper from "@mui/material/Popper";
-import MenuList from "@mui/material/MenuList";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import Grid from "@mui/material/Grid";
 import { useQuery } from "@tanstack/react-query";
 import { SERVER_URL } from "../api/globals";
-import Pin from "./Pin";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+import SendRoundedIcon from "@mui/icons-material/SendRounded";
+import { useUser } from "../api/user";
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
   width: 900,
@@ -49,8 +34,6 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
   boxSizing: "border-box", // 새로운 스타일 추가
   //padding: 25,
 }));
-
-const options = ["보드선택", "보드<1>", "보드<2>", "확인용보드"];
 
 interface State extends SnackbarOrigin {
   open1: boolean;
@@ -72,128 +55,19 @@ function refreshMessages(): MessageExample[] {
 }
 
 function PinBuilder() {
-  const [age, setAge] = React.useState();
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
-  };
-
-  const StyledRoot = styled("div")({
-    display: "flex",
-    padding: 150,
-    backgroundColor: "#e0e0e0",
-    borderRadius: 20,
-    alignItems: "center",
-    position: "relative",
-    flexDirection: "column",
-  });
-
-  const MuiPaperRoot = styled("div")({});
-
-  const Box1 = styled("div")({
-    float: "left",
-    width: 450,
-    height: 750,
-    borderRadius: 20,
-  });
-
-  const Box2 = styled("div")({
-    display: "block",
-    width: 450,
-    height: 750,
-    backgroundColor: "#666666",
-    ml: 10,
-    borderRadius: 20,
-    position: "relative",
-  });
-
-  const Box2Top = styled("div")({
-    width: 450,
-    height: 90,
-    backgroundColor: "yellow",
-    borderRadius: 20,
-  });
-
-  const Box2Middle = styled("div")({
-    width: 450,
-    height: 550,
-    backgroundColor: "#666666",
-    overflow: "auto",
-  });
-
-  const Box2Bottom = styled("div")({});
-
-  const ImageRoot = styled("img")({
-    border: 0,
-    height: "auto",
-    //  maxWidth: "100%",
-    width: 450,
-    verticalAlign: "middle",
-    //borderRadius: 20,
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,
-  });
-
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef<HTMLDivElement>(null);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLDivElement>(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-
-  const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
-  };
-
-  const handleMenuItemClick = (
-    event: React.MouseEvent<HTMLLIElement, MouseEvent>,
-    index: number,
-  ) => {
-    setSelectedIndex(index);
-    setOpen(false);
-  };
-
-  const handleToggle = () => {
-    // setAnchorEl(anchorRef.current);
-    // setAnchorEl(event.target as HTMLDivElement);
-    // console.log(anchorEl);
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event: Event) => {
-    if (
-      anchorRef.current &&
-      anchorRef.current.contains(event.target as HTMLElement)
-    ) {
-      return;
-    }
-
-    setOpen(false);
-  };
-
   const [state, setState] = React.useState<State>({
     open1: false,
     vertical: "top",
     horizontal: "center",
   });
-  const { vertical, horizontal, open1 } = state;
+  const { vertical, horizontal } = state;
 
   const handleClick1 = (newState: SnackbarOrigin) => () => {
     setState({ ...newState, open1: true });
   };
 
-  const handleClose1 = () => {
-    setState({ ...state, open1: false });
-  };
-
-  const [value, setValue] = React.useState(0);
   const ref = React.useRef<HTMLDivElement>(null);
-  const [messages, setMessages] = React.useState(() => refreshMessages());
-
-  React.useEffect(() => {
-    if (ref.current) {
-      ref.current.ownerDocument.body.scrollTop = 0;
-      setMessages(refreshMessages());
-    }
-  }, [value, setMessages]);
+  const url = window.location.href;
 
   interface Data {
     pinSeq: number;
@@ -210,6 +84,9 @@ function PinBuilder() {
 
   interface Member {
     id: string;
+    upimage: {
+      imgSeq: number;
+    };
   }
 
   interface Image {
@@ -221,8 +98,15 @@ function PinBuilder() {
   }
 
   interface Comment {
-    _embedded: {
-      commentInPins: Comment[];
+    comment: {
+      content: string;
+      writer: {
+        id: string;
+        upimage: {
+          imgSeq: number;
+        };
+      };
+      rdate: string;
     };
   }
   interface CommentWithContent extends Comment {
@@ -234,7 +118,40 @@ function PinBuilder() {
       };
     };
   }
+
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("클립보드에 링크가 복사되었습니다.");
+    } catch (e) {
+      alert("복사에 실패하였습니다");
+    }
+  };
+
   const { seq: pinSeq } = useParams(); //pinsSeq 변수에 핀번호 할당
+  const [content, setContent] = useState("");
+  const [user] = useUser();
+  const userId = user?.id;
+
+  const contentInBuilder = async () => {
+    const data = await fetch(`http://localhost:8080/commentInPins`, {
+      method: "POST",
+      body: JSON.stringify({
+        content: content,
+        pin: `${SERVER_URL}/pins/${pinSeq}`,
+        writer: `${SERVER_URL}/members/${userId}`,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      if (response.ok) {
+        alert("댓글이 등록되었습니다");
+        location.reload();
+      }
+    });
+    return data.json() as Promise<Comment>;
+  };
 
   const { data: pinData, isLoading: isPinLoading } = useQuery<Data>({
     queryKey: ["pins", pinSeq],
@@ -265,21 +182,15 @@ function PinBuilder() {
         (res) => res.blob(),
       ),
   });
-
   const { data: commentData, isLoading: isCommentLoading } = useQuery<Comment>({
     queryKey: ["commentInPins", pinSeq],
     queryFn: () =>
-      fetch(SERVER_URL + "/pins/" + pinSeq + "/comment").then((res) =>
-        res.json(),
+      fetch(SERVER_URL + "/pins/" + pinSeq + "?projection=pinProjection").then(
+        (res) => res.json(),
       ),
   });
 
-  // const { data: commentIdData } = useQuery<CommentMember>({
-  //   queryKey: ["commentId"],
-  //   queryFn: () => fetch(writerUrl).then((res) => res.json()),
-  // });
-
-  const commentArray = commentData?._embedded?.commentInPins?.map(
+  const commentArray = commentData?.comment?.map(
     (comment) => comment as CommentWithContent,
   );
 
@@ -288,72 +199,40 @@ function PinBuilder() {
     return null; // 또는 에러 메시지를 표시하거나 다른 처리를 수행
   }
 
-  // const rdateArray: string[] = commentData._embedded.commentInPins.map(
-  //   (comment) => comment.rdate,
-  // );
-  // const writerLinks: string[] = commentData._embedded.commentInPins.map(
-  //   (comment) => comment._links.writer.href,
-  // );
-
-  // if (commentArray && commentArray.length > 0) {
-  //   //messageExamples[0].secondary = commentArray[0].content;
-  //   //messageExamples[0].date = commentArray[0].rdate;
-  //   const comContents = commentArray.map((comment) => comment.content);
-  //   const comRdate = commentArray.map((comment)=> comment.rdate);
-
-  // }
-
-  // if (commentArray && commentArray.length > 0) {
-  //   // for (let i = 0; i < commentArray.length; i++) {
-  //   messageExamples[0].secondary = commentArray[0].content;
-  //   // }
-  // }
-
+  interface MessageExample {
+    primary: string;
+    secondary: string;
+    person: string;
+    date: string;
+  }
+  const updatedMessageExamples = messageExamples.slice();
   if (commentArray && commentArray.length > 0) {
     const comContents = commentArray.map((comment) => comment.content);
     const comRdates = commentArray.map((comment) => comment.rdate);
-    const comIds = commentArray.map((comment) => comment._links.writer.href);
+    const comIds = commentArray.map((comment) => comment.writer.id);
+    const comImgSeqs = commentArray.map(
+      (comment) => comment.writer.upimage.imgSeq,
+    );
 
-    // Promise를 사용하여 데이터를 가져옴
-    // const fetchData = async (url: string) => {
-    //   const response = await fetch(url);
-    //   const data = (await response.json()) as Promise<CommentMember>;
-    //   return data;
-    // };
-
-    //const updateMessageExamples = async () => {
-    for (let i = 0; i < commentArray.length; i++) {
-      const comment = comContents[i];
-      const rdate = comRdates[i];
-      const writerUrl = comIds[i];
-
-      const response = fetch(writerUrl, {
-        method: "Get",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log("response: ", response);
-      //  const commentIdData = await fetchData(writerUrl);
-      // console.log("commentIdData.id", commentIdData.id);
-      // console.log("comment", comment);
-      // commentIdData를 받아와서 messageExamples에 추가
-      messageExamples.push({
-        primary: "  dsd",
-        secondary: comment,
-        person: "/static/images/avatar/5.jpg", // 프로필 사진 경로
-        date: rdate,
-      });
+    for (let i = 0; i < comContents.length; i++) {
+      if (i < updatedMessageExamples.length) {
+        updatedMessageExamples[i] = {
+          primary: comIds[i],
+          secondary: comContents[i],
+          person: comImgSeqs[i], // 프로필 사진 경로
+          date: comRdates[i],
+        };
+      } else {
+        // commentArray의 길이가 messageExamples보다 크다면 새로운 항목을 추가
+        updatedMessageExamples.push({
+          primary: comIds[i],
+          secondary: comContents[i],
+          person: comImgSeqs[i],
+          date: comRdates[i],
+        });
+      }
     }
-    // };
-
-    // 함수를 호출하여 messageExamples를 업데이트
-    // updateMessageExamples();
   }
-  // console.log("commentArray", commentArray);
-  // console.log("contentArray: ", commentArray[0].content);
-  // console.log("rdateArray: ", commentArray[0].rdate);
-  // console.log("writerLinks: ", commentArray[0]._links.writer.href);
 
   if (isImageLoading) {
     return <div>actually ImageLoading..</div>;
@@ -371,26 +250,26 @@ function PinBuilder() {
     return <div>actually CommentLoading..</div>;
   }
 
-  // if (isCommentIdLoading) {
-  //   return <div>actually CommentIdLoading..</div>;
-  // }
-
   return (
     <>
       <StyledRoot sx={{ borderRadius: 5 }}>
         <PinNavBar />
         <MuiPaperRoot>
-          <DemoPaper square={false} elevation={3} sx={{ borderRadius: 5 }}>
+          <DemoPaper elevation={3} sx={{ borderRadius: 5 }}>
             <Box1>
-              {/* <Grid
-              container
-              sx={{ float: "left", width: 450, height: 750, borderRadius: 20 }}
-            > */}
-              {imageData && <ImageRoot src={URL.createObjectURL(imageData)} />}
-              {/* </Grid> */}
+              {imageData && (
+                <ImageRoot
+                  sx={{
+                    float: "left",
+                    maxWidth: 450,
+                    maxHeight: 750,
+                    BorderRadiusTopleft: 5,
+                    BorderRadiusBottomleft: 5,
+                  }}
+                  src={URL.createObjectURL(imageData)}
+                />
+              )}
             </Box1>
-            {/* <Box2> */}
-            {/* <Box2Top> */}
             <Grid
               container
               direction="column"
@@ -398,9 +277,6 @@ function PinBuilder() {
                 display: "flex",
                 width: 450,
                 height: 750,
-                // backgroundColor: "#666666",
-                //  ml: 10,
-                //borderRadius: 5,
                 borderTopRightRadius: 20,
                 borderBottomRightRadius: 20,
                 position: "relative",
@@ -414,8 +290,6 @@ function PinBuilder() {
                   width: 450,
                   height: 90,
                   display: "contents",
-                  // backgroundColor: "yellow",
-                  // borderRadius: 20,
                 }}
               >
                 <List
@@ -424,8 +298,6 @@ function PinBuilder() {
                     ml: 2,
                     mb: 2,
                     bgcolor: "background.paper",
-                    // overflowY: "scroll",
-                    //flexGrow: 2,
                   }}
                 >
                   <ListItem sx={{ p: 0 }}>
@@ -444,102 +316,37 @@ function PinBuilder() {
                       color="inherit"
                       aria-label="open drawer"
                       sx={{ mr: 1, mt: 2 }}
-                      onClick={handleClick1({
-                        vertical: "bottom",
-                        horizontal: "center",
-                      })}
+                      onClick={() => {
+                        handleCopyClipBoard(url).catch((e) => {
+                          console.error(e);
+                        });
+                      }}
                     >
                       <LinkIcon fontSize="medium" />
                       <Snackbar
+                        className="URL"
                         anchorOrigin={{ vertical, horizontal }}
-                        open={open1}
-                        onClose={handleClose1}
                         autoHideDuration={3000}
-                        message="클립보드에 공유할 링크를 복사했습니다" //링크 복사하는 함수 넣어줘야함. 알림만 띄우게 만들었음
+                        message={"클립보드에 복사 되었습니다"}
                         key={vertical + horizontal}
                       />
                     </IconButton>
-                    <React.Fragment>
-                      <ButtonGroup
-                        ref={anchorRef}
-                        aria-label="split button"
-                        sx={{ ml: 7, mr: 1, mt: 2 }}
-                      >
-                        <Button onClick={handleClick}>
-                          {options[selectedIndex]}
-                        </Button>
-                        <Button
-                          size="small"
-                          aria-controls={open ? "split-button-menu" : undefined}
-                          aria-expanded={open ? "true" : undefined}
-                          aria-label="select merge strategy"
-                          aria-haspopup="menu"
-                          onClick={handleToggle}
-                        >
-                          <ArrowDropDownIcon />
-                        </Button>
-                      </ButtonGroup>
-                      <Popper
-                        sx={{
-                          zIndex: 1,
-                        }}
-                        open={open}
-                        anchorEl={() => anchorRef.current!}
-                        role={undefined}
-                        transition
-                        disablePortal
-                      >
-                        {({ TransitionProps, placement }) => (
-                          <Grow
-                            {...TransitionProps}
-                            style={{
-                              transformOrigin:
-                                placement === "bottom"
-                                  ? "center top"
-                                  : "center bottom",
-                            }}
-                          >
-                            <Paper>
-                              <ClickAwayListener onClickAway={handleClose}>
-                                <MenuList id="split-button-menu" autoFocusItem>
-                                  {options.map((option, index) => (
-                                    <MenuItem
-                                      key={option}
-                                      disabled={index === 0}
-                                      selected={index === selectedIndex}
-                                      onClick={(event) =>
-                                        handleMenuItemClick(event, index)
-                                      }
-                                    >
-                                      {option}
-                                    </MenuItem>
-                                  ))}
-                                </MenuList>
-                              </ClickAwayListener>
-                            </Paper>
-                          </Grow>
-                        )}
-                      </Popper>
-                    </React.Fragment>
                     <Button
                       variant="contained"
                       color="error"
-                      sx={{ ml: 1, mr: 1, mt: 2 }}
+                      sx={{ ml: 28, mr: 1, mt: 2 }}
                     >
                       저장
                     </Button>
                   </ListItem>
                 </List>
-                {/* </Box2Top> */}
               </Grid>
-              {/* <Box2Middle> */}
               <Grid
                 item
                 xs
                 sx={{
                   width: 450,
                   height: 550,
-                  //  backgroundColor: "#666666",
                   overflow: "auto",
                   display: "flex",
                   flexDirection: "column",
@@ -553,42 +360,34 @@ function PinBuilder() {
                         gutterBottom
                         style={{ fontWeight: "bold" }}
                       >
-                        {pinData.pinTitle}
+                        {pinData?.pinTitle}
                       </Typography>
                     )}
                     {pinData && (
                       <Typography variant="body1" gutterBottom>
-                        {pinData.pinDesc}
+                        {pinData?.pinDesc}
                       </Typography>
                     )}
-                    <List
-                      sx={
-                        {
-                          //width: "100%",
-                          //  maxWidth: 360,
-                          //bgcolor: "background.paper",
-                        }
-                      }
-                    >
+                    <List>
                       <ListItem sx={{ p: 0 }}>
                         <ListItemAvatar>
                           <IconButton sx={{ p: 0 }}>
                             <Avatar
-                              alt="Remy Sharp"
-                              src="/static/images/avatar/2.jpg"
+                              alt={memberData?.id}
+                              src={`http://localhost:8080/upImages/${memberData?.upimage.imgSeq}/content`}
                             />
                           </IconButton>
                         </ListItemAvatar>
                         {memberData && (
                           <ListItemText
-                            primary={memberData.id}
+                            primary={memberData?.id}
                             secondary="팔로워 3,913명"
                           />
                         )}
                         <Button
                           variant="contained"
                           color="success"
-                          sx={{ ml: 3 }}
+                          sx={{ ml: 40, position: "absolute" }}
                         >
                           팔로우
                         </Button>
@@ -610,7 +409,19 @@ function PinBuilder() {
                           bgcolor: "background.paper",
                         }}
                       >
-                        {messages.map(
+                        {commentArray == false && (
+                          <Typography
+                            variant="h6"
+                            fontWeight="bold"
+                            gutterBottom
+                            mt={2}
+                            color="#afafaf"
+                          >
+                            댓글이 없어요 =͟͟͞͞( ∩ ‘ヮ’=͟͟͞͞) ੭ु⁾⁾
+                          </Typography>
+                        )}
+
+                        {updatedMessageExamples?.map(
                           ({ primary, secondary, person, date }, index) => (
                             <ListItem
                               key={index + person}
@@ -623,21 +434,17 @@ function PinBuilder() {
                             >
                               <ListItemAvatar>
                                 <IconButton
-                                  // size="small"
                                   style={{ position: "absolute", top: 0 }}
                                 >
                                   <Avatar
                                     alt="Profile Picture"
-                                    src={person}
+                                    src={`http://localhost:8080/upImages/${person}/content`}
                                     style={{ width: 30, height: 30 }}
                                   />
                                 </IconButton>
                               </ListItemAvatar>
                               <ListItemText>
-                                <Typography
-                                // variant="h6"
-                                // style={{ fontSize: "15px" }}
-                                >
+                                <Typography>
                                   <span
                                     style={{
                                       fontSize: "15px",
@@ -647,7 +454,6 @@ function PinBuilder() {
                                     {primary}
                                   </span>
                                   <span style={{ fontSize: "15px" }}>
-                                    {" "}
                                     {secondary}
                                   </span>
                                 </Typography>
@@ -665,11 +471,8 @@ function PinBuilder() {
                   </Box>
                 </Container>
               </Grid>
-              {/* </Box2Middle> */}
-              {/* <Box2Bottom> */}
               <Grid
                 item
-                //  xs="auto"
                 sx={{
                   position: "sticky",
                   borderTop: 0.2,
@@ -686,7 +489,7 @@ function PinBuilder() {
                 }}
               >
                 <Typography variant="h6" fontWeight="bold" ml={2}>
-                  댓글 4개
+                  댓글 <span>{updatedMessageExamples.length}</span>개
                 </Typography>
                 <List
                   sx={{
@@ -694,17 +497,12 @@ function PinBuilder() {
                     ml: 2,
                     bgcolor: "background.paper",
                     overflow: "hidden",
-                    // overflowY: "scroll",
-                    //flexGrow: 2,
                   }}
                 >
                   <ListItem sx={{ p: 0 }}>
                     <ListItemAvatar>
                       <IconButton>
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/2.jpg"
-                        />
+                        <Avatar alt="Remy Sharp" />
                       </IconButton>
                     </ListItemAvatar>
                     <TextField
@@ -715,14 +513,27 @@ function PinBuilder() {
                       sx={{
                         height: "100%",
                         width: "320px",
-                        //   maxHeight: "calc((100vh - 80px) - 16px)", // 수정: 계산식 수정
                       }}
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
                     />
+                    <Button
+                      color="error"
+                      sx={{
+                        marginLeft: 2,
+                        backgroundColor: "red",
+                      }}
+                      onClick={() => {
+                        contentInBuilder().catch((e) => {
+                          console.error(e);
+                        });
+                      }}
+                    >
+                      <SendRoundedIcon sx={{ color: "white" }} />
+                    </Button>
                   </ListItem>
                 </List>
               </Grid>
-              {/* </Box2Bottom> */}
-              {/* </Box2> */}
             </Grid>
           </DemoPaper>
         </MuiPaperRoot>
@@ -740,13 +551,34 @@ interface MessageExample {
   date: string;
 }
 
-// const messageExamples: readonly MessageExample[] = [
-//   {
-//     primary: "dsdddsd",
-//     secondary: "dsdsd",
-//     person: "/static/images/avatar/5.jpg",
-//     date: "날dsd짜",
-//   },
-// ];
+const StyledRoot = styled("div")({
+  display: "flex",
+  padding: 150,
+  backgroundColor: "#e0e0e0",
+  borderRadius: 20,
+  alignItems: "center",
+  position: "relative",
+  flexDirection: "column",
+});
 
-let messageExamples: MessageExample[] = [];
+const MuiPaperRoot = styled("div")({});
+
+const Box1 = styled("div")({
+  float: "left",
+  width: 450,
+  height: 750,
+  borderRadius: 20,
+});
+
+const ImageRoot = styled("img")({
+  border: 0,
+  height: "auto",
+  //  maxWidth: "100%",
+  width: 450,
+  verticalAlign: "middle",
+  //borderRadius: 20,
+  borderTopLeftRadius: 20,
+  borderBottomLeftRadius: 20,
+});
+
+const messageExamples: MessageExample[] = [];
