@@ -14,9 +14,10 @@ import {
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useServerUser } from "../api/user";
 import { SERVER_URL } from "../api/globals";
+import dayjs from "dayjs";
 
 export default function AccountSetting() {
   const [, setCountry] = React.useState("");
@@ -24,12 +25,23 @@ export default function AccountSetting() {
   const data = result.data;
   // const pwd = data ? data.pwd : ""; //값을 수정 안되게할때
   const email = data?.id + "@pinterest.clone";
-  const [pwd, setPwd] = useState<string>(data?.pwd ?? ""); //값을 수정할 수 있게 할때
+  const [pwd, setPwd] = useState<string>(""); //값을 수정할 수 있게 할때
   const [birth, setBirth] = React.useState<string | null>(null);
+  const [sex, setSex] = React.useState<string | null>(null);
+  const [loc, setLoc] = React.useState<string | null>(null);
 
   const handleChange = (event: SelectChangeEvent) => {
     setCountry(event.target.value);
   };
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    setBirth(data.birth ?? null);
+    setSex(data.sex ?? null);
+    setLoc(data.loc ?? null);
+  }, [data]);
 
   //비밀번호 변경
   const changePwd = () => {
@@ -118,8 +130,10 @@ export default function AccountSetting() {
       </Typography>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
         <DatePicker
-          onChange={(newBirth) => setBirth(newBirth)}
-          value={birth}
+          onChange={(newBirth) =>
+            setBirth(newBirth?.format("YYYY-MM-DD") ?? null)
+          }
+          value={dayjs(birth)}
           disableFuture
         />
         <div style={{ margin: "1em 0" }}></div>
@@ -134,12 +148,23 @@ export default function AccountSetting() {
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
         >
-          <FormControlLabel value="female" control={<Radio />} label="남성" />
-          <FormControlLabel value="male" control={<Radio />} label="여성" />
           <FormControlLabel
-            value="other"
+            value="Male"
+            control={<Radio />}
+            label="남성"
+            checked={sex === "Male"}
+          />
+          <FormControlLabel
+            value="Female"
+            control={<Radio />}
+            label="여성"
+            checked={sex === "Female"}
+          />
+          <FormControlLabel
+            value="Other"
             control={<Radio />}
             label="둘다아님"
+            checked={sex === "Other"}
           />
         </RadioGroup>
       </FormControl>
@@ -149,33 +174,33 @@ export default function AccountSetting() {
         국가/지역
       </Typography>
       <FormControl fullWidth>
-        <Select onChange={handleChange}>
-          <MenuItem value={1}>네덜란드</MenuItem>
-          <MenuItem value={2}>뉴질랜드</MenuItem>
-          <MenuItem value={3}>대만</MenuItem>
-          <MenuItem value={4}>대한민국(대한민국)</MenuItem>
-          <MenuItem value={5}>독일</MenuItem>
-          <MenuItem value={6}>러시아</MenuItem>
-          <MenuItem value={7}>몽골</MenuItem>
-          <MenuItem value={8}>미국</MenuItem>
-          <MenuItem value={9}>베트남</MenuItem>
-          <MenuItem value={10}>사우디아라비아</MenuItem>
-          <MenuItem value={11}>스웨덴</MenuItem>
-          <MenuItem value={12}>스위스</MenuItem>
-          <MenuItem value={13}>스페인</MenuItem>
-          <MenuItem value={14}>싱가폴</MenuItem>
-          <MenuItem value={15}>영국</MenuItem>
-          <MenuItem value={16}>오스트레일리아</MenuItem>
-          <MenuItem value={17}>우크라이나</MenuItem>
-          <MenuItem value={18}>일본</MenuItem>
-          <MenuItem value={19}>중국</MenuItem>
-          <MenuItem value={20}>태국</MenuItem>
-          <MenuItem value={21}>캐나다</MenuItem>
-          <MenuItem value={22}>포르투갈</MenuItem>
-          <MenuItem value={23}>프랑스</MenuItem>
-          <MenuItem value={24}>핀란드</MenuItem>
-          <MenuItem value={25}>필리핀</MenuItem>
-          <MenuItem value={26}>헝가리</MenuItem>
+        <Select onChange={handleChange} value={loc ?? ""}>
+          <MenuItem value="nl">네덜란드</MenuItem>
+          <MenuItem value="nz">뉴질랜드</MenuItem>
+          <MenuItem value="tw">대만</MenuItem>
+          <MenuItem value="kr">대한민국</MenuItem>
+          <MenuItem value="de">독일</MenuItem>
+          <MenuItem value="ru">러시아</MenuItem>
+          <MenuItem value="mn">몽골</MenuItem>
+          <MenuItem value="us">미국</MenuItem>
+          <MenuItem value="vn">베트남</MenuItem>
+          <MenuItem value="sa">사우디아라비아</MenuItem>
+          <MenuItem value="se">스웨덴</MenuItem>
+          <MenuItem value="ch">스위스</MenuItem>
+          <MenuItem value="es">스페인</MenuItem>
+          <MenuItem value="sg">싱가폴</MenuItem>
+          <MenuItem value="gb">영국</MenuItem>
+          <MenuItem value="au">오스트레일리아</MenuItem>
+          <MenuItem value="ua">우크라이나</MenuItem>
+          <MenuItem value="jp">일본</MenuItem>
+          <MenuItem value="cn">중국</MenuItem>
+          <MenuItem value="th">태국</MenuItem>
+          <MenuItem value="ca">캐나다</MenuItem>
+          <MenuItem value="pt">포르투갈</MenuItem>
+          <MenuItem value="fr">프랑스</MenuItem>
+          <MenuItem value="fi">핀란드</MenuItem>
+          <MenuItem value="ph">필리핀</MenuItem>
+          <MenuItem value="hu">헝가리</MenuItem>
         </Select>
       </FormControl>
       <div style={{ margin: "1em 0" }}></div>
