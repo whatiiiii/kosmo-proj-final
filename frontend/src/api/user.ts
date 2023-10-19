@@ -9,7 +9,12 @@ export type User = {
   birth?: string;
   loc?: string;
   sex?: "Male" | "Female" | "Other";
-  pwd?: string;
+  upimage?: {
+    imgSeq: number;
+    contentId: string;
+    contentLength: number;
+    contentMimeType: string;
+  } | null;
 } | null;
 
 export const UserContext = createContext<User>(null);
@@ -42,7 +47,7 @@ export function useServerUser(id?: string) {
   const result = useQuery({
     queryKey: ["user", id],
     queryFn: () =>
-      fetch(`${SERVER_URL}/members/${id}`).then(
+      fetch(`${SERVER_URL}/members/${id}?projection=memberProjection`).then(
         (res) => res.json() as Promise<User>,
       ),
   });

@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import { useServerUser } from "../api/user";
 import { SERVER_URL } from "../api/globals";
-import { getImageFromMember, uploadImage } from "../api/image";
+import { getImage, uploadImage } from "../api/image";
 
 export default function EditProfilePage() {
   //이미지 초기값 state
@@ -49,17 +49,17 @@ export default function EditProfilePage() {
   };
 
   useEffect(() => {
-    if (data?.id == null) {
+    if (data?.id == null || data.upimage == null) {
       return;
     }
-    getImageFromMember(data.id)
+    getImage(data.upimage.imgSeq)
       .then((img) => {
         setimgFile(URL.createObjectURL(img));
       })
       .catch((err) => {
         console.error(err);
       });
-  }, [data?.id]);
+  }, [data?.id, data?.upimage]);
 
   useEffect(() => {
     if (result.isFetched) {
