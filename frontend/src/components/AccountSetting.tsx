@@ -20,7 +20,6 @@ import { SERVER_URL } from "../api/globals";
 import dayjs from "dayjs";
 
 export default function AccountSetting() {
-  const [, setCountry] = React.useState("");
   const result = useServerUser();
   const data = result.data;
   // const pwd = data ? data.pwd : ""; //값을 수정 안되게할때
@@ -31,7 +30,7 @@ export default function AccountSetting() {
   const [loc, setLoc] = React.useState<string | null>(null);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setCountry(event.target.value);
+    setLoc(event.target.value);
   };
 
   useEffect(() => {
@@ -147,6 +146,9 @@ export default function AccountSetting() {
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
+          onChange={(_, value) => {
+            setSex(value);
+          }}
         >
           <FormControlLabel
             value="Male"
