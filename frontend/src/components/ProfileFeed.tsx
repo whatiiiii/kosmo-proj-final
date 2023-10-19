@@ -12,7 +12,7 @@ export default function ProfileFeed() {
         사용하는 세부 정보를 편집해 보세요. 본 세부 정보는 공개적으로 표<br />
         시되지 않습니다.
       </p>
-      <button className="button1">
+      {/* <button className="button1">
         <strong>활동</strong>
       </button>
       <button className="button2">
@@ -20,9 +20,12 @@ export default function ProfileFeed() {
       </button>
       <button className="button3">
         <strong>보드</strong>
-      </button>
+      </button> */}
       <button className="button4">
         <strong>팔로잉</strong>
+      </button>
+      <button className="button5">
+        <strong>팔로워</strong>
       </button>
     </div>
   );
