@@ -124,12 +124,12 @@ export default function ProfileTab() {
             <Typography fontWeight="bold">프로필 가시성</Typography>
           </ListItemButton>
 
-          <ListItemButton
+          {/* <ListItemButton
             selected={selectedIndex === 5}
             onClick={(event) => handleListItemClick(event, 5)}
           >
             <Typography fontWeight="bold">홈피드 조정</Typography>
-          </ListItemButton>
+          </ListItemButton> */}
 
           <ListItemButton
             selected={selectedIndex === 6}
