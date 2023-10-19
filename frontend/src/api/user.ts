@@ -5,10 +5,10 @@ import { SERVER_URL } from "./globals";
 
 export type User = {
   id: string;
-  name?: string;
-  birth?: string;
-  loc?: string;
-  sex?: "Male" | "Female" | "Other";
+  name?: string | null;
+  birth?: string | null;
+  loc?: string | null;
+  sex?: "Male" | "Female" | "Other" | null;
   upimage?: {
     imgSeq: number;
     contentId: string;
