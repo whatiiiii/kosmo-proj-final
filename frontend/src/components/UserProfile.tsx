@@ -7,12 +7,15 @@ import Container from "@mui/material/Container";
 import { useServerUser, useUser } from "../api/user";
 import { useNavigate, useParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
+import { useEffect, useState } from "react";
+import { getImage } from "../api/image";
 
 export default function UserProfile() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const userQuery = useServerUser(id);
+  const { data } = useServerUser(id);
   const [self] = useUser();
+  const [imgFile, setImgFile] = useState<string>("");
   const isSelf = self?.id === id;
 
   function handleFollowButton() {
@@ -23,6 +26,22 @@ export default function UserProfile() {
       navigate("/signin");
     }
   }
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    if (data.upimage) {
+      getImage(data.upimage.imgSeq)
+        .then((img) => {
+          setImgFile(URL.createObjectURL(img));
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [data]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -36,12 +55,10 @@ export default function UserProfile() {
           alignItems="center"
         >
           <Grid item>
-            <Avatar sx={{ width: 120, height: 120 }} />
+            <Avatar src={imgFile} sx={{ width: 120, height: 120 }} />
           </Grid>
           <Grid item>
-            <Typography variant="h4">
-              {userQuery.data?.name ?? "이름"}
-            </Typography>
+            <Typography variant="h4">{data?.name ?? "이름"}</Typography>
           </Grid>
           <Grid item>
             <Typography variant="h6">@{id ?? "아이디"}</Typography>
@@ -56,7 +73,9 @@ export default function UserProfile() {
               </Button>
             </Grid>
             <Grid item display={isSelf ? "flex" : "none"}>
-              <Button variant="outlined">프로필 수정</Button>
+              <Button variant="outlined" href="/profiletab">
+                프로필 수정
+              </Button>
             </Grid>
           </Grid>
         </Grid>
