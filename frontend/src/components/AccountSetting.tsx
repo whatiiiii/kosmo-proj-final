@@ -19,28 +19,29 @@ import { useServerUser } from "../api/user";
 import { SERVER_URL } from "../api/globals";
 import dayjs from "dayjs";
 
-export default function AccountSetting() {
-  const result = useServerUser();
-  const data = result.data;
+interface AccountSettingProps {
+  vars: {
+    pwd: string;
+    setPwd: React.Dispatch<React.SetStateAction<string>>;
+    birth: string | null;
+    setBirth: React.Dispatch<React.SetStateAction<string | null>>;
+    sex: string | null;
+    setSex: React.Dispatch<React.SetStateAction<string | null>>;
+    loc: string | null;
+    setLoc: React.Dispatch<React.SetStateAction<string | null>>;
+    email: string;
+  };
+}
+
+export default function AccountSetting({
+  vars: { pwd, setPwd, birth, setBirth, sex, setSex, loc, setLoc, email },
+}: AccountSettingProps) {
   // const pwd = data ? data.pwd : ""; //값을 수정 안되게할때
-  const email = data?.id + "@pinterest.clone";
-  const [pwd, setPwd] = useState<string>(""); //값을 수정할 수 있게 할때
-  const [birth, setBirth] = React.useState<string | null>(null);
-  const [sex, setSex] = React.useState<string | null>(null);
-  const [loc, setLoc] = React.useState<string | null>(null);
+  const { data } = useServerUser();
 
   const handleChange = (event: SelectChangeEvent) => {
     setLoc(event.target.value);
   };
-
-  useEffect(() => {
-    if (!data) {
-      return;
-    }
-    setBirth(data.birth ?? null);
-    setSex(data.sex ?? null);
-    setLoc(data.loc ?? null);
-  }, [data]);
 
   //비밀번호 변경
   const changePwd = () => {

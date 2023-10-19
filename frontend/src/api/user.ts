@@ -53,3 +53,19 @@ export function useServerUser(id?: string) {
   });
   return result;
 }
+
+export async function updateUser(
+  id: string | undefined,
+  info: Omit<User, "id">,
+) {
+  if (!id) {
+    return Promise.reject("id must be provided");
+  }
+  return fetch(`${SERVER_URL}/members/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(info),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
