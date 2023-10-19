@@ -23,6 +23,7 @@ import Button from "@mui/material/Button";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useHref, useNavigate } from "react-router-dom";
 import Link from "@mui/material/Link";
+import { useUser } from "../api/user";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -69,6 +70,7 @@ export default function PinNavBar({
 }: {
   position?: AppBarOwnProps["position"];
 }) {
+  const [user] = useUser();
   const navigate = useNavigate();
   const goPin = () => {
     navigate("/feed");
@@ -79,8 +81,8 @@ export default function PinNavBar({
   const goMakePin = () => {
     navigate("/makepin");
   };
-  const goProfile = () => {
-    navigate("/Profile");
+  const goProfilePage = () => {
+    navigate("/user/" + user?.id);
   };
   const goProfileTab = () => {
     navigate("/ProfileTab");
@@ -257,7 +259,7 @@ export default function PinNavBar({
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
-                <MenuItem onClick={goProfileTab}>
+                <MenuItem onClick={goProfilePage}>
                   <Avatar />내 프로필
                 </MenuItem>
                 <MenuItem onClick={goProfileTab}>

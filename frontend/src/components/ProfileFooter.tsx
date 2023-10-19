@@ -20,7 +20,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function ProfileFooter() {
+export default function ProfileFooter({ onSave }: { onSave: () => void }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -83,6 +83,7 @@ export default function ProfileFooter() {
                 bgcolor: "background.paper",
                 fontWeight: "bold",
               }}
+              onClick={onSave}
             >
               저장
             </Button>

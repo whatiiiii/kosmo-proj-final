@@ -5,10 +5,10 @@ import { SERVER_URL } from "./globals";
 
 export type User = {
   id: string;
-  name?: string;
-  birth?: string;
-  loc?: string;
-  sex?: "Male" | "Female" | "Other";
+  name?: string | null;
+  birth?: string | null;
+  loc?: string | null;
+  sex?: "Male" | "Female" | "Other" | null;
   upimage?: {
     imgSeq: number;
     contentId: string;
@@ -52,4 +52,20 @@ export function useServerUser(id?: string) {
       ),
   });
   return result;
+}
+
+export async function updateUser(
+  id: string | undefined,
+  info: Omit<User, "id">,
+) {
+  if (!id) {
+    return Promise.reject("id must be provided");
+  }
+  return fetch(`${SERVER_URL}/members/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(info),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 }

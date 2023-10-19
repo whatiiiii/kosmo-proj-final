@@ -16,14 +16,62 @@ import ProfileNotificationSettings from "./ProfileNotificationSettings";
 import ProfileOwnership from "./ProfileOwnership";
 import ProfileData from "./ProfileData";
 import ProfileBContents from "./ProfileBContents";
+import { useEffect, useRef, useState } from "react";
+import { updateUser, useServerUser } from "../api/user";
+import { getImage } from "../api/image";
 
 export default function ProfileTab() {
+  const result = useServerUser();
+  const data = result.data;
+
   const [selectedIndex, setSelectedIndex] = React.useState(2);
+  const [imgFile, setImgFile] = useState<string>("");
+  const imgRef = useRef<HTMLInputElement>(null);
+  const [name, setName] = useState<string>("");
+  const [pwd, setPwd] = useState<string>(""); //값을 수정할 수 있게 할때
+  const [birth, setBirth] = React.useState<string | null>(null);
+  const [sex, setSex] = React.useState<string | null>(null);
+  const [loc, setLoc] = React.useState<string | null>(null);
+  const email = data?.id + "@pinterest.clone";
+
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number,
   ) => {
     setSelectedIndex(index);
+  };
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    setBirth(data.birth ?? null);
+    setSex(data.sex ?? null);
+    setLoc(data.loc ?? null);
+    setName(data.name ?? "");
+    if (data.upimage) {
+      getImage(data.upimage.imgSeq)
+        .then((img) => {
+          setImgFile(URL.createObjectURL(img));
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [data]);
+
+  const doSave = () => {
+    updateUser(data?.id, { name, birth, sex, loc })
+      .then((res) => {
+        if (res.ok) {
+          alert("저장되었습니다.");
+        } else {
+          alert("저장에 실패하였습니다.");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -76,12 +124,12 @@ export default function ProfileTab() {
             <Typography fontWeight="bold">프로필 가시성</Typography>
           </ListItemButton>
 
-          <ListItemButton
+          {/* <ListItemButton
             selected={selectedIndex === 5}
             onClick={(event) => handleListItemClick(event, 5)}
           >
             <Typography fontWeight="bold">홈피드 조정</Typography>
-          </ListItemButton>
+          </ListItemButton> */}
 
           <ListItemButton
             selected={selectedIndex === 6}
@@ -126,8 +174,26 @@ export default function ProfileTab() {
           </ListItemButton>
         </List>
 
-        {selectedIndex === 2 && <EditProfilePage />}
-        {selectedIndex === 3 && <AccountSetting />}
+        {selectedIndex === 2 && (
+          <EditProfilePage
+            vars={{ data, imgFile, setImgFile, imgRef, name, setName }}
+          />
+        )}
+        {selectedIndex === 3 && (
+          <AccountSetting
+            vars={{
+              pwd,
+              setPwd,
+              birth,
+              setBirth,
+              sex,
+              setSex,
+              loc,
+              setLoc,
+              email,
+            }}
+          />
+        )}
         {selectedIndex === 4 && <ProfileVisibility />}
         {selectedIndex === 10 && <ProfileSecurity />}
         {selectedIndex === 7 && <ProfileAuthority />}
@@ -137,7 +203,7 @@ export default function ProfileTab() {
         {selectedIndex === 9 && <ProfileData />}
         {selectedIndex === 11 && <ProfileBContents />}
       </div>
-      <ProfileFooter />
+      <ProfileFooter onSave={doSave} />
     </Box>
   );
 }

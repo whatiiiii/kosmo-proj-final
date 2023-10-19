@@ -5,19 +5,28 @@ import { TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 //import Button from "@mui/material-next/Button";
 import Avatar from "@mui/material/Avatar";
-import { useServerUser } from "../api/user";
+import { User, useServerUser } from "../api/user";
 import { SERVER_URL } from "../api/globals";
 import { getImage, uploadImage } from "../api/image";
 
-export default function EditProfilePage() {
+interface EditProfilePageProps {
+  vars: {
+    data?: User;
+    imgFile: string;
+    imgRef: React.RefObject<HTMLInputElement>;
+    name: string;
+    setImgFile: React.Dispatch<React.SetStateAction<string>>;
+    setName: React.Dispatch<React.SetStateAction<string>>;
+  };
+}
+
+export default function EditProfilePage({
+  vars: { data, imgFile, setImgFile, imgRef, name, setName },
+}: EditProfilePageProps) {
   //이미지 초기값 state
-  const [imgFile, setimgFile] = useState<string>("");
-  const imgRef = useRef<HTMLInputElement>(null);
-  const result = useServerUser();
-  const data = result.data;
+
   // const name = data !==null && data ! == undefined ? data.name:"";
   // const name = data ? data.name : "";
-  const [name, setName] = useState<string>("");
 
   const changeImage = () => {
     if (imgRef.current?.files == null || imgRef.current.files.length === 0) {
@@ -52,20 +61,8 @@ export default function EditProfilePage() {
     if (data?.id == null || data.upimage == null) {
       return;
     }
-    getImage(data.upimage.imgSeq)
-      .then((img) => {
-        setimgFile(URL.createObjectURL(img));
-      })
-      .catch((err) => {
-        console.error(err);
-      });
   }, [data?.id, data?.upimage]);
 
-  useEffect(() => {
-    if (result.isFetched) {
-      setName(data?.name ?? "");
-    }
-  }, [result.isFetched, data]);
   const saveImgFile = () => {
     let file: File | null = null;
     if (imgRef.current?.files != null && imgRef.current?.files.length !== 0) {
@@ -78,7 +75,7 @@ export default function EditProfilePage() {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
         if (typeof reader.result === "string") {
-          setimgFile(reader.result);
+          setImgFile(reader.result);
         }
       };
     }
