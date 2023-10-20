@@ -17,7 +17,7 @@ export async function uploadImage(image: File) {
       method: "PUT",
       body: image,
       headers: {
-        "Content-Type": "image/jpeg",
+        "Content-Type": image.type,
       },
     },
   );

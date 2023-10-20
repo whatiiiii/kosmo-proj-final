@@ -172,13 +172,15 @@ function MakePin() {
 
   const createTag = async (seq: number) => {
     const tagIds = selectedTags.map((tag) => tag.reason);
+    console.log("tagIds: ", tagIds);
+    console.log("tag의 seq: ", seq);
     for (const tag of tagIds) {
       await fetch(`${SERVER_URL}/tags`, {
         method: "POST",
         body: JSON.stringify({
           tagId: {
             tagName: tag,
-            pinSeq: `${SERVER_URL}/pins/${seq}`,
+            pin: `${SERVER_URL}/pins/${seq}`,
           },
         }),
         headers: {
