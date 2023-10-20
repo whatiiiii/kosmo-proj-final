@@ -4,13 +4,12 @@ import { useFeed } from "../api/feed";
 import { Button } from "@mui/material";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+// import { useQueryClient } from "@tanstack/react-query";
 
 function PinLayout() {
-  const { status, error, isFetched, isFetching, data, fetchNextPage } =
-    useFeed();
+  const { status, error, data, fetchNextPage } = useFeed();
   const { inView, ref } = useInView();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   useEffect(() => {
     if (inView) {
@@ -20,34 +19,32 @@ function PinLayout() {
     }
   }, [inView, fetchNextPage, data]);
 
-  useEffect(() => {
-    queryClient
-      .invalidateQueries({
-        predicate: (query) => {
-          return query.queryKey[0] === "feed";
-        },
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }, [queryClient]);
+  // useEffect(() => {
+  //   queryClient
+  //     .invalidateQueries({
+  //       predicate: (query) => {
+  //         return query.queryKey[0] === "feed";
+  //       },
+  //     })
+  //     .catch((e) => {
+  //       console.error(e);
+  //     });
+  // }, [queryClient]);
 
-  // return status === "pending" ? (
-  //   <p>Loading...</p>
-  // ) : status === "error" ? (
-  //   <p>Error: {error.message}</p>
-  // ) : (
-  return (
+  return status === "pending" ? (
+    <p>Loading...</p>
+  ) : status === "error" ? (
+    <p>Error: {error.message}</p>
+  ) : (
     <>
       <PinNavBar />
-      {isFetched && !isFetching && (
-        <div style={styles.pin_container}>
-          {data.pages.map((src, i) => (
-            <Pin key={i} src={src} pinSeq={data.pageParams[i] as number} />
-          ))}
-          <div ref={ref}></div>
-        </div>
-      )}
+
+      <div style={styles.pin_container}>
+        {data.pages.map((src, i) => (
+          <Pin key={i} src={src} pinSeq={data.pageParams[i] as number} />
+        ))}
+        <div ref={ref}></div>
+      </div>
     </>
   );
 }
