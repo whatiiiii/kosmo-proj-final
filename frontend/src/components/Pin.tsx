@@ -1,16 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+interface PinProps {
+  src?: string;
+  pinSeq: number;
+}
+
 const sizeArray = ["small", "medium", "large"];
 
-function Pin({ src }: { src?: string }) {
+function Pin({ src, pinSeq }: PinProps) {
   if (src === undefined) {
     src = "https://placehold.co/600x400?text=Error";
   }
 
   const navigate = useNavigate();
   const goPin = () => {
-    navigate("/pin-builder");
+    navigate("/pin/" + pinSeq);
   };
   const [randomIndex2, setRandomIndex2] = useState(0);
   useEffect(() => {

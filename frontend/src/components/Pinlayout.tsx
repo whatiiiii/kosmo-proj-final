@@ -27,7 +27,7 @@ function PinLayout() {
 
       <div style={styles.pin_container}>
         {data.pages.map((src, i) => (
-          <Pin key={i} src={src} />
+          <Pin key={i} src={src} pinSeq={data.pageParams[i] as number} />
         ))}
         <div ref={ref}></div>
       </div>
