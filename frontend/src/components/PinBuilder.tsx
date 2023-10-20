@@ -118,6 +118,10 @@ function PinBuilder() {
       };
     };
   }
+  interface FollowAndFollower {
+    followId: string;
+    followerId: string;
+  }
 
   const handleCopyClipBoard = async (text: string) => {
     try {
@@ -151,6 +155,29 @@ function PinBuilder() {
       }
     });
     return data.json() as Promise<Comment>;
+  };
+
+  const createFollow = () => {
+    const data = fetch(`${SERVER_URL}/follows`, {
+      method: "POST",
+      body: JSON.stringify({
+        id: {
+          follow: `${SERVER_URL}/members/${userId}`,
+          follower: `${SERVER_URL}/members/${memberData?.id}`,
+        },
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return data;
+  };
+
+  const unFollow = () => {
+    const data = fetch(`${SERVER_URL}/follows/${userId}_${memberData?.id}`, {
+      method: "DELETE",
+    });
+    return data;
   };
 
   const { data: pinData, isLoading: isPinLoading } = useQuery<Data>({
@@ -190,8 +217,20 @@ function PinBuilder() {
       ),
   });
 
+  const { data: followData } = useQuery<FollowAndFollower>({
+    queryKey: ["follows", userId, memberData?.id],
+    queryFn: () =>
+      fetch(
+        SERVER_URL +
+          "/follows/search/existsByIdFollowIdAndIdFollowerId?follow=" +
+          userId +
+          "&follower=" +
+          memberData?.id,
+      ).then((res) => res.json()),
+  });
+
   const commentArray = commentData?.comment?.map(
-    (comment) => comment as CommentWithContent,
+    (comment) => comment as Comment,
   );
 
   if (!commentArray) {
@@ -207,11 +246,11 @@ function PinBuilder() {
   }
   const updatedMessageExamples = messageExamples.slice();
   if (commentArray && commentArray.length > 0) {
-    const comContents = commentArray.map((comment) => comment.content);
-    const comRdates = commentArray.map((comment) => comment.rdate);
-    const comIds = commentArray.map((comment) => comment.writer.id);
+    const comContents = commentArray.map((comment) => comment?.content);
+    const comRdates = commentArray.map((comment) => comment?.rdate);
+    const comIds = commentArray.map((comment) => comment?.writer?.id);
     const comImgSeqs = commentArray.map(
-      (comment) => comment.writer.upimage.imgSeq,
+      (comment) => comment?.writer?.upimage?.imgSeq,
     );
 
     for (let i = 0; i < comContents.length; i++) {
@@ -372,10 +411,12 @@ function PinBuilder() {
                       <ListItem sx={{ p: 0 }}>
                         <ListItemAvatar>
                           <IconButton sx={{ p: 0 }}>
-                            <Avatar
-                              alt={memberData?.id}
-                              src={`http://localhost:8080/upImages/${memberData?.upimage.imgSeq}/content`}
-                            />
+                            {memberData && (
+                              <Avatar
+                                alt={memberData?.id}
+                                src={`http://localhost:8080/upImages/${memberData?.upimage?.imgSeq}/content`}
+                              />
+                            )}
                           </IconButton>
                         </ListItemAvatar>
                         {memberData && (
@@ -384,13 +425,32 @@ function PinBuilder() {
                             secondary="팔로워 3,913명"
                           />
                         )}
-                        <Button
-                          variant="contained"
-                          color="success"
-                          sx={{ ml: 40, position: "absolute" }}
-                        >
-                          팔로우
-                        </Button>
+                        {followData && (
+                          <Button
+                            variant="contained"
+                            color="success"
+                            sx={{ ml: 40, position: "absolute" }}
+                            onClick={createFollow.catch((e) => {
+                              console.error(e);
+                            })}
+                          >
+                            팔로우
+                          </Button>
+                        )}
+                        {followData != null && (
+                          <Button
+                            variant="contained"
+                            color="success"
+                            sx={{ ml: 40, position: "absolute" }}
+                            onClick={() => {
+                              unFollow().catch((e) => {
+                                console.error(e);
+                              });
+                            }}
+                          >
+                            팔로우
+                          </Button>
+                        )}
                       </ListItem>
                     </List>
                     <Typography
@@ -437,7 +497,7 @@ function PinBuilder() {
                                   style={{ position: "absolute", top: 0 }}
                                 >
                                   <Avatar
-                                    alt="Profile Picture"
+                                    alt={memberData?.id}
                                     src={`http://localhost:8080/upImages/${person}/content`}
                                     style={{ width: 30, height: 30 }}
                                   />
