@@ -67,7 +67,6 @@ function MakePin() {
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement>(null);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const handleClick = () => {
@@ -203,71 +202,10 @@ function MakePin() {
                 <div style={styles.searchbar}>
                   <div style={styles.searchbutton}></div>
                   <div style={styles.searchbutton2}>
-                    <ButtonGroup
-                      ref={anchorRef}
-                      aria-label="split button"
-                      sx={{ ml: 7, mr: 1 }}
-                    >
-                      <Button onClick={handleClick} style={{ width: 120 }}>
-                        {options[selectedIndex]}
-                      </Button>
-                      <Button
-                        size="small"
-                        aria-controls={open ? "split-button-menu" : undefined}
-                        aria-expanded={open ? "true" : undefined}
-                        aria-label="select merge strategy"
-                        aria-haspopup="menu"
-                        onClick={handleToggle}
-                      >
-                        <ArrowDropDownIcon />
-                      </Button>
-                    </ButtonGroup>
-                    <Popper
-                      sx={{
-                        zIndex: 1,
-                      }}
-                      open={open}
-                      anchorEl={() => anchorRef.current!}
-                      role={undefined}
-                      transition
-                      disablePortal
-                    >
-                      {({ TransitionProps, placement }) => (
-                        <Grow
-                          {...TransitionProps}
-                          style={{
-                            transformOrigin:
-                              placement === "bottom"
-                                ? "center top"
-                                : "center bottom",
-                          }}
-                        >
-                          <Paper>
-                            <ClickAwayListener onClickAway={handleClose}>
-                              <MenuList id="split-button-menu" autoFocusItem>
-                                {options.map((option, index) => (
-                                  <MenuItem
-                                    key={option}
-                                    disabled={index === 0}
-                                    selected={index === selectedIndex}
-                                    onClick={(event) => {
-                                      handleMenuItemClick(event, index);
-                                    }}
-                                  >
-                                    {option}
-                                  </MenuItem>
-                                ))}
-                              </MenuList>
-                            </ClickAwayListener>
-                          </Paper>
-                        </Grow>
-                      )}
-                    </Popper>
                     <Button
                       variant="contained"
                       color="error"
-                      sx={{ ml: 1, mr: 1 }}
-                      //onClick={submitData}
+                      sx={{ ml: 27, mr: 1 }}
                       onClick={() => {
                         handleSubmit().catch((e) => {
                           console.error(e);
