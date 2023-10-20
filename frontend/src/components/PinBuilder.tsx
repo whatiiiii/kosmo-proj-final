@@ -80,6 +80,9 @@ function PinBuilder() {
     saves: number;
     tags: number;
     id: string;
+    writer: {
+      id: string;
+    };
   }
 
   interface Member {
@@ -183,8 +186,39 @@ function PinBuilder() {
   const { data: pinData, isLoading: isPinLoading } = useQuery<Data>({
     queryKey: ["pins", pinSeq],
     queryFn: () =>
-      fetch(SERVER_URL + "/pins/" + pinSeq).then((res) => res.json()),
+      fetch(SERVER_URL + "/pins/" + pinSeq + "?projection=pinProjection").then(
+        (res) => res.json(),
+      ),
   });
+
+  const getFollowerCount = () => {
+    const data = fetch(
+      `${SERVER_URL}/follows/search/countByIdFollowerId?follower=${pinData?.writer.id}`,
+      {
+        method: "GET",
+      },
+    );
+    return data;
+  };
+  const [followerCount, setFollowerCount] = useState(-1);
+  useEffect(() => {
+    if (!pinData?.writer) {
+      return;
+    }
+    getFollowerCount()
+      .then((res) => {
+        return res.json();
+      })
+      .then((count) => {
+        setFollowerCount(count);
+      });
+  }, [getFollowerCount, pinData]);
+  // useEffect(() => {
+  //   setIsFollowing(followData);
+  // }, [followData]);
+
+  // console.log("isFollowing: ", isFollowing);
+
   const { data: memberData, isLoading: isMemberLoading } = useQuery<Member>({
     queryKey: ["members", pinSeq],
     queryFn: () =>
@@ -228,11 +262,14 @@ function PinBuilder() {
       ).then((res) => res.json()),
   });
 
+  console.log("followData: ", followData);
   const [isFollowing, setIsFollowing] = useState(followData);
 
   useEffect(() => {
     setIsFollowing(followData);
   }, [followData]);
+
+  console.log("isFollowing: ", isFollowing);
 
   const commentArray = commentData?.comment?.map(
     (comment) => comment as Comment,
@@ -427,49 +464,61 @@ function PinBuilder() {
                         {memberData && (
                           <ListItemText
                             primary={memberData?.id}
-                            secondary="팔로워 3,913명"
+                            secondary={`팔로우 ${followerCount}명`} //{getFollowerCount().catch((e) => {
+                            //   console.error(e);})}
                           />
                         )}
-
-                        {memberData?.id != userId &&
-                          (isFollowing ? (
-                            // {followData === false && userId != memberData?.id && (
-                            <Button
-                              variant="contained"
-                              //color="success"
-                              sx={{ ml: 39, position: "absolute", width: 80 }}
-                              onClick={() => {
-                                unFollow()
-                                  .then(() => {
-                                    setIsFollowing(false); // 팔로우 성공 시 상태 변경
-                                  })
-                                  .catch((e) => {
-                                    console.error(e);
-                                  });
-                              }}
-                            >
-                              팔로잉
-                            </Button>
-                          ) : (
-                            // )}
-                            // {followData === true && (
-                            <Button
-                              variant="contained"
-                              color="success"
-                              sx={{ ml: 39, position: "absolute", width: 80 }}
-                              onClick={() => {
-                                createFollow()
-                                  .then(() => {
-                                    setIsFollowing(true); // 팔로우 성공 시 상태 변경
-                                  })
-                                  .catch((e) => {
-                                    console.error(e);
-                                  });
-                              }}
-                            >
-                              팔로우
-                            </Button>
-                          ))}
+                        {isFollowing ? (
+                          // {followData === false && userId != memberData?.id && (
+                          <Button
+                            variant="contained"
+                            //color="success"
+                            sx={{ ml: 40, position: "absolute" }}
+                            onClick={() => {
+                              unFollow()
+                                .then(() => {
+                                  setIsFollowing(false); // 팔로우 성공 시 상태 변경
+                                })
+                                .catch((e) => {
+                                  console.error(e);
+                                });
+                            }}
+                          >
+                            팔로잉
+                          </Button>
+                        ) : (
+                          // )}
+                          // {followData === true && (
+                          <Button
+                            variant="contained"
+                            color="success"
+                            sx={{ ml: 40, position: "absolute" }}
+                            onClick={() => {
+                              createFollow()
+                                .then(() => {
+                                  setIsFollowing(true); // 팔로우 성공 시 상태 변경
+                                })
+                                .catch((e) => {
+                                  console.error(e);
+                                });
+                            }}
+                          >
+                            팔로우
+                          </Button>
+                          //  )}
+                          // {followData === true && userId === memberData?.id && (
+                          //   <Button
+                          //     variant="contained"
+                          //     color="success"
+                          //     sx={{ ml: 40, position: "absolute" }}
+                          //     onClick={() => {
+                          //       createFollow().catch((e) => {
+                          //         console.error(e);
+                          //       });
+                          //     }}
+                          //   ></Button>
+                          // )}
+                        )}
                       </ListItem>
                     </List>
                     <Typography
@@ -503,7 +552,7 @@ function PinBuilder() {
                         {updatedMessageExamples?.map(
                           ({ primary, secondary, person, date }, index) => (
                             <ListItem
-                              key={index}
+                              key={index + person}
                               style={{
                                 paddingTop: 0,
                                 paddingBottom: 8,
@@ -523,11 +572,7 @@ function PinBuilder() {
                                 </IconButton>
                               </ListItemAvatar>
                               <ListItemText>
-                                <Typography
-                                  style={{
-                                    maxWidth: 402.03,
-                                  }}
-                                >
+                                <Typography>
                                   <span
                                     style={{
                                       fontSize: "15px",
@@ -536,15 +581,7 @@ function PinBuilder() {
                                   >
                                     {primary}
                                   </span>
-                                  <span
-                                    style={{
-                                      marginLeft: "8px",
-                                      fontSize: "15px",
-                                      maxWidth: 402.03,
-                                      height: 150,
-                                      wordBreak: "break-all",
-                                    }}
-                                  >
+                                  <span style={{ fontSize: "15px" }}>
                                     {secondary}
                                   </span>
                                 </Typography>

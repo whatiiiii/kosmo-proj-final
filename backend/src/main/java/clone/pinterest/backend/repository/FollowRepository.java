@@ -12,5 +12,5 @@ public interface FollowRepository extends CrudRepository<Follow, FollowId> {
     boolean existsByIdFollowIdAndIdFollowerId(@Param("follow") String idFollowId,
             @Param("follower") String idFollowerId);
 
-    int countByIdFollowId(@Param("follow") String idFollowId);
+    int countByIdFollowerId(@Param("follower") String idFollowerId);
 }
