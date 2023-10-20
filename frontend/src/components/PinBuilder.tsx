@@ -437,7 +437,7 @@ function PinBuilder() {
                             <Button
                               variant="contained"
                               //color="success"
-                              sx={{ ml: 40, position: "absolute" }}
+                              sx={{ ml: 39, position: "absolute", width: 80 }}
                               onClick={() => {
                                 unFollow()
                                   .then(() => {
@@ -456,7 +456,7 @@ function PinBuilder() {
                             <Button
                               variant="contained"
                               color="success"
-                              sx={{ ml: 40, position: "absolute" }}
+                              sx={{ ml: 39, position: "absolute", width: 80 }}
                               onClick={() => {
                                 createFollow()
                                   .then(() => {
