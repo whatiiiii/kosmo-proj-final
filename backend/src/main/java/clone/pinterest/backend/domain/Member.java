@@ -38,8 +38,8 @@ public class Member implements Serializable {
     @OneToMany(mappedBy = "writer")
     private List<Pin> pin;
 
-    @OneToOne(mappedBy = "writer")
-    private CommentInPin comment;
+    @OneToMany(mappedBy = "writer")
+    private List<CommentInPin> comment;
 
     @OneToMany(mappedBy = "id.follow") // Follow 엔티티의 id 필드의 follow와 매핑
     private List<Follow> follow;
