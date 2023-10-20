@@ -7,7 +7,8 @@ import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 function PinLayout() {
-  const { status, error, data, fetchNextPage } = useFeed();
+  const { status, error, isFetched, isFetching, data, fetchNextPage } =
+    useFeed();
   const { inView, ref } = useInView();
   const queryClient = useQueryClient();
 
@@ -31,20 +32,22 @@ function PinLayout() {
       });
   }, [queryClient]);
 
-  return status === "pending" ? (
-    <p>Loading...</p>
-  ) : status === "error" ? (
-    <p>Error: {error.message}</p>
-  ) : (
+  // return status === "pending" ? (
+  //   <p>Loading...</p>
+  // ) : status === "error" ? (
+  //   <p>Error: {error.message}</p>
+  // ) : (
+  return (
     <>
       <PinNavBar />
-
-      <div style={styles.pin_container}>
-        {data.pages.map((src, i) => (
-          <Pin key={i} src={src} pinSeq={data.pageParams[i] as number} />
-        ))}
-        <div ref={ref}></div>
-      </div>
+      {isFetched && !isFetching && (
+        <div style={styles.pin_container}>
+          {data.pages.map((src, i) => (
+            <Pin key={i} src={src} pinSeq={data.pageParams[i] as number} />
+          ))}
+          <div ref={ref}></div>
+        </div>
+      )}
     </>
   );
 }
