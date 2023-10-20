@@ -28,8 +28,19 @@ export function fakeFetch(url?: string): Promise<Response> {
   //     }
   //   }, 300);
   // });
-  if (url.includes("PinImg")) {
-    const ids = url.match(/\/pins\/(\d+)\//);
+  if (url.includes("pins/")) {
+    const ids = url.match(/\/pins\/(\d+)\?/);
+    if (ids === null) {
+      return Promise.reject(new Error("No id"));
+    }
+    const id = ids[1];
+    return Promise.resolve(
+      new Response(JSON.stringify({ image: { imgSeq: id } })),
+    );
+  }
+
+  if (url.includes("upImages")) {
+    const ids = url.match(/\/upImages\/(\d+)\//);
     if (ids === null) {
       return Promise.reject(new Error("No id"));
     }

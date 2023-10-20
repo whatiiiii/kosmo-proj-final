@@ -5,8 +5,8 @@ import { shuffle } from "./utils";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { fakeFetch } from "./fakeServer";
 
-// TODO: Remove fakeFetch after testing
-const fetch = fakeFetch;
+// Uncomment this line to use the fake server
+// const fetch = fakeFetch;
 
 export function useFeed() {
   // let pinIds: number[] | undefined = undefined;
@@ -56,7 +56,13 @@ export function useFeed() {
 
   const fetchOne = async (id?: number) => {
     if (id === undefined) return undefined;
-    const res = await fetch(`${SERVER_URL}/pins/${id}/PinImg/content`);
+    const pinRes = await fetch(
+      `${SERVER_URL}/pins/${id}?projection=pinProjection`,
+    );
+    if (!pinRes.ok) throw new Error("No data");
+    const pinData = (await pinRes.json()) as { image: { imgSeq: number } };
+    const imgSeq = pinData.image.imgSeq;
+    const res = await fetch(`${SERVER_URL}/upImages/${imgSeq}/content`);
     if (!res.ok) throw new Error("No data");
     const data = await res.blob();
     return URL.createObjectURL(data);
