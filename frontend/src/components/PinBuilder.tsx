@@ -126,6 +126,10 @@ function PinBuilder() {
     followerId: string;
   }
 
+  interface MemberIdAndPinId {
+    memberId: string;
+    pinId: number;
+  }
   const handleCopyClipBoard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -178,6 +182,13 @@ function PinBuilder() {
 
   const unFollow = () => {
     const data = fetch(`${SERVER_URL}/follows/${userId}_${memberData?.id}`, {
+      method: "DELETE",
+    });
+    return data;
+  };
+
+  const unSave = () => {
+    const data = fetch(`${SERVER_URL}/saves/${userId}_${pinSeq}`, {
       method: "DELETE",
     });
     return data;
@@ -262,14 +273,49 @@ function PinBuilder() {
       ).then((res) => res.json()),
   });
 
-  console.log("followData: ", followData);
   const [isFollowing, setIsFollowing] = useState(followData);
 
   useEffect(() => {
     setIsFollowing(followData);
   }, [followData]);
 
-  console.log("isFollowing: ", isFollowing);
+  const { data: saveData } = useQuery<MemberIdAndPinId>({
+    queryKey: ["saveDatas", userId, pinSeq],
+    queryFn: () =>
+      fetch(
+        SERVER_URL +
+          "/saves/search/existsByIdMemberIdAndIdPinPinSeq?memberId=" +
+          userId +
+          "&pinId=" +
+          pinSeq,
+      ).then((res) => res.json()),
+  });
+
+  const [isSaving, setIsSaving] = useState(saveData);
+  useEffect(() => {
+    setIsSaving(saveData);
+  }, [saveData]);
+
+  console.log("saveData: ", saveData);
+
+  const createSaves = () => {
+    console.log("pinSeq: ", pinSeq);
+    const data = fetch(`${SERVER_URL}/saves`, {
+      method: "POST",
+      body: JSON.stringify({
+        id: {
+          member: `${SERVER_URL}/members/${userId}`,
+          pin: `${SERVER_URL}/pins/${pinSeq}`,
+        },
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("save 데이터: ", data);
+    return data;
+  };
 
   const commentArray = commentData?.comment?.map(
     (comment) => comment as Comment,
@@ -412,13 +458,41 @@ function PinBuilder() {
                         key={vertical + horizontal}
                       />
                     </IconButton>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      sx={{ ml: 28, mr: 1, mt: 2 }}
-                    >
-                      저장
-                    </Button>
+                    {isSaving ? (
+                      <Button
+                        variant="contained"
+                        color="success"
+                        sx={{ ml: 27, mt: 2 }}
+                        onClick={() => {
+                          unSave()
+                            .then(() => {
+                              setIsSaving(false); // 팔로우 성공 시 상태 변경
+                            })
+                            .catch((e) => {
+                              console.error(e);
+                            });
+                        }}
+                      >
+                        저장됨
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="error"
+                        sx={{ ml: 27, mt: 2 }}
+                        onClick={() => {
+                          createSaves()
+                            .then(() => {
+                              setIsSaving(true); // 팔로우 성공 시 상태 변경
+                            })
+                            .catch((e) => {
+                              console.error(e);
+                            });
+                        }}
+                      >
+                        저장
+                      </Button>
+                    )}
                   </ListItem>
                 </List>
               </Grid>
@@ -464,20 +538,17 @@ function PinBuilder() {
                         {memberData && (
                           <ListItemText
                             primary={memberData?.id}
-                            secondary={`팔로우 ${followerCount}명`} //{getFollowerCount().catch((e) => {
-                            //   console.error(e);})}
+                            secondary={`팔로우 ${followerCount}명`}
                           />
                         )}
                         {isFollowing ? (
-                          // {followData === false && userId != memberData?.id && (
                           <Button
                             variant="contained"
-                            //color="success"
-                            sx={{ ml: 40, position: "absolute" }}
+                            sx={{ ml: 38, position: "absolute", width: 100 }}
                             onClick={() => {
                               unFollow()
                                 .then(() => {
-                                  setIsFollowing(false); // 팔로우 성공 시 상태 변경
+                                  setIsFollowing(false);
                                 })
                                 .catch((e) => {
                                   console.error(e);
@@ -487,16 +558,14 @@ function PinBuilder() {
                             팔로잉
                           </Button>
                         ) : (
-                          // )}
-                          // {followData === true && (
                           <Button
                             variant="contained"
                             color="success"
-                            sx={{ ml: 40, position: "absolute" }}
+                            sx={{ ml: 38, position: "absolute", width: 100 }}
                             onClick={() => {
                               createFollow()
                                 .then(() => {
-                                  setIsFollowing(true); // 팔로우 성공 시 상태 변경
+                                  setIsFollowing(true);
                                 })
                                 .catch((e) => {
                                   console.error(e);
@@ -552,7 +621,7 @@ function PinBuilder() {
                         {updatedMessageExamples?.map(
                           ({ primary, secondary, person, date }, index) => (
                             <ListItem
-                              key={index + person}
+                              key={index}
                               style={{
                                 paddingTop: 0,
                                 paddingBottom: 8,
@@ -581,7 +650,13 @@ function PinBuilder() {
                                   >
                                     {primary}
                                   </span>
-                                  <span style={{ fontSize: "15px" }}>
+                                  <span
+                                    style={{
+                                      fontSize: "15px",
+                                      wordBreak: "break-all",
+                                      marginLeft: 8,
+                                    }}
+                                  >
                                     {secondary}
                                   </span>
                                 </Typography>
