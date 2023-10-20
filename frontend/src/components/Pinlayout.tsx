@@ -4,10 +4,12 @@ import { useFeed } from "../api/feed";
 import { Button } from "@mui/material";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 function PinLayout() {
   const { status, error, data, fetchNextPage } = useFeed();
   const { inView, ref } = useInView();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (inView) {
@@ -16,6 +18,18 @@ function PinLayout() {
       });
     }
   }, [inView, fetchNextPage, data]);
+
+  useEffect(() => {
+    queryClient
+      .invalidateQueries({
+        predicate: (query) => {
+          return query.queryKey[0] === "feed";
+        },
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, [queryClient]);
 
   return status === "pending" ? (
     <p>Loading...</p>
