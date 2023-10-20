@@ -185,7 +185,6 @@ function PinBuilder() {
     queryFn: () =>
       fetch(SERVER_URL + "/pins/" + pinSeq).then((res) => res.json()),
   });
-
   const { data: memberData, isLoading: isMemberLoading } = useQuery<Member>({
     queryKey: ["members", pinSeq],
     queryFn: () =>
@@ -229,14 +228,11 @@ function PinBuilder() {
       ).then((res) => res.json()),
   });
 
-  console.log("followData: ", followData);
   const [isFollowing, setIsFollowing] = useState(followData);
 
   useEffect(() => {
     setIsFollowing(followData);
   }, [followData]);
-
-  console.log("isFollowing: ", isFollowing);
 
   const commentArray = commentData?.comment?.map(
     (comment) => comment as Comment,
@@ -434,57 +430,46 @@ function PinBuilder() {
                             secondary="팔로워 3,913명"
                           />
                         )}
-                        {isFollowing ? (
-                          // {followData === false && userId != memberData?.id && (
-                          <Button
-                            variant="contained"
-                            //color="success"
-                            sx={{ ml: 40, position: "absolute" }}
-                            onClick={() => {
-                              unFollow()
-                                .then(() => {
-                                  setIsFollowing(false); // 팔로우 성공 시 상태 변경
-                                })
-                                .catch((e) => {
-                                  console.error(e);
-                                });
-                            }}
-                          >
-                            팔로잉
-                          </Button>
-                        ) : (
-                          // )}
-                          // {followData === true && (
-                          <Button
-                            variant="contained"
-                            color="success"
-                            sx={{ ml: 40, position: "absolute" }}
-                            onClick={() => {
-                              createFollow()
-                                .then(() => {
-                                  setIsFollowing(true); // 팔로우 성공 시 상태 변경
-                                })
-                                .catch((e) => {
-                                  console.error(e);
-                                });
-                            }}
-                          >
-                            팔로우
-                          </Button>
-                          //  )}
-                          // {followData === true && userId === memberData?.id && (
-                          //   <Button
-                          //     variant="contained"
-                          //     color="success"
-                          //     sx={{ ml: 40, position: "absolute" }}
-                          //     onClick={() => {
-                          //       createFollow().catch((e) => {
-                          //         console.error(e);
-                          //       });
-                          //     }}
-                          //   ></Button>
-                          // )}
-                        )}
+
+                        {memberData?.id != userId &&
+                          (isFollowing ? (
+                            // {followData === false && userId != memberData?.id && (
+                            <Button
+                              variant="contained"
+                              //color="success"
+                              sx={{ ml: 40, position: "absolute" }}
+                              onClick={() => {
+                                unFollow()
+                                  .then(() => {
+                                    setIsFollowing(false); // 팔로우 성공 시 상태 변경
+                                  })
+                                  .catch((e) => {
+                                    console.error(e);
+                                  });
+                              }}
+                            >
+                              팔로잉
+                            </Button>
+                          ) : (
+                            // )}
+                            // {followData === true && (
+                            <Button
+                              variant="contained"
+                              color="success"
+                              sx={{ ml: 40, position: "absolute" }}
+                              onClick={() => {
+                                createFollow()
+                                  .then(() => {
+                                    setIsFollowing(true); // 팔로우 성공 시 상태 변경
+                                  })
+                                  .catch((e) => {
+                                    console.error(e);
+                                  });
+                              }}
+                            >
+                              팔로우
+                            </Button>
+                          ))}
                       </ListItem>
                     </List>
                     <Typography
@@ -518,7 +503,7 @@ function PinBuilder() {
                         {updatedMessageExamples?.map(
                           ({ primary, secondary, person, date }, index) => (
                             <ListItem
-                              key={index + person}
+                              key={index}
                               style={{
                                 paddingTop: 0,
                                 paddingBottom: 8,
@@ -538,7 +523,11 @@ function PinBuilder() {
                                 </IconButton>
                               </ListItemAvatar>
                               <ListItemText>
-                                <Typography>
+                                <Typography
+                                  style={{
+                                    maxWidth: 402.03,
+                                  }}
+                                >
                                   <span
                                     style={{
                                       fontSize: "15px",
@@ -547,7 +536,15 @@ function PinBuilder() {
                                   >
                                     {primary}
                                   </span>
-                                  <span style={{ fontSize: "15px" }}>
+                                  <span
+                                    style={{
+                                      marginLeft: "8px",
+                                      fontSize: "15px",
+                                      maxWidth: 402.03,
+                                      height: 150,
+                                      wordBreak: "break-all",
+                                    }}
+                                  >
                                     {secondary}
                                   </span>
                                 </Typography>
