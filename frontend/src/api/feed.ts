@@ -27,6 +27,7 @@ export function useFeed() {
       fetch(SERVER_URL + "/pins/search/findAllIds")
         .then((res) => res.json() as Promise<number[]>)
         .then((data) => shuffle(data)),
+    staleTime: Infinity,
   });
 
   // const getPins = (cnt = 1): string[] => {
