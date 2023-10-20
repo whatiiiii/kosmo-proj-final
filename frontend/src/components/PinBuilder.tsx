@@ -20,7 +20,7 @@ import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import Grid from "@mui/material/Grid";
 import { useQuery } from "@tanstack/react-query";
 import { SERVER_URL } from "../api/globals";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import { useUser } from "../api/user";
@@ -229,6 +229,15 @@ function PinBuilder() {
       ).then((res) => res.json()),
   });
 
+  console.log("followData: ", followData);
+  const [isFollowing, setIsFollowing] = useState(followData);
+
+  useEffect(() => {
+    setIsFollowing(followData);
+  }, [followData]);
+
+  console.log("isFollowing: ", isFollowing);
+
   const commentArray = commentData?.comment?.map(
     (comment) => comment as Comment,
   );
@@ -425,31 +434,56 @@ function PinBuilder() {
                             secondary="팔로워 3,913명"
                           />
                         )}
-                        {followData && (
+                        {isFollowing ? (
+                          // {followData === false && userId != memberData?.id && (
                           <Button
                             variant="contained"
-                            color="success"
+                            //color="success"
                             sx={{ ml: 40, position: "absolute" }}
-                            onClick={createFollow.catch((e) => {
-                              console.error(e);
-                            })}
+                            onClick={() => {
+                              unFollow()
+                                .then(() => {
+                                  setIsFollowing(false); // 팔로우 성공 시 상태 변경
+                                })
+                                .catch((e) => {
+                                  console.error(e);
+                                });
+                            }}
                           >
-                            팔로우
+                            팔로잉
                           </Button>
-                        )}
-                        {followData != null && (
+                        ) : (
+                          // )}
+                          // {followData === true && (
                           <Button
                             variant="contained"
                             color="success"
                             sx={{ ml: 40, position: "absolute" }}
                             onClick={() => {
-                              unFollow().catch((e) => {
-                                console.error(e);
-                              });
+                              createFollow()
+                                .then(() => {
+                                  setIsFollowing(true); // 팔로우 성공 시 상태 변경
+                                })
+                                .catch((e) => {
+                                  console.error(e);
+                                });
                             }}
                           >
                             팔로우
                           </Button>
+                          //  )}
+                          // {followData === true && userId === memberData?.id && (
+                          //   <Button
+                          //     variant="contained"
+                          //     color="success"
+                          //     sx={{ ml: 40, position: "absolute" }}
+                          //     onClick={() => {
+                          //       createFollow().catch((e) => {
+                          //         console.error(e);
+                          //       });
+                          //     }}
+                          //   ></Button>
+                          // )}
                         )}
                       </ListItem>
                     </List>
