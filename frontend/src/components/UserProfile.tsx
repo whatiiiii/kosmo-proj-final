@@ -12,13 +12,13 @@ import { getImage } from "../api/image";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import PinLayout from "./Pinlayout";
+import ProfileAvatar from "./ProfileAvatar";
 
 export default function UserProfile() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data } = useServerUser(id);
   const [self] = useUser();
-  const [imgFile, setImgFile] = useState<string>("");
   const [followerCount, setFollowerCount] = useState<number>(-1);
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const isSelf = self?.id === id;
@@ -45,22 +45,6 @@ export default function UserProfile() {
     }
   }
 
-  useEffect(() => {
-    if (!data) {
-      return;
-    }
-
-    if (data.upimage) {
-      getImage(data.upimage.imgSeq)
-        .then((img) => {
-          setImgFile(URL.createObjectURL(img));
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
-  }, [data]);
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <PinNavBar position="static" />
@@ -73,7 +57,7 @@ export default function UserProfile() {
           alignItems="center"
         >
           <Grid item>
-            <Avatar src={imgFile} sx={{ width: 120, height: 120 }} />
+            <ProfileAvatar username={id} sx={{ width: 120, height: 120 }} />
           </Grid>
           <Grid item>
             <Typography variant="h4">{data?.name ?? "이름없음"}</Typography>
