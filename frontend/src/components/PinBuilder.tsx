@@ -67,7 +67,6 @@ function PinBuilder() {
   };
 
   const ref = React.useRef<HTMLDivElement>(null);
-  const url = window.location.href;
 
   interface Data {
     pinSeq: number;
@@ -130,13 +129,19 @@ function PinBuilder() {
     memberId: string;
     pinId: number;
   }
-  const handleCopyClipBoard = async (text: string) => {
+  const handleCopyClipBoard = (url: string) => {
+    const textArea = document.createElement("button");
+    url = window.location.href;
+    textArea.value = url;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
     try {
-      await navigator.clipboard.writeText(text);
-      alert("클립보드에 링크가 복사되었습니다.");
-    } catch (e) {
-      alert("복사에 실패하였습니다");
+      alert("복사 완료");
+    } catch (err) {
+      console.error("Unable to copy to clipboard", err);
     }
+    document.body.removeChild(textArea);
   };
 
   const { seq: pinSeq } = useParams(); //pinsSeq 변수에 핀번호 할당
@@ -145,7 +150,7 @@ function PinBuilder() {
   const userId = user?.id;
 
   const contentInBuilder = async () => {
-    const data = await fetch(`http://localhost:8080/commentInPins`, {
+    const data = await fetch(`${SERVER_URL}/commentInPins`, {
       method: "POST",
       body: JSON.stringify({
         content: content,
@@ -234,6 +239,18 @@ function PinBuilder() {
     queryKey: ["members", pinSeq],
     queryFn: () =>
       fetch(SERVER_URL + "/pins/" + pinSeq + "/pinWriter").then((res) =>
+        res.json(),
+      ),
+  });
+
+  interface User {
+    imgSeq: number;
+    contentId: string;
+  }
+  const { data: userIdData } = useQuery<User>({
+    queryKey: ["userId", userId],
+    queryFn: () =>
+      fetch(SERVER_URL + "/members/" + userId + "/ProfileImg").then((res) =>
         res.json(),
       ),
   });
@@ -444,55 +461,50 @@ function PinBuilder() {
                       aria-label="open drawer"
                       sx={{ mr: 1, mt: 2 }}
                       onClick={() => {
-                        handleCopyClipBoard(url).catch((e) => {
+                        handleCopyClipBoard().catch((e) => {
                           console.error(e);
                         });
                       }}
                     >
                       <LinkIcon fontSize="medium" />
-                      <Snackbar
-                        className="URL"
-                        anchorOrigin={{ vertical, horizontal }}
-                        autoHideDuration={3000}
-                        message={"클립보드에 복사 되었습니다"}
-                        key={vertical + horizontal}
-                      />
+                      <Snackbar />
                     </IconButton>
-                    {isSaving ? (
-                      <Button
-                        variant="contained"
-                        color="success"
-                        sx={{ ml: 27, mt: 2 }}
-                        onClick={() => {
-                          unSave()
-                            .then(() => {
-                              setIsSaving(false); // 팔로우 성공 시 상태 변경
-                            })
-                            .catch((e) => {
-                              console.error(e);
-                            });
-                        }}
-                      >
-                        저장됨
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        color="error"
-                        sx={{ ml: 27, mt: 2 }}
-                        onClick={() => {
-                          createSaves()
-                            .then(() => {
-                              setIsSaving(true); // 팔로우 성공 시 상태 변경
-                            })
-                            .catch((e) => {
-                              console.error(e);
-                            });
-                        }}
-                      >
-                        저장
-                      </Button>
-                    )}
+                    {memberData?.id != userId &&
+                      (isSaving ? (
+                        <Button
+                          variant="contained"
+                          color="success"
+                          sx={{ ml: 27, mt: 2 }}
+                          onClick={() => {
+                            unSave()
+                              .then(() => {
+                                setIsSaving(false); // 팔로우 성공 시 상태 변경
+                              })
+                              .catch((e) => {
+                                console.error(e);
+                              });
+                          }}
+                        >
+                          저장됨
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          color="error"
+                          sx={{ ml: 27, mt: 2 }}
+                          onClick={() => {
+                            createSaves()
+                              .then(() => {
+                                setIsSaving(true); // 팔로우 성공 시 상태 변경
+                              })
+                              .catch((e) => {
+                                console.error(e);
+                              });
+                          }}
+                        >
+                          저장
+                        </Button>
+                      ))}
                   </ListItem>
                 </List>
               </Grid>
@@ -530,7 +542,7 @@ function PinBuilder() {
                             {memberData && (
                               <Avatar
                                 alt={memberData?.id}
-                                src={`http://localhost:8080/upImages/${memberData?.upimage?.imgSeq}/content`}
+                                src={`${SERVER_URL}/upImages/${memberData?.upimage?.imgSeq}/content`}
                               />
                             )}
                           </IconButton>
@@ -541,53 +553,41 @@ function PinBuilder() {
                             secondary={`팔로우 ${followerCount}명`}
                           />
                         )}
-                        {isFollowing ? (
-                          <Button
-                            variant="contained"
-                            sx={{ ml: 38, position: "absolute", width: 100 }}
-                            onClick={() => {
-                              unFollow()
-                                .then(() => {
-                                  setIsFollowing(false);
-                                })
-                                .catch((e) => {
-                                  console.error(e);
-                                });
-                            }}
-                          >
-                            팔로잉
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="contained"
-                            color="success"
-                            sx={{ ml: 38, position: "absolute", width: 100 }}
-                            onClick={() => {
-                              createFollow()
-                                .then(() => {
-                                  setIsFollowing(true);
-                                })
-                                .catch((e) => {
-                                  console.error(e);
-                                });
-                            }}
-                          >
-                            팔로우
-                          </Button>
-                          //  )}
-                          // {followData === true && userId === memberData?.id && (
-                          //   <Button
-                          //     variant="contained"
-                          //     color="success"
-                          //     sx={{ ml: 40, position: "absolute" }}
-                          //     onClick={() => {
-                          //       createFollow().catch((e) => {
-                          //         console.error(e);
-                          //       });
-                          //     }}
-                          //   ></Button>
-                          // )}
-                        )}
+                        {memberData?.id != userId &&
+                          (isFollowing ? (
+                            <Button
+                              variant="contained"
+                              sx={{ ml: 38, position: "absolute", width: 100 }}
+                              onClick={() => {
+                                unFollow()
+                                  .then(() => {
+                                    setIsFollowing(false);
+                                  })
+                                  .catch((e) => {
+                                    console.error(e);
+                                  });
+                              }}
+                            >
+                              팔로잉
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="contained"
+                              color="success"
+                              sx={{ ml: 38, position: "absolute", width: 100 }}
+                              onClick={() => {
+                                createFollow()
+                                  .then(() => {
+                                    setIsFollowing(true);
+                                  })
+                                  .catch((e) => {
+                                    console.error(e);
+                                  });
+                              }}
+                            >
+                              팔로우
+                            </Button>
+                          ))}
                       </ListItem>
                     </List>
                     <Typography
@@ -635,7 +635,7 @@ function PinBuilder() {
                                 >
                                   <Avatar
                                     alt={memberData?.id}
-                                    src={`http://localhost:8080/upImages/${person}/content`}
+                                    src={`${SERVER_URL}/upImages/${person}/content`}
                                     style={{ width: 30, height: 30 }}
                                   />
                                 </IconButton>
@@ -705,7 +705,10 @@ function PinBuilder() {
                   <ListItem sx={{ p: 0 }}>
                     <ListItemAvatar>
                       <IconButton>
-                        <Avatar alt="Remy Sharp" />
+                        <Avatar
+                          alt={userId}
+                          src={`${SERVER_URL}/upImages/${userIdData?.imgSeq}/content`}
+                        />
                       </IconButton>
                     </ListItemAvatar>
                     <TextField
@@ -756,9 +759,8 @@ interface MessageExample {
 
 const StyledRoot = styled("div")({
   display: "flex",
-  padding: 150,
+  padding: 207,
   backgroundColor: "#e0e0e0",
-  borderRadius: 20,
   alignItems: "center",
   position: "relative",
   flexDirection: "column",
@@ -770,7 +772,6 @@ const Box1 = styled("div")({
   float: "left",
   width: 450,
   height: 750,
-  borderRadius: 20,
 });
 
 const ImageRoot = styled("img")({
