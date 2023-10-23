@@ -129,20 +129,23 @@ function PinBuilder() {
     memberId: string;
     pinId: number;
   }
-  const handleCopyClipBoard = (url: string) => {
-    const textArea = document.createElement("button");
-    url = window.location.href;
-    textArea.value = url;
+  function copyToClipboard(text: string): void {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
+
     try {
-      alert("복사 완료");
+      const successful = document.execCommand("copy");
+      const msg = successful ? "링크가 복사됐어요." : "복사에 실패했어요.";
+      alert(msg);
     } catch (err) {
-      console.error("Unable to copy to clipboard", err);
+      console.error("복사 중 에러가 발생했어요.", err);
     }
-    document.body.removeChild(textArea);
-  };
+
+    textArea.remove();
+  }
 
   const { seq: pinSeq } = useParams(); //pinsSeq 변수에 핀번호 할당
   const [content, setContent] = useState("");
@@ -461,9 +464,7 @@ function PinBuilder() {
                       aria-label="open drawer"
                       sx={{ mr: 1, mt: 2 }}
                       onClick={() => {
-                        handleCopyClipBoard().catch((e) => {
-                          console.error(e);
-                        });
+                        copyToClipboard(window.location.href);
                       }}
                     >
                       <LinkIcon fontSize="medium" />
