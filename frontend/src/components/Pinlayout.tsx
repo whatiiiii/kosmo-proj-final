@@ -6,8 +6,14 @@ import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 // import { useQueryClient } from "@tanstack/react-query";
 
-function PinLayout() {
-  const { status, error, data, fetchNextPage } = useFeed();
+interface PinLayoutProps {
+  hideNavBar?: boolean;
+  username?: string;
+  type?: "created" | "saved";
+}
+
+function PinLayout({ hideNavBar, username, type }: PinLayoutProps) {
+  const { status, error, data, fetchNextPage } = useFeed(username, type);
   const { inView, ref } = useInView();
   // const queryClient = useQueryClient();
 
@@ -37,7 +43,7 @@ function PinLayout() {
     <p>Error: {error.message}</p>
   ) : (
     <>
-      <PinNavBar />
+      {!hideNavBar && <PinNavBar />}
 
       <div style={styles.pin_container}>
         {data.pages.map((src, i) => (

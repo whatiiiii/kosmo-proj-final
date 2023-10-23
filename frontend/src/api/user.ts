@@ -69,3 +69,12 @@ export async function updateUser(
     },
   });
 }
+
+export async function getFollowerCount(id: string) {
+  const res = await fetch(
+    `${SERVER_URL}/follows/search/countByIdFollowerId?follower=${id}`,
+  );
+  if (!res.ok) throw new Error("No data");
+  const data = (await res.json()) as number;
+  return data;
+}

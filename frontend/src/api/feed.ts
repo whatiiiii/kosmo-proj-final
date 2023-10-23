@@ -8,7 +8,7 @@ import { fakeFetch } from "./fakeServer";
 // Uncomment this line to use the fake server
 // const fetch = fakeFetch;
 
-export function useFeed() {
+export function useFeed(username?: string, type?: "created" | "saved") {
   // let pinIds: number[] | undefined = undefined;
 
   // fetch(SERVER_URL + "/pins/search/findAllIds")
@@ -21,10 +21,18 @@ export function useFeed() {
   //     throw new Error("No data");
   //   });
 
+  const fetchIdsUrl =
+    SERVER_URL +
+    (!username
+      ? "/pins/search/findAllIds"
+      : type === "created"
+      ? "/pins/search/findIdsByMemberId?id=" + username
+      : "/saves/search/findSavedPinIdsByMemberId?id=" + username);
+
   const { data: pinIds } = useQuery({
-    queryKey: ["pinIds"],
+    queryKey: ["pinIds", fetchIdsUrl],
     queryFn: () =>
-      fetch(SERVER_URL + "/pins/search/findAllIds")
+      fetch(fetchIdsUrl)
         .then((res) => res.json() as Promise<number[]>)
         .then((data) => shuffle(data)),
     staleTime: Infinity,
@@ -70,7 +78,7 @@ export function useFeed() {
   };
 
   return useInfiniteQuery({
-    queryKey: ["feed"],
+    queryKey: ["feed", fetchIdsUrl],
     queryFn: ({ pageParam }) => fetchOne(pageParam),
     initialPageParam: pinIds ? pinIds[0] : undefined,
     getNextPageParam: (_0, _1, lastPageParam) => {
