@@ -4,11 +4,14 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import PinNavBar from "./PinNavBar";
 import Container from "@mui/material/Container";
-import { useServerUser, useUser } from "../api/user";
+import { getFollowerCount, useServerUser, useUser } from "../api/user";
 import { useNavigate, useParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import { useEffect, useState } from "react";
 import { getImage } from "../api/image";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import PinLayout from "./Pinlayout";
 
 export default function UserProfile() {
   const navigate = useNavigate();
@@ -16,7 +19,22 @@ export default function UserProfile() {
   const { data } = useServerUser(id);
   const [self] = useUser();
   const [imgFile, setImgFile] = useState<string>("");
+  const [followerCount, setFollowerCount] = useState<number>(-1);
+  const [selectedTab, setSelectedTab] = useState<number>(0);
   const isSelf = self?.id === id;
+
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+    getFollowerCount(id)
+      .then((count) => {
+        setFollowerCount(count);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [followerCount, id]);
 
   function handleFollowButton() {
     if (self) {
@@ -58,13 +76,13 @@ export default function UserProfile() {
             <Avatar src={imgFile} sx={{ width: 120, height: 120 }} />
           </Grid>
           <Grid item>
-            <Typography variant="h4">{data?.name ?? "이름"}</Typography>
+            <Typography variant="h4">{data?.name ?? "이름없음"}</Typography>
           </Grid>
           <Grid item>
             <Typography variant="h6">@{id ?? "아이디"}</Typography>
           </Grid>
           <Grid item>
-            <Typography variant="h6">{"n"}명이 팔로우</Typography>
+            <Typography variant="h6">{followerCount}명이 팔로우</Typography>
           </Grid>
           <Grid item container justifyContent="center">
             <Grid item display={isSelf ? "none" : "flex"}>
@@ -78,6 +96,24 @@ export default function UserProfile() {
               </Button>
             </Grid>
           </Grid>
+          <Box sx={{ paddingTop: "20px" }}>
+            <Tabs
+              value={selectedTab}
+              onChange={(_, value) => {
+                setSelectedTab(value as number);
+                console.log(value);
+              }}
+            >
+              <Tab label="생성됨" />
+              <Tab label="저장됨" />
+            </Tabs>
+            {selectedTab === 0 && (
+              <PinLayout username={id} type="created" hideNavBar />
+            )}
+            {selectedTab === 1 && (
+              <PinLayout username={id} type="saved" hideNavBar />
+            )}
+          </Box>
         </Grid>
       </Container>
     </Box>
