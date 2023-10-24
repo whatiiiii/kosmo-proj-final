@@ -1,7 +1,7 @@
 import PinNavBar from "./PinNavBar";
 import Pin from "./Pin";
 import { useFeed } from "../api/feed";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 // import { useQueryClient } from "@tanstack/react-query";
@@ -44,13 +44,18 @@ function PinLayout({ hideNavBar, username, type }: PinLayoutProps) {
   ) : (
     <>
       {!hideNavBar && <PinNavBar />}
-
-      <div style={styles.pin_container}>
-        {data.pages.map((src, i) => (
-          <Pin key={i} src={src} pinSeq={data.pageParams[i] as number} />
-        ))}
-        <div ref={ref}></div>
-      </div>
+      {!data.pages[0] ? (
+        <Typography align="center" sx={{ marginTop: "20px" }}>
+          해당하는 핀이 없습니다.
+        </Typography>
+      ) : (
+        <div style={styles.pin_container}>
+          {data.pages.map((src, i) => (
+            <Pin key={i} src={src} pinSeq={data.pageParams[i] as number} />
+          ))}
+          <div ref={ref}></div>
+        </div>
+      )}
     </>
   );
 }
