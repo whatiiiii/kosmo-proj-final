@@ -441,7 +441,6 @@ const imIdiot = [
   { reason: "영화", why: 123 },
   { reason: "애니메이션", why: 123 },
   { reason: "드라마", why: 123 },
-  { reason: "추억", why: 123 },
   { reason: "웹툰", why: 123 },
   { reason: "디즈니", why: 123 },
   { reason: "지브리", why: 123 },
