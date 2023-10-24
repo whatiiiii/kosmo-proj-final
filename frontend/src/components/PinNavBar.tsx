@@ -25,6 +25,7 @@ import { useHref, useNavigate } from "react-router-dom";
 import Link from "@mui/material/Link";
 import { useUser } from "../api/user";
 import { useState } from "react";
+import ProfileAvatar from "./ProfileAvatar";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -236,7 +237,10 @@ export default function PinNavBar({
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}
                 >
-                  <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                  <ProfileAvatar
+                    username={user?.id}
+                    sx={{ width: 32, height: 32 }}
+                  />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -277,9 +281,9 @@ export default function PinNavBar({
                 <MenuItem onClick={goProfilePage}>
                   <Avatar />내 프로필
                 </MenuItem>
-                <MenuItem onClick={goProfileTab}>
+                {/* <MenuItem onClick={goProfileTab}>
                   <Avatar /> 계정 관리
-                </MenuItem>
+                </MenuItem> */}
                 <Divider />
                 <MenuItem onClick={goProfileTab}>
                   <ListItemIcon>

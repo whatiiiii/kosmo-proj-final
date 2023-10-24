@@ -647,7 +647,7 @@ function PinBuilder() {
                                   href={`/user/${primary}`}
                                 >
                                   <Avatar
-                                    alt={memberData?.id}
+                                    alt={primary}
                                     src={`${SERVER_URL}/upImages/${person}/content`}
                                     style={{ width: 30, height: 30 }}
                                   />
