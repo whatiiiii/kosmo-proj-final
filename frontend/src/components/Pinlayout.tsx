@@ -9,13 +9,17 @@ import { useParams } from "react-router-dom";
 interface PinLayoutProps {
   hideNavBar?: boolean;
   username?: string;
-  type?: "created" | "saved" | "search" | "undefined";
+  type?: "created" | "saved";
 }
 
-function PinLayout({ hideNavBar, username }: PinLayoutProps) {
+function PinLayout({ hideNavBar, username, type }: PinLayoutProps) {
   const { inputValue } = useParams();
 
-  const { status, error, data, fetchNextPage } = useFeed(username, inputValue);
+  const { status, error, data, fetchNextPage } = useFeed(
+    username,
+    inputValue,
+    type,
+  );
   const { inView, ref } = useInView();
 
   useEffect(() => {
