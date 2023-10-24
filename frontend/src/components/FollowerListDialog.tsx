@@ -66,7 +66,7 @@ export default function FollowerListDialog({
       <List sx={{ pt: 0 }}>
         {ids.map((id) => (
           <ListItem disableGutters key={id}>
-            <ListItemButton>
+            <ListItemButton href={`/user/${id}`} onClick={onClose}>
               <ListItemAvatar>
                 <ProfileAvatar username={id}>
                   <PersonIcon />
