@@ -86,9 +86,11 @@ function PinBuilder() {
 
   interface Member {
     id: string;
-    upimage: {
-      imgSeq: number;
-    };
+    upimage:
+      | {
+          imgSeq: number;
+        }
+      | undefined;
   }
 
   interface Image {
@@ -552,7 +554,7 @@ function PinBuilder() {
                             >
                               <Avatar
                                 alt={memberData.id}
-                                src={`${SERVER_URL}/upImages/${memberData.upimage.imgSeq}/content`}
+                                src={`${SERVER_URL}/upImages/${memberData.upimage?.imgSeq}/content`}
                               />
                             </IconButton>
                           )}
