@@ -19,6 +19,7 @@ export default function ProfileAvatar({
   const [imgSrc, setImgSrc] = useState<string>("");
   useEffect(() => {
     if (!data) {
+      setImgSrc("");
       return;
     }
 
@@ -30,6 +31,8 @@ export default function ProfileAvatar({
         .catch((err) => {
           console.error(err);
         });
+    } else {
+      setImgSrc("");
     }
   }, [data]);
 
