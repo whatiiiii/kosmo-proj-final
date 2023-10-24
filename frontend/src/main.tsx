@@ -2,7 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
+  type LoaderFunction,
   Outlet,
+  redirect,
   redirectDocument,
   RouterProvider,
 } from "react-router-dom";
@@ -25,6 +27,16 @@ import ProfileFooter from "./components/ProfileFooter.tsx";
 import EditProfilePage from "./components/EditProfilePage.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import WelcomePage from "./components/WelcomePage.tsx";
+
+const checkLogin: LoaderFunction = () => {
+  const user = localStorage.getItem("user");
+  if (!user) {
+    return redirect("/signup");
+  } else {
+    return null;
+  }
+};
 
 const router = createBrowserRouter(
   [
@@ -39,7 +51,7 @@ const router = createBrowserRouter(
       children: [
         {
           index: true,
-          element: <TestPage />,
+          element: <WelcomePage />,
         },
         {
           path: "test",
@@ -52,6 +64,7 @@ const router = createBrowserRouter(
         {
           path: "feed",
           element: <PinLayout />,
+          loader: checkLogin,
         },
         {
           path: "image",
@@ -64,6 +77,7 @@ const router = createBrowserRouter(
         {
           path: "makepin",
           element: <MakePin />,
+          loader: checkLogin,
         },
         {
           path: "signin",
@@ -76,6 +90,7 @@ const router = createBrowserRouter(
         {
           path: "profiletab",
           element: <ProfileTab />,
+          loader: checkLogin,
         },
         {
           path: "profilefooter",
@@ -91,7 +106,8 @@ const router = createBrowserRouter(
         },
         {
           path: "/pins/search/pinSearch/:inputValue",
-          element: <PinLayout type="search" />,
+          element: <PinLayout />,
+          loader: checkLogin,
         },
 
         {
