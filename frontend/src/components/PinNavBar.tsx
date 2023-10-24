@@ -120,7 +120,7 @@ export default function PinNavBar({
   const [inputValue, setInputValue] = useState("");
 
   function pressEnterHandler(e) {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && onInputValueChange) {
       console.log("Enter key pressed. Input value:", inputValue);
       onInputValueChange(inputValue); // 2. 입력값을 부모 컴포넌트로 전달
       setInputValue("");

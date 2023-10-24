@@ -18,9 +18,11 @@ function PinLayout({ hideNavBar, username, type }: PinLayoutProps) {
   const navigate = useNavigate();
   const { inputValue } = useParams();
 
-  const handleInputValueChange = (value) => {
+  const handleInputValueChange = (value: string) => {
     setCurrentType("search");
-    navigate(`/pins/search/pinSearch/${value}`);
+    if (value !== "") {
+      navigate(`/pins/search/pinSearch/${value}`);
+    }
   };
 
   const { status, error, data, fetchNextPage } = useFeed(
