@@ -203,6 +203,13 @@ function PinBuilder() {
     return data;
   };
 
+  const deletePin = () => {
+    const data = fetch(`${SERVER_URL}/pins/${pinSeq}`, {
+      method: "DELETE",
+    });
+    return data;
+  };
+
   const { data: pinData, isLoading: isPinLoading } = useQuery<Data>({
     queryKey: ["pins", pinSeq],
     queryFn: () =>
@@ -477,8 +484,8 @@ function PinBuilder() {
                       <LinkIcon fontSize="medium" />
                       <Snackbar />
                     </IconButton>
-                    {memberData?.id != userId &&
-                      (isSaving ? (
+                    {memberData?.id != userId ? (
+                      isSaving ? (
                         <Button
                           variant="contained"
                           color="success"
@@ -512,7 +519,26 @@ function PinBuilder() {
                         >
                           저장
                         </Button>
-                      ))}
+                      )
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="error"
+                        sx={{ ml: 27, mt: 2 }}
+                        onClick={() => {
+                          deletePin()
+                            .then(() => {
+                              alert("삭제되었습니다.");
+                              location.href = "/feed";
+                            })
+                            .catch((e) => {
+                              console.error(e);
+                            });
+                        }}
+                      >
+                        삭제
+                      </Button>
+                    )}
                   </ListItem>
                 </List>
               </Grid>

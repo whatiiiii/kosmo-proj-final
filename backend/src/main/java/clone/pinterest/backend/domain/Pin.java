@@ -8,6 +8,8 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.rest.core.annotation.RestResource;
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -31,7 +33,7 @@ public class Pin implements Serializable {
     private String pinTitle;
     private String pinDesc;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "imgSeq")
     @RestResource(path = "PinImg", rel = "image")
     private UpImage image;
@@ -42,12 +44,12 @@ public class Pin implements Serializable {
     @JoinColumn(name = "id")
     @RestResource(path = "pinWriter", rel = "writer")
     private Member writer;
-    @OneToMany(mappedBy = "pin")
+    @OneToMany(mappedBy = "pin", cascade = CascadeType.REMOVE)
     private List<CommentInPin> comment;
 
-    @OneToMany(mappedBy = "id.pin") // Save 엔티티의 id 필드의 pin과 매핑
+    @OneToMany(mappedBy = "id.pin", cascade = CascadeType.REMOVE) // Save 엔티티의 id 필드의 pin과 매핑
     private List<Save> saves;
 
-    @OneToMany(mappedBy = "tagId.pin") // Tag 엔티티의 id 필드의 pin과 매핑
+    @OneToMany(mappedBy = "tagId.pin", cascade = CascadeType.REMOVE) // Tag 엔티티의 id 필드의 pin과 매핑
     private List<Tag> tags;
 }
