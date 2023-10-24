@@ -1,23 +1,18 @@
 import { useState } from "react";
-// import Button from "react-bootstrap/Button";
-// import Modal from "react-bootstrap/Modal";
-// import { Form } from "react-bootstrap";
 import { useUser } from "../api/user";
-import { Button } from "@mui/material"
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import { Button } from "@mui/material";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 
 function MainPage() {
-
- 
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [signupId, setSignupId] = useState("");
   const [signupPwd, setSignupPwd] = useState("");
   const [signupName, setSignupName] = useState("");
   const [signupDate, setSignupDate] = useState("");
- 
+
   const [loginId, setloginId] = useState("");
   const [loginPwd, setloginPwd] = useState("");
 
@@ -106,7 +101,11 @@ function MainPage() {
 
   return (
     <>
-      <Button variant="contained" onClick={handleShowLogin} style={{ backgroundColor: '#E60023', color: 'white' }}>
+      <Button
+        variant="contained"
+        onClick={handleShowLogin}
+        style={{ backgroundColor: "#E60023", color: "white" }}
+      >
         로그인
       </Button>
 
@@ -114,109 +113,150 @@ function MainPage() {
         variant="outlined"
         onClick={handleShowSignup}
         sx={{
-          m : 1,
+          m: 1,
           color: "black",
           borderColor: "gray",
           ":hover": { borderColor: "black" },
         }}
-        >
+      >
         회원가입
       </Button>
 
-      <Button href="/profile" variant="contained" style={{ backgroundColor: '#E60023', color: 'white' }}>
+      <Button
+        href="/profile"
+        variant="contained"
+        style={{ backgroundColor: "#E60023", color: "white" }}
+      >
         프로필
       </Button>
 
       <div>
-      <Modal
-        open={showLogin}
-        onClose={handleCloseLogin}
-        aria-labelledby="login-modal"
-        aria-describedby="login-modal-description"
-      >
-        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 300, bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
-          <h2 id="login-modal" style={{ textAlign: 'center' }}>Pinterest에 오신것을<br/>환영합니다!</h2>
-          <TextField
-            fullWidth
-            label="ID"
-            variant="outlined"
-            margin="normal"
-            value={loginId}
-            onChange={(e) => setloginId(e.target.value)}
-            autoFocus
-          />
-          <TextField
-            fullWidth
-            label="Password"
-            type="password"
-            variant="outlined"
-            margin="normal"
-            value={loginPwd}
-            onChange={(e) => setloginPwd(e.target.value)}
-          />
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button variant="contained" onClick={doLogin} style={{ backgroundColor: '#E60023', color: 'white' }}>
-            로그인
-          </Button>
-          </div>
-        </Box>
-      </Modal>
-    </div>
+        <Modal
+          open={showLogin}
+          onClose={handleCloseLogin}
+          aria-labelledby="login-modal"
+          aria-describedby="login-modal-description"
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 300,
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <h2 id="login-modal" style={{ textAlign: "center" }}>
+              Pinterest에 오신것을
+              <br />
+              환영합니다!
+            </h2>
+            <TextField
+              fullWidth
+              label="ID"
+              variant="outlined"
+              margin="normal"
+              value={loginId}
+              onChange={(e) => setloginId(e.target.value)}
+              autoFocus
+            />
+            <TextField
+              fullWidth
+              label="Password"
+              type="password"
+              variant="outlined"
+              margin="normal"
+              value={loginPwd}
+              onChange={(e) => setloginPwd(e.target.value)}
+            />
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                variant="contained"
+                onClick={doLogin}
+                style={{ backgroundColor: "#E60023", color: "white" }}
+              >
+                로그인
+              </Button>
+            </div>
+          </Box>
+        </Modal>
+      </div>
 
-    <div>
-      <Modal
-        open={showSignup}
-        onClose={handleCloseSignup}
-        aria-labelledby="signup-modal"
-        aria-describedby="signup-modal-description"
-      >
-        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 300, bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
-          <h2 id="signup-modal" style={{ textAlign: 'center' }}>Pinterest에 오신것을 <br/>환영합니다!</h2>
-          <TextField
-            fullWidth
-            label="아이디"
-            variant="outlined"
-            margin="normal"
-            value={signupId}
-            onChange={(e) => setSignupId(e.target.value)}
-            autoFocus
-          />
-          <TextField
-            fullWidth
-            label="비밀번호"
-            type="password"
-            variant="outlined"
-            margin="normal"
-            value={signupPwd}
-            onChange={(e) => setSignupPwd(e.target.value)}
-          />
-          <TextField
-            fullWidth
-            label="이름"
-            variant="outlined"
-            margin="normal"
-            value={signupName}
-            onChange={(e) => setSignupName(e.target.value)}
-          />
-          <TextField
-            fullWidth
-            label="생년월일"
-            InputLabelProps={{ shrink: true, required: true}} //기본값안뜨게추가 
-            type="date"
-            variant="outlined"
-            margin="normal"
-            value={signupDate}
-            onChange={(e) => setSignupDate(e.target.value)}
-          />
+      <div>
+        <Modal
+          open={showSignup}
+          onClose={handleCloseSignup}
+          aria-labelledby="signup-modal"
+          aria-describedby="signup-modal-description"
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 300,
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <h2 id="signup-modal" style={{ textAlign: "center" }}>
+              Pinterest에 오신것을 <br />
+              환영합니다!
+            </h2>
+            <TextField
+              fullWidth
+              label="아이디"
+              variant="outlined"
+              margin="normal"
+              value={signupId}
+              onChange={(e) => setSignupId(e.target.value)}
+              autoFocus
+            />
+            <TextField
+              fullWidth
+              label="비밀번호"
+              type="password"
+              variant="outlined"
+              margin="normal"
+              value={signupPwd}
+              onChange={(e) => setSignupPwd(e.target.value)}
+            />
+            <TextField
+              fullWidth
+              label="이름"
+              variant="outlined"
+              margin="normal"
+              value={signupName}
+              onChange={(e) => setSignupName(e.target.value)}
+            />
+            <TextField
+              fullWidth
+              label="생년월일"
+              InputLabelProps={{ shrink: true, required: true }} //기본값안뜨게추가
+              type="date"
+              variant="outlined"
+              margin="normal"
+              value={signupDate}
+              onChange={(e) => setSignupDate(e.target.value)}
+            />
 
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button variant="contained" onClick={doSignup} style={{ backgroundColor: '#E60023', color: 'white' }}>
-            가입하기
-          </Button>
-          </div>
-        </Box>
-      </Modal>
-    </div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                variant="contained"
+                onClick={doSignup}
+                style={{ backgroundColor: "#E60023", color: "white" }}
+              >
+                가입하기
+              </Button>
+            </div>
+          </Box>
+        </Modal>
+      </div>
     </>
   );
 }

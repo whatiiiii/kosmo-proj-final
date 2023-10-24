@@ -5,8 +5,7 @@ import Box from "@mui/material/Box";
 import PinNavBar from "./PinNavBar";
 import Container from "@mui/material/Container";
 import { getFollowerCount, useServerUser, useUser } from "../api/user";
-import { useNavigate, useParams } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -17,7 +16,6 @@ import Link from "@mui/material/Link";
 import FollowerListDialog from "./FollowerListDialog";
 
 export default function UserProfile() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const { data } = useServerUser(id);
   const [self] = useUser();
@@ -46,17 +44,11 @@ export default function UserProfile() {
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
-  const handleInputValueChange = (value) => {
-    navigate(`/pins/search/pinSearch/${value}`);
-  };
 
   return (
     id && (
       <Box sx={{ flexGrow: 1 }}>
-        <PinNavBar
-          position="static"
-          onInputValueChange={handleInputValueChange}
-        />
+        <PinNavBar position="static" />
         <Container maxWidth="md" sx={{ padding: "1.5em" }}>
           <Grid
             container
@@ -112,12 +104,7 @@ export default function UserProfile() {
                 <PinLayout username={id} type="created" hideNavBar />
               )}
               {selectedTab === 1 && (
-                <PinLayout
-                  username={id}
-                  inputValue=""
-                  type="saved"
-                  hideNavBar
-                />
+                <PinLayout username={id} type="saved" hideNavBar />
               )}
             </Box>
           </Grid>

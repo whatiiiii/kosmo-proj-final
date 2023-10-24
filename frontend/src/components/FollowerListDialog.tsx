@@ -1,4 +1,3 @@
-import Avatar from "@mui/material/Avatar";
 import Dialog, { type DialogProps } from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import ListItem from "@mui/material/ListItem";
@@ -6,12 +5,9 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
 import PersonIcon from "@mui/icons-material/Person";
 import ListItemText from "@mui/material/ListItemText";
-import AddIcon from "@mui/icons-material/Add";
 import List from "@mui/material/List";
 import ProfileAvatar from "./ProfileAvatar";
 import FollowButton from "./FollowButton";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import { SERVER_URL } from "../api/globals";
 

@@ -1,4 +1,4 @@
-// import { Button } from "react-bootstrap";
+import { Button } from "@mui/material";
 import { useUser } from "../api/user";
 
 function Feed() {
@@ -12,14 +12,10 @@ function Feed() {
     <div>
       <h1>Feed</h1>
       <p>
-        <Button href="/profile" variant="primary">
-          프로필
-        </Button>
+        <Button href="/profile">프로필</Button>
       </p>
       <p>
-        <Button variant="danger" onClick={doLogout}>
-          로그아웃
-        </Button>
+        <Button onClick={doLogout}>로그아웃</Button>
       </p>
     </div>
   );

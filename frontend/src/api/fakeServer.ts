@@ -1,5 +1,3 @@
-// import testPic from "../assets/react.svg?raw";
-
 export function fakeFetch(url?: string): Promise<Response> {
   if (url === undefined) {
     return Promise.reject(new Error("No url"));
@@ -19,15 +17,7 @@ export function fakeFetch(url?: string): Promise<Response> {
       }, 300);
     });
   }
-  // return new Promise((resolve, reject) => {
-  //   setTimeout(() => {
-  //     if (Math.random() < 0.01) {
-  //       reject(new Error("Fake Error"));
-  //     } else {
-  //       resolve(new Blob([testPic], { type: "image/svg+xml" }));
-  //     }
-  //   }, 300);
-  // });
+
   if (url.includes("pins/")) {
     const ids = url.match(/\/pins\/(\d+)\?/);
     if (ids === null) {

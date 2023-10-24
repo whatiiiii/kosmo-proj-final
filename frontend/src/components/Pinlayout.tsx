@@ -1,11 +1,10 @@
 import PinNavBar from "./PinNavBar";
 import Pin from "./Pin";
 import { useFeed } from "../api/feed";
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useInView } from "react-intersection-observer";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-// import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 interface PinLayoutProps {
   hideNavBar?: boolean;
@@ -13,23 +12,10 @@ interface PinLayoutProps {
   type?: "created" | "saved" | "search" | "undefined";
 }
 
-function PinLayout({ hideNavBar, username, type }: PinLayoutProps) {
-  const [currentType, setCurrentType] = useState(type);
-  const navigate = useNavigate();
+function PinLayout({ hideNavBar, username }: PinLayoutProps) {
   const { inputValue } = useParams();
 
-  const handleInputValueChange = (value: string) => {
-    setCurrentType("search");
-    if (value !== "") {
-      navigate(`/pins/search/pinSearch/${value}`);
-    }
-  };
-
-  const { status, error, data, fetchNextPage } = useFeed(
-    username,
-    inputValue,
-    currentType,
-  );
+  const { status, error, data, fetchNextPage } = useFeed(username, inputValue);
   const { inView, ref } = useInView();
 
   useEffect(() => {
@@ -46,7 +32,7 @@ function PinLayout({ hideNavBar, username, type }: PinLayoutProps) {
     <p>Error: {error.message}</p>
   ) : (
     <>
-      {!hideNavBar && <PinNavBar onInputValueChange={handleInputValueChange} />}
+      {!hideNavBar && <PinNavBar />}
       <div style={{ paddingTop: "55px" }}>
         {!data.pages[0] ? (
           <Typography align="center" sx={{ marginTop: "20px" }}>

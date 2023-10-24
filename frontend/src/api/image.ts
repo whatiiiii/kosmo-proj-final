@@ -36,13 +36,3 @@ export async function getImage(imgSeq: number) {
 
   return response.blob();
 }
-
-// export async function getImageFromMember(id: string) {
-//   const infoResponse = await fetch(`${SERVER_URL}/members/${id}/ProfileImg`);
-//   if (!infoResponse.ok) {
-//     throw new Error("Failed to get info");
-//   }
-//   const { imgSeq } = (await infoResponse.json()) as UpImage;
-
-//   return getImage(imgSeq);
-// }

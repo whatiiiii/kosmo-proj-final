@@ -13,15 +13,13 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Pinterest from "@mui/icons-material/Pinterest";
-import Avatar from "@mui/material/Avatar";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import Button from "@mui/material/Button";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { useHref, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Link from "@mui/material/Link";
 import { useUser } from "../api/user";
 import { useState } from "react";
@@ -58,7 +56,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
@@ -70,10 +67,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PinNavBar({
   position,
-  onInputValueChange, // 1. 콜백 함수를 추가
 }: {
   position?: AppBarOwnProps["position"];
-  onInputValueChange: (value: string) => void; // 1. 콜백 함수 타입 정의
 }) {
   const [user] = useUser();
   const navigate = useNavigate();
@@ -100,10 +95,6 @@ export default function PinNavBar({
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
@@ -119,11 +110,13 @@ export default function PinNavBar({
   };
   const [inputValue, setInputValue] = useState("");
 
-  function pressEnterHandler(e) {
-    if (e.key === "Enter" && onInputValueChange) {
+  function pressEnterHandler(e: KeyboardEvent) {
+    if (e.key === "Enter") {
       console.log("Enter key pressed. Input value:", inputValue);
-      onInputValueChange(inputValue); // 2. 입력값을 부모 컴포넌트로 전달
-      setInputValue("");
+      if (inputValue !== "") {
+        navigate(`/pins/search/pinSearch/${inputValue}`);
+        setInputValue("");
+      }
     }
   }
   const StyledMenu = styled((props: MenuProps) => (

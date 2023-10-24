@@ -1,27 +1,11 @@
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import {
-  Autocomplete,
-  Button,
-  ButtonGroup,
-  ClickAwayListener,
-  Grow,
-  IconButton,
-  MenuItem,
-  MenuList,
-  Paper,
-  Popper,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, Button, IconButton, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { ArrowDropDownIcon } from "@mui/x-date-pickers";
-import { Mutation, useMutation } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
 import PinNavBar from "./PinNavBar";
 import Profiletext from "./Profiletext";
-import axios from "axios";
 import { SERVER_URL } from "../api/globals";
-import Pin from "./Pin";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../api/user";
 import Tooltip from "@mui/material/Tooltip";
@@ -65,40 +49,6 @@ function MakePin() {
 
   const [selectedTags, setSelectedTags] = useState(Array<object>());
   const tagsRef = useRef<React.ReactElement>(null);
-
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef<HTMLDivElement>(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-
-  const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
-  };
-
-  const handleMenuItemClick = (
-    event: React.MouseEvent<HTMLLIElement>,
-    index: number,
-  ) => {
-    setSelectedIndex(index);
-    setOpen(false);
-  };
-
-  const handleToggle = () => {
-    // setAnchorEl(anchorRef.current);
-    // setAnchorEl(event.target as HTMLDivElement);
-    // console.log(anchorEl);
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event: Event) => {
-    if (
-      anchorRef.current &&
-      anchorRef.current.contains(event.target as HTMLElement)
-    ) {
-      return;
-    }
-
-    setOpen(false);
-  };
 
   interface Pin {
     pinSeq: number;
@@ -191,12 +141,9 @@ function MakePin() {
       // 여기에서 data를 사용하거나 필요한 작업 수행
     }
   };
-  const handleInputValueChange = (value) => {
-    navigate(`/pins/search/pinSearch/${value}`);
-  };
   return (
     <Container>
-      <PinNavBar onInputValueChange={handleInputValueChange} />
+      <PinNavBar />
       <Box>
         <div style={styles.mainscreen}>
           <div>
