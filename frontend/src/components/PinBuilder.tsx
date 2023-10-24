@@ -24,7 +24,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import { useUser } from "../api/user";
-
+import { useNavigate } from "react-router-dom";
 const DemoPaper = styled(Paper)(({ theme }) => ({
   width: 900,
   height: 750,
@@ -151,6 +151,8 @@ function PinBuilder() {
   const [content, setContent] = useState("");
   const [user] = useUser();
   const userId = user?.id;
+
+  const navigate = useNavigate();
 
   const contentInBuilder = async () => {
     const data = await fetch(`${SERVER_URL}/commentInPins`, {
@@ -397,10 +399,14 @@ function PinBuilder() {
     return <div>actually CommentLoading..</div>;
   }
 
+  const handleInputValueChange = (value) => {
+    navigate(`/pins/search/pinSearch/${value}`);
+  };
+
   return (
     <>
       <StyledRoot sx={{ borderRadius: 5 }}>
-        <PinNavBar />
+        <PinNavBar onInputValueChange={handleInputValueChange} />
         <MuiPaperRoot>
           <DemoPaper elevation={3} sx={{ borderRadius: 5 }}>
             <Box1>

@@ -24,6 +24,7 @@ import { SERVER_URL } from "../api/globals";
 import Pin from "./Pin";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../api/user";
+import Tooltip from "@mui/material/Tooltip";
 
 function MakePin() {
   const options = ["보드선택", "보드<1>", "보드<2>", "확인용보드"];
@@ -190,10 +191,12 @@ function MakePin() {
       // 여기에서 data를 사용하거나 필요한 작업 수행
     }
   };
-
+  const handleInputValueChange = (value) => {
+    navigate(`/pins/search/pinSearch/${value}`);
+  };
   return (
     <Container>
-      <PinNavBar />
+      <PinNavBar onInputValueChange={handleInputValueChange} />
       <Box>
         <div style={styles.mainscreen}>
           <div>
@@ -202,18 +205,35 @@ function MakePin() {
                 <div style={styles.searchbar}>
                   <div style={styles.searchbutton}></div>
                   <div style={styles.searchbutton2}>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      sx={{ ml: 27, mr: 1 }}
-                      onClick={() => {
-                        handleSubmit().catch((e) => {
-                          console.error(e);
-                        });
-                      }}
-                    >
-                      저장
-                    </Button>
+                    {!imgFile || !pinTitle ? (
+                      <Tooltip title="이미지 파일과 제목을 입력하세요">
+                        <span>
+                          <Button
+                            variant="contained"
+                            color="error"
+                            sx={{ ml: 27, mr: 1 }}
+                            disabled={!imgFile || !pinTitle}
+                          >
+                            저장
+                          </Button>
+                        </span>
+                      </Tooltip>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="error"
+                        sx={{ ml: 27, mr: 1 }}
+                        onClick={() => {
+                          if (imgFile && pinTitle) {
+                            handleSubmit().catch((e) => {
+                              console.error(e);
+                            });
+                          }
+                        }}
+                      >
+                        저장
+                      </Button>
+                    )}
                   </div>
                 </div>
                 <div style={styles.fileandtext}>
@@ -381,21 +401,90 @@ function MakePin() {
   );
 }
 const imIdiot = [
-  { reason: "idk :(", why: 123 },
-  { reason: "i know why :D", why: 123 },
-  { reason: "whatdoido? :(", why: 123 },
-  { reason: "bold :(", why: 123 },
-  { reason: "rottenanion :(", why: 123 },
-  { reason: "nerd :(", why: 123 },
-  { reason: "puppy :D", why: 123 },
-  { reason: "bark bard :O", why: 123 },
-  { reason: "bobisgood :(", why: 123 },
-  { reason: "kick :m", why: 123 },
-  { reason: "bearisdanger :(", why: 123 },
-  { reason: "can i fly? :/", why: 123 },
-  { reason: "ca", why: 123 },
+  { reason: "오오티디", why: 123 },
+  { reason: "OOTD", why: 123 },
+  { reason: "일상코디", why: 123 },
+  { reason: "일상패션", why: 123 },
+  { reason: "데일리룩", why: 123 },
+  { reason: "데일리코디", why: 123 },
+  { reason: "오오티디룩", why: 123 },
+  { reason: "패션핀", why: 123 },
+  { reason: "신상룩", why: 123 },
+  { reason: "전신샷", why: 123 },
+  { reason: "미러샷", why: 123 },
+  { reason: "패션", why: 123 },
+  { reason: "오늘의코디", why: 123 },
+  { reason: "패피", why: 123 },
+  { reason: "패피남", why: 123 },
+  { reason: "패피녀", why: 123 },
+  { reason: "사진", why: 123 },
+  { reason: "뷰티", why: 123 },
+  { reason: "쇼핑", why: 123 },
+  { reason: "코덕", why: 123 },
+  { reason: "화장품", why: 123 },
+  { reason: "화장품덕후", why: 123 },
+  { reason: "코스메틱", why: 123 },
+  { reason: "오늘의화장품", why: 123 },
+  { reason: "뷰티팁", why: 123 },
+  { reason: "뷰티꿀팁", why: 123 },
+  { reason: "인생템", why: 123 },
+  { reason: "발색", why: 123 },
+  { reason: "발색짱", why: 123 },
+  { reason: "뷰티템", why: 123 },
+  { reason: "인생템", why: 123 },
+  { reason: "뷰티꿀팁", why: 123 },
+  { reason: "화장품추천", why: 123 },
+  { reason: "코덕핀", why: 123 },
+  { reason: "존예보스", why: 123 },
+  { reason: "영롱보스", why: 123 },
+  { reason: "블링블링", why: 123 },
+  { reason: "흔녀", why: 123 },
+  { reason: "흔남", why: 123 },
+  { reason: "세졜예", why: 123 },
+  { reason: "세젤귀", why: 123 },
+  { reason: "selfcamera", why: 123 },
+  { reason: "selfcam", why: 123 },
+  { reason: "셀카", why: 123 },
+  { reason: "일상", why: 123 },
+  { reason: "라이프", why: 123 },
+  { reason: "오늘", why: 123 },
+  { reason: "데일리", why: 123 },
+  { reason: "일상기록", why: 123 },
+  { reason: "하루일과", why: 123 },
+  { reason: "그냥", why: 123 },
+  { reason: "소소", why: 123 },
+  { reason: "사무실", why: 123 },
+  { reason: "출근", why: 123 },
+  { reason: "여행", why: 123 },
+  { reason: "떠나고싶다", why: 123 },
+  { reason: "여행에미치다", why: 123 },
+  { reason: "일상을여행처럼", why: 123 },
+  { reason: "여행후기", why: 123 },
+  { reason: "여행사진", why: 123 },
+  { reason: "추억", why: 123 },
+  { reason: "비행", why: 123 },
+  { reason: "휴가", why: 123 },
+  { reason: "봄", why: 123 },
+  { reason: "여름", why: 123 },
+  { reason: "가을", why: 123 },
+  { reason: "겨울", why: 123 },
+  { reason: "행복", why: 123 },
+  { reason: "남자혼자", why: 123 },
+  { reason: "웨딩", why: 123 },
+  { reason: "자동차", why: 123 },
+  { reason: "원숭이", why: 123 },
+  { reason: "짱구", why: 123 },
 ];
 
+// 일상을여행처럼 여행후기 여행사진 여행앓이 추억 비행 휴가 행복 야경 봄 여름 가을 겨울 2박3일 1박2일 남자혼자 여자혼자 여행사 국내여행 해외여행 게스트하우스 설렘 패키지여행 리조트 펜션 가볼만한곳 강원도 호캉스 동남아 유럽 여친 남친 사랑꾼 데이트 연애중 커플샷 기념일 사랑해 연애 남친몬 여친몬 핑크빛 내사랑
+// 공부
+// 공핀 노트필기 스터디플래너 공부 자극 목표
+// 자기개발 열공 시험공부 공부계획 시간관리 스터디메이트 고3 공부인증 공시생일기 책상
+// 맛집
+// 먹방 먹핀 맛있다 푸드핀 또먹고싶다 맛집 먹방투어 맛집투어 카페투어 카페핀 디저트핀 오늘뭐먹지 존맛탱 맛집탐방 핵존맛 먹깃리스트 혼술 혼밥
+// 헬스
+// 건강핀 건강 다이어트 헬스핀 운동중 몸짱
+// 몸매 피트니스 오운완 바디핀 웨이트 훈녀 훈남 훈훈핀 바디프로필 바디체크 다이어터 눈바디 헬린이 벌크업 힙업 헬스장
 const styles: Record<string, React.CSSProperties> = {
   Body: {
     margin: 0,

@@ -24,6 +24,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useHref, useNavigate } from "react-router-dom";
 import Link from "@mui/material/Link";
 import { useUser } from "../api/user";
+import { useState } from "react";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -67,8 +68,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PinNavBar({
   position,
+  onInputValueChange, // 1. 콜백 함수를 추가
 }: {
   position?: AppBarOwnProps["position"];
+  onInputValueChange: (value: string) => void; // 1. 콜백 함수 타입 정의
 }) {
   const [user] = useUser();
   const navigate = useNavigate();
@@ -112,7 +115,15 @@ export default function PinNavBar({
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const [inputValue, setInputValue] = useState("");
 
+  function pressEnterHandler(e) {
+    if (e.key === "Enter") {
+      console.log("Enter key pressed. Input value:", inputValue);
+      onInputValueChange(inputValue); // 2. 입력값을 부모 컴포넌트로 전달
+      setInputValue("");
+    }
+  }
   const StyledMenu = styled((props: MenuProps) => (
     <Menu
       elevation={0}
@@ -189,6 +200,10 @@ export default function PinNavBar({
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              value={inputValue} // 입력 필드의 값을 상태로 설정
+              onChange={(e) => setInputValue(e.target.value)} // 입력 필드 값이 변경될 때 상태 업데이트
+              onKeyUp={(e) => pressEnterHandler(e)}
+              type="search"
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
