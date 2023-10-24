@@ -40,7 +40,7 @@ export default function WelcomePage() {
               variant="h2"
               sx={{ fontWeight: "bold" }}
             >
-              저장해.
+              아이디어를 검색하세요.
             </Typography>
           </Grid>
         </Grid>
