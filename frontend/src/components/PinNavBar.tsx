@@ -26,6 +26,7 @@ import Link from "@mui/material/Link";
 import { useUser } from "../api/user";
 import { useState } from "react";
 import ProfileAvatar from "./ProfileAvatar";
+import PersonIcon from "@mui/icons-material/Person";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -279,7 +280,8 @@ export default function PinNavBar({
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
                 <MenuItem onClick={goProfilePage}>
-                  <Avatar />내 프로필
+                  <PersonIcon style={{ marginRight: 12, color: "grey" }} />내
+                  프로필
                 </MenuItem>
                 {/* <MenuItem onClick={goProfileTab}>
                   <Avatar /> 계정 관리
