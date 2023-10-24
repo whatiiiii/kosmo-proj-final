@@ -1,5 +1,5 @@
 import Avatar, { type AvatarProps } from "@mui/material/Avatar";
-import { useServerUser, useUser } from "../api/user";
+import { User, useServerUser, useUser } from "../api/user";
 import { useEffect, useState } from "react";
 import { getImage } from "../api/image";
 
@@ -15,7 +15,14 @@ export default function ProfileAvatar({
   if (!username) {
     username = self?.id;
   }
-  const { data } = useServerUser(username);
+  let data: User | undefined = undefined;
+  try {
+    const serverUser = useServerUser(username);
+    data = serverUser.data;
+  } catch (err) {
+    data = null;
+  }
+
   const [imgSrc, setImgSrc] = useState<string>("");
   useEffect(() => {
     if (!data) {
