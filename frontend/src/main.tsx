@@ -104,6 +104,11 @@ const router = createBrowserRouter(
           element: <UserProfile />,
         },
         {
+          path: "/pins/search/pinSearch/:inputValue",
+          element: <PinLayout type="search" />,
+        },
+
+        {
           path: "logout",
           loader: () => {
             localStorage.removeItem("user");

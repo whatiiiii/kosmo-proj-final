@@ -15,4 +15,10 @@ public interface PinRepository extends CrudRepository<Pin, Integer> {
 
     @Query("select p.pinSeq from #{#entityName} p where p.writer.id = ?1")
     Integer[] findIdsByMemberId(@Param("id") String id);
+
+    @Query("SELECT p.pinSeq FROM Pin p WHERE p.pinTitle LIKE %:searchName% " +
+            "UNION " +
+            "SELECT t.tagId.pin.pinSeq FROM Tag t WHERE t.tagId.tagName LIKE %:searchName%")
+    Integer[] findPinIdsByTitleOrTagName(@Param("searchName") String searchName);
+
 }

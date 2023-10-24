@@ -4,11 +4,15 @@ import { shuffle } from "./utils";
 // import img1 from "../assets/img1.jpg";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { fakeFetch } from "./fakeServer";
-
+import { useNavigate } from "react-router-dom";
 // Uncomment this line to use the fake server
 // const fetch = fakeFetch;
 
-export function useFeed(username?: string, type?: "created" | "saved") {
+export function useFeed(
+  username?: string,
+  inputValue?: string,
+  type?: "created" | "saved" | "search" | "undefined",
+) {
   // let pinIds: number[] | undefined = undefined;
 
   // fetch(SERVER_URL + "/pins/search/findAllIds")
@@ -19,15 +23,35 @@ export function useFeed(username?: string, type?: "created" | "saved") {
   //   .catch((err) => {
   //     console.log(err);
   //     throw new Error("No data");
-  //   });
+  //   });""
+  console.log("username 은? ", username);
+  console.log("feed안에 type은? ", type);
+  console.log("inputValue: ", inputValue);
+  // const fetchIdsUrl =
+  //   SERVER_URL +
+  //   (!username
+  //     ? "/pins/search/findAllIds"
+  //     : type === "created"
+  //     ? "/pins/search/findIdsByMemberId?id=" + username
+  //     : "/saves/search/findSavedPinIdsByMemberId?id=" + username);
 
-  const fetchIdsUrl =
-    SERVER_URL +
-    (!username
-      ? "/pins/search/findAllIds"
-      : type === "created"
-      ? "/pins/search/findIdsByMemberId?id=" + username
-      : "/saves/search/findSavedPinIdsByMemberId?id=" + username);
+  let fetchIdsUrl = SERVER_URL;
+
+  if (!username) {
+    if (type === "search" && inputValue != null) {
+      fetchIdsUrl +=
+        "/pins/search/findPinIdsByTitleOrTagName?searchName=" + inputValue;
+    } else {
+      fetchIdsUrl += "/pins/search/findAllIds";
+    }
+  } else {
+    if (type === "created") {
+      fetchIdsUrl += "/pins/search/findIdsByMemberId?id=" + username;
+    } else if (type === "saved") {
+      fetchIdsUrl += "/saves/search/findSavedPinIdsByMemberId?id=" + username;
+    }
+  }
+  console.log("fetchIdsUrl: ", fetchIdsUrl);
 
   const { data: pinIds } = useQuery({
     queryKey: ["pinIds", fetchIdsUrl],
@@ -78,7 +102,7 @@ export function useFeed(username?: string, type?: "created" | "saved") {
   };
 
   return useInfiniteQuery({
-    queryKey: ["feed", fetchIdsUrl],
+    queryKey: ["feed", pinIds],
     queryFn: ({ pageParam }) => fetchOne(pageParam),
     initialPageParam: pinIds ? pinIds[0] : undefined,
     getNextPageParam: (_0, _1, lastPageParam) => {
