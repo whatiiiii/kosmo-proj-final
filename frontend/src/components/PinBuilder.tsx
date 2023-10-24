@@ -544,14 +544,17 @@ function PinBuilder() {
                     <List>
                       <ListItem sx={{ p: 0 }}>
                         <ListItemAvatar>
-                          <IconButton sx={{ p: 0 }}>
-                            {memberData && (
+                          {memberData && (
+                            <IconButton
+                              sx={{ p: 0 }}
+                              href={`/user/${memberData.id}`}
+                            >
                               <Avatar
-                                alt={memberData?.id}
-                                src={`${SERVER_URL}/upImages/${memberData?.upimage?.imgSeq}/content`}
+                                alt={memberData.id}
+                                src={`${SERVER_URL}/upImages/${memberData.upimage.imgSeq}/content`}
                               />
-                            )}
-                          </IconButton>
+                            </IconButton>
+                          )}
                         </ListItemAvatar>
                         {memberData && (
                           <ListItemText
@@ -638,6 +641,7 @@ function PinBuilder() {
                               <ListItemAvatar>
                                 <IconButton
                                   style={{ position: "absolute", top: 0 }}
+                                  href={`/user/${primary}`}
                                 >
                                   <Avatar
                                     alt={memberData?.id}
