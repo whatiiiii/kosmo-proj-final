@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 export default function WelcomePage() {
   return (
     <Box
-      position="relative"
+      // position="relative"
       overflow="auto"
       height="100vh"
       sx={{ scrollSnapType: "y mandatory" }}
