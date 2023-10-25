@@ -3,19 +3,25 @@ import SignUp from "./SignUp";
 import Paper from "@mui/material/Paper";
 import PinNavBar from "./PinNavBar";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 export default function WelcomePage() {
   return (
-    <>
+    <Box
+      position="relative"
+      overflow="auto"
+      height="100vh"
+      sx={{ scrollSnapType: "y mandatory" }}
+    >
       <PinNavBar />
-      <Grid container>
-        <Grid container item sx={{ height: "64px" }}></Grid>
+      <Box>
+        <Grid container height="64px"></Grid>
         <Grid
-          item
           container
           alignContent="center"
           justifyContent="center"
-          sx={{ height: "calc(100vh - 64px)" }}
+          height="calc(100vh - 64px)"
+          sx={{ scrollSnapAlign: "end" }}
         >
           <Grid item>
             <Typography
@@ -28,11 +34,11 @@ export default function WelcomePage() {
           </Grid>
         </Grid>
         <Grid
-          item
           container
           alignContent="center"
           justifyContent="center"
-          sx={{ height: "calc(100vh - 64px)" }}
+          height="calc(100vh - 64px)"
+          sx={{ scrollSnapAlign: "end" }}
         >
           <Grid item>
             <Typography
@@ -44,7 +50,11 @@ export default function WelcomePage() {
             </Typography>
           </Grid>
         </Grid>
-        <Grid container item sx={{ height: "calc(100vh - 64px)" }}>
+        <Grid
+          container
+          height="calc(100vh - 64px)"
+          sx={{ scrollSnapAlign: "end" }}
+        >
           <Grid
             item
             xs={false}
@@ -74,7 +84,7 @@ export default function WelcomePage() {
             <SignUp />
           </Grid>
         </Grid>
-      </Grid>
-    </>
+      </Box>
+    </Box>
   );
 }
