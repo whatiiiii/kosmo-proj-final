@@ -1,10 +1,9 @@
 import Grid from "@mui/material/Grid";
 import SignUp from "./SignUp";
 import Paper from "@mui/material/Paper";
-import PinNavBar from "./PinNavBar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-
+import FirstMainPage from "./MainPageNavBar";
 export default function WelcomePage() {
   return (
     <Box
@@ -13,7 +12,7 @@ export default function WelcomePage() {
       height="100vh"
       sx={{ scrollSnapType: "y mandatory" }}
     >
-      <PinNavBar />
+      <FirstMainPage />
       <Box>
         <Grid container height="64px"></Grid>
         <Grid
