@@ -38,6 +38,17 @@ function Profiletext() {
       id: string;
     };
   }
+  interface User {
+    imgSeq: number;
+    contentId: string;
+  }
+  const { data: userIdData } = useQuery<User>({
+    queryKey: ["userId", userId],
+    queryFn: () =>
+      fetch(SERVER_URL + "/members/" + userId + "/ProfileImg").then((res) =>
+        res.json(),
+      ),
+  });
 
   const { data: memberData } = useQuery<Member>({
     queryKey: ["members", pinSeq],
@@ -85,8 +96,8 @@ function Profiletext() {
           <ListItemAvatar>
             <IconButton sx={{ p: 0 }}>
               <Avatar
-                alt={memberData?.id}
-                src={`http://localhost:8080/upImages/${memberData?.upimage?.imgSeq}/content`}
+                alt={userId}
+                src={`${SERVER_URL}/upImages/${userIdData?.imgSeq}/content`}
               />
             </IconButton>
           </ListItemAvatar>
