@@ -25,6 +25,7 @@ import { useParams } from "react-router-dom";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import { useUser } from "../api/user";
 import { useNavigate } from "react-router-dom";
+import CommentIn from "./CommentIn";
 const DemoPaper = styled(Paper)(({ theme }) => ({
   width: 900,
   height: 750,
@@ -150,31 +151,10 @@ function PinBuilder() {
   }
 
   const { seq: pinSeq } = useParams(); //pinsSeq 변수에 핀번호 할당
-  const [content, setContent] = useState("");
   const [user] = useUser();
   const userId = user?.id;
 
   const navigate = useNavigate();
-
-  const contentInBuilder = async () => {
-    const data = await fetch(`${SERVER_URL}/commentInPins`, {
-      method: "POST",
-      body: JSON.stringify({
-        content: content,
-        pin: `${SERVER_URL}/pins/${pinSeq}`,
-        writer: `${SERVER_URL}/members/${userId}`,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      if (response.ok) {
-        alert("댓글이 등록되었습니다");
-        location.reload();
-      }
-    });
-    return data.json() as Promise<Comment>;
-  };
 
   const createFollow = () => {
     const data = fetch(`${SERVER_URL}/follows`, {
@@ -327,8 +307,6 @@ function PinBuilder() {
     setIsSaving(saveData);
   }, [saveData]);
 
-  console.log("saveData: ", saveData);
-
   const createSaves = () => {
     console.log("pinSeq: ", pinSeq);
     const data = fetch(`${SERVER_URL}/saves`, {
@@ -344,7 +322,6 @@ function PinBuilder() {
       },
     });
 
-    console.log("save 데이터: ", data);
     return data;
   };
 
@@ -411,11 +388,10 @@ function PinBuilder() {
   const handleInputValueChange = (value) => {
     navigate(`/pins/search/pinSearch/${value}`);
   };
-
   return (
     <>
       <StyledRoot sx={{ borderRadius: 5 }}>
-        <PinNavBar onInputValueChange={handleInputValueChange} />
+        <PinNavBar />
         <MuiPaperRoot>
           <DemoPaper elevation={3} sx={{ borderRadius: 5 }}>
             <Box1>
@@ -750,32 +726,7 @@ function PinBuilder() {
                         />
                       </IconButton>
                     </ListItemAvatar>
-                    <TextField
-                      id="outlined-multiline-flexible"
-                      multiline
-                      maxRows={4}
-                      fullWidth
-                      sx={{
-                        height: "100%",
-                        width: "320px",
-                      }}
-                      value={content}
-                      onChange={(e) => setContent(e.target.value)}
-                    />
-                    <Button
-                      color="error"
-                      sx={{
-                        marginLeft: 2,
-                        backgroundColor: "red",
-                      }}
-                      onClick={() => {
-                        contentInBuilder().catch((e) => {
-                          console.error(e);
-                        });
-                      }}
-                    >
-                      <SendRoundedIcon sx={{ color: "white" }} />
-                    </Button>
+                    <CommentIn />
                   </ListItem>
                 </List>
               </Grid>
