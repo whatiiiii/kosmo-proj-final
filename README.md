@@ -14,14 +14,13 @@
 
 # :rocket: 프로젝트 설명 
 
-__상품을 주문하는 일련의 과정에서 마지막 결제까지 쇼핑몰 주문처리에 대한 전반적인 시스템 구현과 상품 리뷰 및 문의 게시판 구현__
+__이미지 공유형 소셜미디어 업체인 ‘핀터레스트’ 클론 코딩 팀 프로젝트__
 
 - - -
 
 
 # 📆 개발 기간
-* 2023/08/10 ~ 2023/08/25 (총2주)
-* 설계 2일 / 개발 10일
+* 2023/09/18 ~ 2023/10/20 
 
 - - -
 # 📝 데이터베이스(DB) 설계
@@ -29,17 +28,16 @@ __상품을 주문하는 일련의 과정에서 마지막 결제까지 쇼핑몰
 - - -
 # 🛠️ Languages and Tools
 <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"> <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"> <img src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white"> 
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"> 
+<img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white"> 
 
 
-<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
-<img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white">
+
+<img src="https://img.shields.io/badge/Material--UI-0081CB?style=for-the-badge&logo=material-ui&logoColor=white"> <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/Talend-FF6D70?style=for-the-badge&logo=Talend&logoColor=white"> 
 
 
-<img src="https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=Oracle&logoColor=white"/> <img src="https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white">
+<img src="https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=Oracle&logoColor=white"/> <img src="https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white">
 
-
-➕ JSP, JPA, toss API
 
 
 - - -
