@@ -24,7 +24,7 @@ __이미지 공유형 소셜미디어 업체인 ‘핀터레스트’ 클론 코
 
 - - -
 # 📝 데이터베이스(DB) 설계
-<img src="https://github.com/whatiiiii/sec_project/assets/140373535/a257956d-a976-46c5-ae6f-9a786a145cec" width="800px" height="450px" title="px(픽셀) 크기 설정" alt="modeling"></img>
+<img src="https://github.com/solban1/kosmo-proj-final/assets/140373535/ecfe2741-298a-41c4-8010-7ba5ce53c039" width="800px" height="450px" title="px(픽셀) 크기 설정" alt="modeling"></img>
 - - -
 # 🛠️ Languages and Tools
 <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"> <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white">
